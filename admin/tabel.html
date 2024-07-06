@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Romi</title>
+    <meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets.">
+    <meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard">
+    <link rel="shortcut icon" href="assets/media/logos/favicon.ico">
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700">
+
+    <!-- Vendor Stylesheets -->
+    <link href="assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css">
+
+    <!-- Global Stylesheets Bundle -->
+    <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css">
+</head>
+<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5FS8GGP" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <div class="d-flex flex-column flex-root">
+        <!-- Page -->
+        <div class="page d-flex flex-row flex-column-fluid">
+            <!-- Aside -->
+            <div id="kt_aside" class="aside aside-default aside-hoverable"
+                data-kt-drawer="true"
+                data-kt-drawer-name="aside"
+                data-kt-drawer-activate="{default: true, lg: false}"
+                data-kt-drawer-overlay="true"
+                data-kt-drawer-width="{default:'200px', '300px': '250px'}"
+                data-kt-drawer-direction="start"
+                data-kt-drawer-toggle="#kt_aside_toggle">
+                <!-- Brand -->
+                <div class="aside-logo flex-column-auto px-10 pt-9 pb-5" id="kt_aside_logo">
+                    <a href="index-2.html">
+                        <img alt="Logo" src="assets/media/logos/logo-default.svg" class="max-h-50px logo-default theme-light-show">
+                        <img alt="Logo" src="assets/media/logos/logo-default-dark.svg" class="max-h-50px logo-default theme-dark-show">
+                        <img alt="Logo" src="assets/media/logos/logo-minimize.svg" class="max-h-50px logo-minimize">
+                    </a>
+                </div>
+                <!-- End Brand -->
+
+                <!-- Aside menu -->
+                <div class="aside-menu flex-column-fluid ps-3 pe-1">
+                    <div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500" id="kt_menu_1">
+                        <!-- Menu items -->
+                        <div class="menu-item">
+                            <a href="index.html" class="menu-link">
+                                <span class="menu-title">Dashboard</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="#" class="menu-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title">User Listing</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="#" class="menu-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title">View Role</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="#" class="menu-link">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title">Permissions</span>
+                            </a>
+                        </div>
+                        <!-- End Menu items -->
+                    </div>
+                </div>
+                <!-- End Aside menu -->
+            </div>
+            <!-- End Aside -->
+
+            <!-- Content -->
+            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+                <!-- Form Section -->
+                <section>
+                    <div class="container mt-5">
+                        <h2>Add Admin Data</h2>
+                        <form id="crudForm">
+                            <div class="mb-3">
+                                <label for="firstName" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="firstName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="lastName" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="lastName" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </form>
+                    </div>
+                </section>
+                <!-- End Form Section -->
+
+                <!-- Table Section -->
+                <section>
+                    <div class="container mt-5">
+                        <h2>Admin Data</h2>
+                        <table class="table table-bordered">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">First Name</th>
+                                    <th scope="col">Last Name</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                <!-- Table rows will be dynamically added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <!-- End Table Section -->
+            </div>
+            <!-- End Content -->
+        </div>
+        <!-- End Page -->
+    </div>
+
+    <!-- Global Javascript Bundle -->
+    <script src="assets/plugins/global/plugins.bundle.js"></script>
+    <script src="assets/js/scripts.bundle.js"></script>
+
+    <!-- Vendors Javascript -->
+    <script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
+
+    <!-- Custom Javascript -->
+    <script>
+        // Function to add data to the table
+        function addData() {
+            var firstName = document.getElementById('firstName').value;
+            var lastName = document.getElementById('lastName').value;
+            
+            var table = document.getElementById('tableBody');
+            var newRow = table.insertRow();
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            var cell3 = newRow.insertCell(2);
+            var cell4 = newRow.insertCell(3);
+            
+            cell1.textContent = table.rows.length; // Index number
+            cell2.textContent = firstName;
+            cell3.textContent = lastName;
+            
+            var editButton = document.createElement('button');
+            editButton.className = 'btn btn-primary btn-sm me-1';
+            editButton.textContent = 'Edit';
+            editButton.addEventListener('click', function() {
+                editRow(newRow);
+            });
+            cell4.appendChild(editButton);
+
+            var deleteButton = document.createElement('button');
+            deleteButton.className = 'btn btn-danger btn-sm';
+            deleteButton.textContent = 'Delete';
+            deleteButton.addEventListener('click', function() {
+                deleteRow(newRow);
+            });
+            cell4.appendChild(deleteButton);
+            
+            // Clear input fields after adding
+            document.getElementById('firstName').value = '';
+            document.getElementById('lastName').value = '';
+        }
+
+        // Function to delete a row
+        function deleteRow(row) {
+            var rowIndex = row.rowIndex;
+            document.getElementById('tableBody').deleteRow(rowIndex);
+            
+            // Update row numbers after deletion
+            var tableRows = document.getElementById('tableBody').rows;
+            for (var i = rowIndex; i < tableRows.length; i++) {
+                tableRows[i].cells[0].textContent = i + 1;
+            }
+        }
+
+        // Function to edit a row
+        function editRow(row) {
+            var firstName = prompt('Enter updated First Name:');
+            var lastName = prompt('Enter updated Last Name:');
+            
+            if (firstName !== null && lastName !== null) {
+                row.cells[1].textContent = firstName;
+                row.cells[2].textContent = lastName;
+            }
+        }
+
+        // Submit form handler
+        document.getElementById('crudForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+            addData(); // Call addData function to add row to table
+        });
+    </script>
+</body>
+</html>
