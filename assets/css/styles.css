@@ -44,7 +44,7 @@
 	Preloader
 ------------------------------------*/
 :root, [data-bs-theme=light] {
-	--bs-primary-rgb:#074da3;
+	--bs-primary-rgb:#193845;
 }
 .dark #preloader {
   background-color: #232323;
