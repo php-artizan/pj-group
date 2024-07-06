@@ -34,11 +34,7 @@ if (isset($_POST['login'])) {
 
 ?>
 
-<?php
-if ($error) {
-    echo "<div class='alert alert-danger'>$error</div>";
-}
-?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -102,7 +98,11 @@ if ($error) {
                 <!--end::Input-->
             </div>
             <!--end::Input group-->
-
+            <?php
+            if ($error) {
+                echo "<div class='alert alert-danger'>$error</div>";
+            }
+            ?>
             <!--begin::Actions-->
             <div class="text-center">
                 <input type="submit" name="login" value="Login" class="btn btn-lg btn-primary w-100 mb-5">

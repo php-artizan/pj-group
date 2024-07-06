@@ -1,6 +1,6 @@
 <?php 
 session_start();
-$db = mysqli_connect("localhost", "root", "", "pj_groups");
+$db = mysqli_connect("localhost", "root", "", "pj_group");
 
 
 
@@ -8,11 +8,6 @@ $db = mysqli_connect("localhost", "root", "", "pj_groups");
 include("functions.php");
 
 $pageName = basename($_SERVER['PHP_SELF']);
-if (!isset($_SESSION['admin_id'])) {
-    redirect("login");
-} else {
-    redirect("users");
-     // Ensure script stops executing after redirection
-}
+
 
 ?>
