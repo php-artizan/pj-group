@@ -17,4 +17,13 @@ function redirect($route){
     }
 }
 
+function is_admin_logged_in(){
+    if (!isset($_SESSION['admin_id'])) {
+        redirect("login");
+    } else {
+        redirect("index");
+        
+    }
+}
+
 ?>
