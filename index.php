@@ -7,6 +7,7 @@
 
 
 <body class="blue-skin">
+	
 
 	<!-- ============================================================== -->
 	<!-- Preloader - style you can find in spinners.css -->
@@ -512,8 +513,8 @@
 										<i class="fa-solid fa-house"></i>
 									</div>
 									<div class="classical-cats-wrap-content ms-3">
-										<h4>Private House</h4>
-										<p>12 Properties</p>
+										<h4>New Projects</h4>
+										<p>The best investment opportunities</p>
 									</div>
 								</a>
 							</div>
@@ -521,13 +522,13 @@
 
 						<div class="col-lg-3 col-md-4 col-sm-6">
 							<div class="classical-cats-wrap d-flex align-items-center">
-								<a class="classical-cats-boxs d-flex align-items-center w-100">
+								<a class="classical-cats-boxs d-flex align-items-center w-100" href="construction-cost-calculato.php">
 									<div class="classical-cats-icon px-4 py-4 rounded bg-light-warning text-warning fs-2">
 										<i class="fa-solid fa-building"></i>
 									</div>
 									<div class="classical-cats-wrap-content ms-3">
-										<h4>Apartment</h4>
-										<p>16 Properties</p>
+										<h4>Construction Cost Calculation</h4>
+										<p>Get Construction Cost Estimate</p>
 									</div>
 								</a>
 							</div>
@@ -535,13 +536,13 @@
 
 						<div class="col-lg-3 col-md-4 col-sm-6">
 							<div class="classical-cats-wrap d-flex align-items-center">
-								<a class="classical-cats-boxs d-flex align-items-center w-100">
+								<a class="classical-cats-boxs d-flex align-items-center w-100" href="home-loan.php">
 									<div class="classical-cats-icon px-4 py-4 rounded bg-light-danger text-danger fs-2">
 										<i class="fa-solid fa-building-shield"></i>
 									</div>
 									<div class="classical-cats-wrap-content ms-3">
-										<h4>Townhouse</h4>
-										<p>22 Properties</p>
+										<h4>Home Loan Calculator</h4>
+										<p>Find affordable loan package</p>
 									</div>
 								</a>
 							</div>
@@ -549,13 +550,13 @@
 
 						<div class="col-lg-3 col-md-4 col-sm-6">
 							<div class="classical-cats-wrap d-flex align-items-center">
-								<a class="classical-cats-boxs d-flex align-items-center w-100">
+								<a class="classical-cats-boxs d-flex align-items-center w-100" href="area-guide.php">
 									<div class="classical-cats-icon px-4 py-4 rounded bg-light-info text-primary fs-2">
 										<i class="fa-solid fa-synagogue"></i>
 									</div>
 									<div class="classical-cats-wrap-content ms-3">
-										<h4>Villa</h4>
-										<p>18 Properties</p>
+										<h4>Area Guide</h4>
+										<p>Explore housing societies in pakistan</p>
 									</div>
 								</a>
 							</div>
@@ -563,13 +564,13 @@
 
 						<div class="col-lg-3 col-md-4 col-sm-6">
 							<div class="classical-cats-wrap d-flex align-items-center">
-								<a class="classical-cats-boxs d-flex align-items-center w-100">
+								<a class="classical-cats-boxs d-flex align-items-center w-100" >
 									<div class="classical-cats-icon px-4 py-4 rounded bg-light-success text-success fs-2">
 										<i class="fa-solid fa-mosque"></i>
 									</div>
 									<div class="classical-cats-wrap-content ms-3">
-										<h4>Offices</h4>
-										<p>42 Properties</p>
+										<h4>Plot Finder</h4>
+										<p>Find plot in any housing society</p>
 									</div>
 								</a>
 							</div>
@@ -577,39 +578,39 @@
 
 						<div class="col-lg-3 col-md-4 col-sm-6">
 							<div class="classical-cats-wrap d-flex align-items-center">
-								<a class="classical-cats-boxs d-flex align-items-center w-100">
+								<a class="classical-cats-boxs d-flex align-items-center w-100" href="property-index.php">
 									<div class="classical-cats-icon px-4 py-4 rounded bg-light-danger text-danger fs-2">
 										<i class="fa-solid fa-tree-city"></i>
 									</div>
 									<div class="classical-cats-wrap-content ms-3">
-										<h4>Warehouses</h4>
-										<p>63 Properties</p>
+										<h4>Property Index</h4>
+										<p>Track Changes in real estate prices</p>
 									</div>
 								</a>
 							</div>
 						</div>
 						<div class="col-lg-3 col-md-4 col-sm-6">
 							<div class="classical-cats-wrap d-flex align-items-center">
-								<a class="classical-cats-boxs d-flex align-items-center w-100">
+								<a class="classical-cats-boxs d-flex align-items-center w-100" href="area-unit-convertor.php">
 									<div class="classical-cats-icon px-4 py-4 rounded bg-light-danger text-danger fs-2">
 										<i class="fa-solid fa-tree-city"></i>
 									</div>
 									<div class="classical-cats-wrap-content ms-3">
-										<h4>Warehouses</h4>
-										<p>63 Properties</p>
+										<h4>Area Unit Converter</h4>
+										<p>Convert any area unit instantly</p>
 									</div>
 								</a>
 							</div>
 						</div>
 						<div class="col-lg-3 col-md-4 col-sm-6">
 							<div class="classical-cats-wrap d-flex align-items-center">
-								<a class="classical-cats-boxs d-flex align-items-center w-100">
+								<a class="classical-cats-boxs d-flex align-items-center w-100" href="property-trend.php">
 									<div class="classical-cats-icon px-4 py-4 rounded bg-light-danger text-danger fs-2">
 										<i class="fa-solid fa-tree-city"></i>
 									</div>
 									<div class="classical-cats-wrap-content ms-3">
-										<h4>Warehouses</h4>
-										<p>63 Properties</p>
+										<h4>Property Trends </h4>
+										<p>Find popular area to buy property</p>
 									</div>
 								</a>
 							</div>
