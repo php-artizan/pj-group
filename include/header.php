@@ -88,23 +88,23 @@
 						<div class="nav-menus-wrapper" style="transition-property: none;">
 							<ul class="nav-menu">
 
-								<li class="active"><a href="home-11.html">Home<span
+								<li class="active"><a href="index.php">Home<span
 											class="submenu-indicator"></span></a>
 								</li>
 
 								<li><a href="JavaScript:Void(0);">Buy<span class="submenu-indicator"></span></a>
 									<ul class="nav-dropdown nav-submenu">
 										<li>
-										<li><a href="list-layout-new.html">HOME</a></li>
-										<li><a href="list-layout-new-3.html">PLOTS</a></li>
-										<li><a href="list-layout-new-3.html">COMMERCIAL</a></li>
+										<li><a href="list-layout-new.php">HOME</a></li>
+										<li><a href="list-layout-new-3.php">PLOTS</a></li>
+										<li><a href="list-layout-new-3.php">COMMERCIAL</a></li>
 								</li>
 							</ul>
 							</li>
-							<li class="active"><a href="404.html">AGENTS<span
+							<li class="active"><a href="404.php">AGENTS<span
 								class="submenu-indicator"></span></a>
 					</li>
-					<li class="active"><a href="404.html">NEW PROJECTS<span
+					<li class="active"><a href="404.php">NEW PROJECTS<span
 						class="submenu-indicator"></span></a>
 			</li>
 				

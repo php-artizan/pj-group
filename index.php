@@ -68,7 +68,7 @@
 									<img src="assets/img/p-1.jpg" class="img-fluid" alt="">
 								</div>
 								<div class="sides_list_property_detail">
-									<h4><a href="single-property-1.html">Loss vengel New Apartment</a></h4>
+									<h4><a href="single-property-1.php">Loss vengel New Apartment</a></h4>
 									<span class="text-muted-2"><i class="fa-solid fa-location-dot"></i>Sans
 										Fransico</span>
 									<div class="lists_property_price">
@@ -88,7 +88,7 @@
 									<img src="assets/img/p-4.jpg" class="img-fluid" alt="">
 								</div>
 								<div class="sides_list_property_detail">
-									<h4><a href="single-property-1.html">Montreal Quriqe Apartment</a></h4>
+									<h4><a href="single-property-1.php">Montreal Quriqe Apartment</a></h4>
 									<span class="text-muted-2"><i class="fa-solid fa-location-dot"></i>Liverpool,
 										London</span>
 									<div class="lists_property_price">
@@ -108,7 +108,7 @@
 									<img src="assets/img/p-7.jpg" class="img-fluid" alt="">
 								</div>
 								<div class="sides_list_property_detail">
-									<h4><a href="single-property-1.html">Curmic Studio For Office</a></h4>
+									<h4><a href="single-property-1.php">Curmic Studio For Office</a></h4>
 									<span class="text-muted-2"><i class="fa-solid fa-location-dot"></i>Montreal,
 										Canada</span>
 									<div class="lists_property_price">
@@ -128,7 +128,7 @@
 									<img src="assets/img/p-5.jpg" class="img-fluid" alt="">
 								</div>
 								<div class="sides_list_property_detail">
-									<h4><a href="single-property-1.html">Montreal Quebec City</a></h4>
+									<h4><a href="single-property-1.php">Montreal Quebec City</a></h4>
 									<span class="text-muted-2"><i class="fa-solid fa-location-dot"></i>Sreek View, New
 										York</span>
 									<div class="lists_property_price">
@@ -158,7 +158,7 @@
 									<img src="assets/img/p-2.jpg" class="img-fluid" alt="">
 								</div>
 								<div class="sides_list_property_detail">
-									<h4><a href="single-property-1.html">Loss vengel New Apartment</a></h4>
+									<h4><a href="single-property-1.php">Loss vengel New Apartment</a></h4>
 									<span class="text-muted-2"><i class="fa-solid fa-location-dot"></i>Sans
 										Fransico</span>
 									<div class="lists_property_price">
@@ -178,7 +178,7 @@
 									<img src="assets/img/p-3.jpg" class="img-fluid" alt="">
 								</div>
 								<div class="sides_list_property_detail">
-									<h4><a href="single-property-1.html">Montreal Quriqe Apartment</a></h4>
+									<h4><a href="single-property-1.php">Montreal Quriqe Apartment</a></h4>
 									<span class="text-muted-2"><i class="fa-solid fa-location-dot"></i>Liverpool,
 										London</span>
 									<div class="lists_property_price">
@@ -198,7 +198,7 @@
 									<img src="assets/img/p-4.jpg" class="img-fluid" alt="">
 								</div>
 								<div class="sides_list_property_detail">
-									<h4><a href="single-property-1.html">Curmic Studio For Office</a></h4>
+									<h4><a href="single-property-1.php">Curmic Studio For Office</a></h4>
 									<span class="text-muted-2"><i class="fa-solid fa-location-dot"></i>Montreal,
 										Canada</span>
 									<div class="lists_property_price">
@@ -218,7 +218,7 @@
 									<img src="assets/img/p-27.jpg" class="img-fluid" alt="">
 								</div>
 								<div class="sides_list_property_detail">
-									<h4><a href="single-property-1.html">Montreal Quebec City</a></h4>
+									<h4><a href="single-property-1.php">Montreal Quebec City</a></h4>
 									<span class="text-muted-2"><i class="fa-solid fa-location-dot"></i>Sreek View, New
 										York</span>
 									<div class="lists_property_price">
@@ -900,7 +900,7 @@
 					<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
 						<div class="location-property-wrap rounded-4 p-2">
 							<div class="location-property-thumb rounded-4">
-								<a href="listings-list-with-sidebar.html"><img src="assets/img/c-1.png"
+								<a href="listings-list-with-sidebar.php"><img src="assets/img/c-1.png"
 										class="img-fluid" alt="" /></a>
 							</div>
 							<div class="location-property-content">
@@ -909,7 +909,7 @@
 									<span class="text-muted-2">95 Properties</span>
 								</div>
 								<div class="lp-content-right">
-									<a href="listings-list-with-sidebar.html" class="text-primary">
+									<a href="listings-list-with-sidebar.php" class="text-primary">
 										<span class="svg-icon svg-icon-2hx">
 											<svg width="40" height="40" viewBox="0 0 24 24" fill="none"
 												xmlns="http://www.w3.org/2000/svg">
@@ -929,7 +929,7 @@
 					<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
 						<div class="location-property-wrap rounded-4 p-2">
 							<div class="location-property-thumb rounded-4">
-								<a href="listings-list-with-sidebar.html"><img src="assets/img/c-2.png"
+								<a href="listings-list-with-sidebar.php"><img src="assets/img/c-2.png"
 										class="img-fluid" alt="" /></a>
 							</div>
 							<div class="location-property-content">
@@ -938,7 +938,7 @@
 									<span class="text-muted-2">95 Properties</span>
 								</div>
 								<div class="lp-content-right">
-									<a href="listings-list-with-sidebar.html" class="text-primary">
+									<a href="listings-list-with-sidebar.php" class="text-primary">
 										<span class="svg-icon svg-icon-2hx">
 											<svg width="40" height="40" viewBox="0 0 24 24" fill="none"
 												xmlns="http://www.w3.org/2000/svg">
@@ -958,7 +958,7 @@
 					<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
 						<div class="location-property-wrap rounded-4 p-2">
 							<div class="location-property-thumb rounded-4">
-								<a href="listings-list-with-sidebar.html"><img src="assets/img/c-3.png"
+								<a href="listings-list-with-sidebar.php"><img src="assets/img/c-3.png"
 										class="img-fluid" alt="" /></a>
 							</div>
 							<div class="location-property-content">
@@ -967,7 +967,7 @@
 									<span class="text-muted-2">95 Properties</span>
 								</div>
 								<div class="lp-content-right">
-									<a href="listings-list-with-sidebar.html" class="text-primary">
+									<a href="listings-list-with-sidebar.php" class="text-primary">
 										<span class="svg-icon svg-icon-2hx">
 											<svg width="40" height="40" viewBox="0 0 24 24" fill="none"
 												xmlns="http://www.w3.org/2000/svg">
@@ -987,7 +987,7 @@
 					<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
 						<div class="location-property-wrap rounded-4 p-2">
 							<div class="location-property-thumb rounded-4">
-								<a href="listings-list-with-sidebar.html"><img src="assets/img/c-4.png"
+								<a href="listings-list-with-sidebar.php"><img src="assets/img/c-4.png"
 										class="img-fluid" alt="" /></a>
 							</div>
 							<div class="location-property-content">
@@ -996,7 +996,7 @@
 									<span class="text-muted-2">95 Properties</span>
 								</div>
 								<div class="lp-content-right">
-									<a href="listings-list-with-sidebar.html" class="text-primary">
+									<a href="listings-list-with-sidebar.php" class="text-primary">
 										<span class="svg-icon svg-icon-2hx">
 											<svg width="40" height="40" viewBox="0 0 24 24" fill="none"
 												xmlns="http://www.w3.org/2000/svg">
@@ -1016,7 +1016,7 @@
 					<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
 						<div class="location-property-wrap rounded-4 p-2">
 							<div class="location-property-thumb rounded-4">
-								<a href="listings-list-with-sidebar.html"><img src="assets/img/c-5.png"
+								<a href="listings-list-with-sidebar.php"><img src="assets/img/c-5.png"
 										class="img-fluid" alt="" /></a>
 							</div>
 							<div class="location-property-content">
@@ -1025,7 +1025,7 @@
 									<span class="text-muted-2">95 Properties</span>
 								</div>
 								<div class="lp-content-right">
-									<a href="listings-list-with-sidebar.html" class="text-primary">
+									<a href="listings-list-with-sidebar.php" class="text-primary">
 										<span class="svg-icon svg-icon-2hx">
 											<svg width="40" height="40" viewBox="0 0 24 24" fill="none"
 												xmlns="http://www.w3.org/2000/svg">
@@ -1045,7 +1045,7 @@
 					<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
 						<div class="location-property-wrap rounded-4 p-2">
 							<div class="location-property-thumb rounded-4">
-								<a href="listings-list-with-sidebar.html"><img src="assets/img/c-6.png"
+								<a href="listings-list-with-sidebar.php"><img src="assets/img/c-6.png"
 										class="img-fluid" alt="" /></a>
 							</div>
 							<div class="location-property-content">
@@ -1054,7 +1054,7 @@
 									<span class="text-muted-2">95 Properties</span>
 								</div>
 								<div class="lp-content-right">
-									<a href="listings-list-with-sidebar.html" class="text-primary">
+									<a href="listings-list-with-sidebar.php" class="text-primary">
 										<span class="svg-icon svg-icon-2hx">
 											<svg width="40" height="40" viewBox="0 0 24 24" fill="none"
 												xmlns="http://www.w3.org/2000/svg">
@@ -1074,7 +1074,7 @@
 					<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
 						<div class="location-property-wrap rounded-4 p-2">
 							<div class="location-property-thumb rounded-4">
-								<a href="listings-list-with-sidebar.html"><img src="assets/img/c-7.png"
+								<a href="listings-list-with-sidebar.php"><img src="assets/img/c-7.png"
 										class="img-fluid" alt="" /></a>
 							</div>
 							<div class="location-property-content">
@@ -1083,7 +1083,7 @@
 									<span class="text-muted-2">18 Properties</span>
 								</div>
 								<div class="lp-content-right">
-									<a href="listings-list-with-sidebar.html" class="text-primary">
+									<a href="listings-list-with-sidebar.php" class="text-primary">
 										<span class="svg-icon svg-icon-2hx">
 											<svg width="40" height="40" viewBox="0 0 24 24" fill="none"
 												xmlns="http://www.w3.org/2000/svg">
@@ -1103,7 +1103,7 @@
 					<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
 						<div class="location-property-wrap rounded-4 p-2">
 							<div class="location-property-thumb rounded-4">
-								<a href="listings-list-with-sidebar.html"><img src="assets/img/c-8.png"
+								<a href="listings-list-with-sidebar.php"><img src="assets/img/c-8.png"
 										class="img-fluid" alt="" /></a>
 							</div>
 							<div class="location-property-content">
@@ -1112,7 +1112,7 @@
 									<span class="text-muted-2">26 Properties</span>
 								</div>
 								<div class="lp-content-right">
-									<a href="listings-list-with-sidebar.html" class="text-primary">
+									<a href="listings-list-with-sidebar.php" class="text-primary">
 										<span class="svg-icon svg-icon-2hx">
 											<svg width="40" height="40" viewBox="0 0 24 24" fill="none"
 												xmlns="http://www.w3.org/2000/svg">
@@ -1133,7 +1133,7 @@
 
 				<div class="row">
 					<div class="col-lg-12 col-md-12 col-sm-12 text-center mt-5">
-						<a href="listings-list-with-sidebar.html" class="btn btn-primary px-md-5 rounded">Browse More
+						<a href="listings-list-with-sidebar.php" class="btn btn-primary px-md-5 rounded">Browse More
 							Locations</a>
 					</div>
 				</div>
@@ -1177,9 +1177,9 @@
                 </div>
                 <div class="list-img-slide">
                     <div class="click mb-0 rounded-3 overflow-hidden">
-                        <div><a href="single-property-1.html"><img src="assets/img/p-1.jpg" class="img-fluid" alt="" /></a></div>
-                        <div><a href="single-property-1.html"><img src="assets/img/p-9.jpg" class="img-fluid" alt="" /></a></div>
-                        <div><a href="single-property-1.html"><img src="assets/img/p-10.jpg" class="img-fluid" alt="" /></a></div>
+                        <div><a href="single-property-1.php"><img src="assets/img/p-1.jpg" class="img-fluid" alt="" /></a></div>
+                        <div><a href="single-property-1.php"><img src="assets/img/p-9.jpg" class="img-fluid" alt="" /></a></div>
+                        <div><a href="single-property-1.php"><img src="assets/img/p-10.jpg" class="img-fluid" alt="" /></a></div>
                     </div>
                 </div>
             </div>
@@ -1191,7 +1191,7 @@
                         <div class="d-flex align-items-center mb-1">
                             <span class="label bg-light-success text-success prt-type me-2">For Rent</span><span class="label bg-light-purple text-purple property-cats">Apartment</span>
                         </div>
-                        <h4 class="listing-name fw-semibold fs-6 mb-0"><a href="single-property-1.html" class="prt-link-detail">Equitable Property Group</a></h4>
+                        <h4 class="listing-name fw-semibold fs-6 mb-0"><a href="single-property-1.php" class="prt-link-detail">Equitable Property Group</a></h4>
                         <div class="prt-location text-muted-2">
                             <span class="svg-icon svg-icon-2hx">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1273,11 +1273,11 @@
 									</div>
 									<div class="list-img-slide">
 										<div class="click mb-0 rounded-3 overflow-hidden">
-											<div><a href="single-property-1.html"><img src="assets/img/p-2.jpg"
+											<div><a href="single-property-1.php"><img src="assets/img/p-2.jpg"
 														class="img-fluid" alt="" /></a></div>
-											<div><a href="single-property-1.html"><img src="assets/img/p-6.jpg"
+											<div><a href="single-property-1.php"><img src="assets/img/p-6.jpg"
 														class="img-fluid" alt="" /></a></div>
-											<div><a href="single-property-1.html"><img src="assets/img/p-8.jpg"
+											<div><a href="single-property-1.php"><img src="assets/img/p-8.jpg"
 														class="img-fluid" alt="" /></a></div>
 										</div>
 									</div>
@@ -1294,7 +1294,7 @@
 													class="label bg-light-purple text-purple property-cats">Apartment</span>
 											</div>
 											<h4 class="listing-name fw-semibold fs-6 mb-0"><a
-													href="single-property-1.html" class="prt-link-detail">Purple
+													href="single-property-1.php" class="prt-link-detail">Purple
 													Flatiron House</a></h4>
 											<div class="prt-location text-muted-2">
 												<span class="svg-icon svg-icon-2hx">
@@ -1412,11 +1412,11 @@
 									</div>
 									<div class="list-img-slide">
 										<div class="click mb-0 rounded-3 overflow-hidden">
-											<div><a href="single-property-1.html"><img src="assets/img/p-3.jpg"
+											<div><a href="single-property-1.php"><img src="assets/img/p-3.jpg"
 														class="img-fluid" alt="" /></a></div>
-											<div><a href="single-property-1.html"><img src="assets/img/p-5.jpg"
+											<div><a href="single-property-1.php"><img src="assets/img/p-5.jpg"
 														class="img-fluid" alt="" /></a></div>
-											<div><a href="single-property-1.html"><img src="assets/img/p-7.jpg"
+											<div><a href="single-property-1.php"><img src="assets/img/p-7.jpg"
 														class="img-fluid" alt="" /></a></div>
 										</div>
 									</div>
@@ -1433,7 +1433,7 @@
 													class="label bg-light-purple text-purple property-cats">Apartment</span>
 											</div>
 											<h4 class="listing-name fw-semibold fs-6 mb-0"><a
-													href="single-property-1.html" class="prt-link-detail">Rustic Reunion
+													href="single-property-1.php" class="prt-link-detail">Rustic Reunion
 													Tower</a></h4>
 											<div class="prt-location text-muted-2">
 												<span class="svg-icon svg-icon-2hx">
@@ -1534,11 +1534,11 @@
 									</div>
 									<div class="list-img-slide">
 										<div class="click mb-0 rounded-3 overflow-hidden">
-											<div><a href="single-property-1.html"><img src="assets/img/p-4.jpg"
+											<div><a href="single-property-1.php"><img src="assets/img/p-4.jpg"
 														class="img-fluid" alt="" /></a></div>
-											<div><a href="single-property-1.html"><img src="assets/img/p-6.jpg"
+											<div><a href="single-property-1.php"><img src="assets/img/p-6.jpg"
 														class="img-fluid" alt="" /></a></div>
-											<div><a href="single-property-1.html"><img src="assets/img/p-9.jpg"
+											<div><a href="single-property-1.php"><img src="assets/img/p-9.jpg"
 														class="img-fluid" alt="" /></a></div>
 										</div>
 									</div>
@@ -1555,7 +1555,7 @@
 													class="label bg-light-purple text-purple property-cats">Apartment</span>
 											</div>
 											<h4 class="listing-name fw-semibold fs-6 mb-0"><a
-													href="single-property-1.html" class="prt-link-detail">The Red
+													href="single-property-1.php" class="prt-link-detail">The Red
 													Freedom Tower</a></h4>
 											<div class="prt-location text-muted-2">
 												<span class="svg-icon svg-icon-2hx">
@@ -1673,11 +1673,11 @@
 									</div>
 									<div class="list-img-slide">
 										<div class="click mb-0 rounded-3 overflow-hidden">
-											<div><a href="single-property-1.html"><img src="assets/img/p-5.jpg"
+											<div><a href="single-property-1.php"><img src="assets/img/p-5.jpg"
 														class="img-fluid" alt="" /></a></div>
-											<div><a href="single-property-1.html"><img src="assets/img/p-12.jpg"
+											<div><a href="single-property-1.php"><img src="assets/img/p-12.jpg"
 														class="img-fluid" alt="" /></a></div>
-											<div><a href="single-property-1.html"><img src="assets/img/p-13.jpg"
+											<div><a href="single-property-1.php"><img src="assets/img/p-13.jpg"
 														class="img-fluid" alt="" /></a></div>
 										</div>
 									</div>
@@ -1694,7 +1694,7 @@
 													class="label bg-light-purple text-purple property-cats">Apartment</span>
 											</div>
 											<h4 class="listing-name fw-semibold fs-6 mb-0"><a
-													href="single-property-1.html" class="prt-link-detail">The Donald
+													href="single-property-1.php" class="prt-link-detail">The Donald
 													Dwelling</a></h4>
 											<div class="prt-location text-muted-2">
 												<span class="svg-icon svg-icon-2hx">
@@ -1795,11 +1795,11 @@
 									</div>
 									<div class="list-img-slide">
 										<div class="click mb-0 rounded-3 overflow-hidden">
-											<div><a href="single-property-1.html"><img src="assets/img/p-6.jpg"
+											<div><a href="single-property-1.php"><img src="assets/img/p-6.jpg"
 														class="img-fluid" alt="" /></a></div>
-											<div><a href="single-property-1.html"><img src="assets/img/p-7.jpg"
+											<div><a href="single-property-1.php"><img src="assets/img/p-7.jpg"
 														class="img-fluid" alt="" /></a></div>
-											<div><a href="single-property-1.html"><img src="assets/img/p-11.jpg"
+											<div><a href="single-property-1.php"><img src="assets/img/p-11.jpg"
 														class="img-fluid" alt="" /></a></div>
 										</div>
 									</div>
@@ -1816,7 +1816,7 @@
 													class="label bg-light-purple text-purple property-cats">Apartment</span>
 											</div>
 											<h4 class="listing-name fw-semibold fs-6 mb-0"><a
-													href="single-property-1.html" class="prt-link-detail">Red Tiny
+													href="single-property-1.php" class="prt-link-detail">Red Tiny
 													Hearst Castle</a></h4>
 											<div class="prt-location text-muted-2">
 												<span class="svg-icon svg-icon-2hx">
@@ -1894,7 +1894,7 @@
 
 				<div class="row align-items-center justify-content-center">
 					<div class="col-lg-12 col-md-12 col-sm-12 text-center mt-5">
-						<a href="listings-list-with-sidebar.html" class="btn btn-primary px-md-5 rounded">Browse More
+						<a href="listings-list-with-sidebar.php" class="btn btn-primary px-md-5 rounded">Browse More
 							Properties</a>
 					</div>
 				</div>
@@ -1926,7 +1926,7 @@
 
 							<div class="agents-grid-wrap">
 								<div class="fr-grid-thumb mx-auto text-center mt-5 mb-3">
-									<a href="agent-page.html" class="d-inline-flex p-1 circle border">
+									<a href="agent-page.php" class="d-inline-flex p-1 circle border">
 										<img src="assets/img/user-1.png" class="img-fluid circle" width="130" alt="" />
 									</a>
 								</div>
@@ -1971,7 +1971,7 @@
 
 							<div class="agents-grid-wrap">
 								<div class="fr-grid-thumb mx-auto text-center mt-5 mb-3">
-									<a href="agent-page.html" class="d-inline-flex p-1 circle border">
+									<a href="agent-page.php" class="d-inline-flex p-1 circle border">
 										<img src="assets/img/user-2.png" class="img-fluid circle" width="130" alt="" />
 									</a>
 								</div>
@@ -2016,7 +2016,7 @@
 
 							<div class="agents-grid-wrap">
 								<div class="fr-grid-thumb mx-auto text-center mt-5 mb-3">
-									<a href="agent-page.html" class="d-inline-flex p-1 circle border">
+									<a href="agent-page.php" class="d-inline-flex p-1 circle border">
 										<img src="assets/img/user-3.png" class="img-fluid circle" width="130" alt="" />
 									</a>
 								</div>
@@ -2061,7 +2061,7 @@
 
 							<div class="agents-grid-wrap">
 								<div class="fr-grid-thumb mx-auto text-center mt-5 mb-3">
-									<a href="agent-page.html" class="d-inline-flex p-1 circle border">
+									<a href="agent-page.php" class="d-inline-flex p-1 circle border">
 										<img src="assets/img/user-4.png" class="img-fluid circle" width="130" alt="" />
 									</a>
 								</div>
@@ -2106,7 +2106,7 @@
 
 							<div class="agents-grid-wrap">
 								<div class="fr-grid-thumb mx-auto text-center mt-5 mb-3">
-									<a href="agent-page.html" class="d-inline-flex p-1 circle border">
+									<a href="agent-page.php" class="d-inline-flex p-1 circle border">
 										<img src="assets/img/user-5.png" class="img-fluid circle" width="130" alt="" />
 									</a>
 								</div>
@@ -2151,7 +2151,7 @@
 
 							<div class="agents-grid-wrap">
 								<div class="fr-grid-thumb mx-auto text-center mt-5 mb-3">
-									<a href="agent-page.html" class="d-inline-flex p-1 circle border">
+									<a href="agent-page.php" class="d-inline-flex p-1 circle border">
 										<img src="assets/img/user-6.png" class="img-fluid circle" width="130" alt="" />
 									</a>
 								</div>
@@ -2196,7 +2196,7 @@
 
 							<div class="agents-grid-wrap">
 								<div class="fr-grid-thumb mx-auto text-center mt-5 mb-3">
-									<a href="agent-page.html" class="d-inline-flex p-1 circle border">
+									<a href="agent-page.php" class="d-inline-flex p-1 circle border">
 										<img src="assets/img/user-7.png" class="img-fluid circle" width="130" alt="" />
 									</a>
 								</div>
@@ -2241,7 +2241,7 @@
 
 							<div class="agents-grid-wrap">
 								<div class="fr-grid-thumb mx-auto text-center mt-5 mb-3">
-									<a href="agent-page.html" class="d-inline-flex p-1 circle border">
+									<a href="agent-page.php" class="d-inline-flex p-1 circle border">
 										<img src="assets/img/user-8.png" class="img-fluid circle" width="130" alt="" />
 									</a>
 								</div>
@@ -2285,7 +2285,7 @@
 				<!-- Pagination -->
 				<div class="row">
 					<div class="col-lg-12 col-md-12 col-sm-12 text-center mt-5">
-						<a href="listings-list-with-sidebar.html" class="btn btn-primary px-lg-5 rounded">Explore More
+						<a href="listings-list-with-sidebar.php" class="btn btn-primary px-lg-5 rounded">Explore More
 							Agents</a>
 					</div>
 				</div>
