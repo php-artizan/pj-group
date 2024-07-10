@@ -1,7 +1,6 @@
 <?php
 require "config/global.php";
-require "includes/footer_scripts.php";
-require "includes/head.php";
+
 
 $error = false;
 
@@ -10,18 +9,18 @@ if (isset($_POST['login'])) {
     $password = $_POST['password'];
 
     // Debugging: Check if form data is received
-    echo "Username: $username, Password: $password";
+    // echo "Username: $username, Password: $password";
 
     $query = $db->query("SELECT * FROM admins WHERE email = '$username' AND pass = '$password' ");
 
     if (mysqli_num_rows($query) != 0) {
         $user = mysqli_fetch_assoc($query);
-        $_SESSION['admin_id'] = $user['id'];
-
+       
         if ($user) {
 
-            $_SESSION['user_id'] = 1;
-            redirect("users");
+            $_SESSION['admin_id'] = $user['id'];
+
+            header("Location: index.php");
         }
        
 
@@ -44,14 +43,14 @@ if (isset($_POST['login'])) {
 </head>
 
 <body>
-    <div class="w-50 mx-auto mt-20">
+    <div class="w-40 mx-auto mt-20">
         <form class="form w-40" method="POST" novalidate="novalidate" action="">
             <!-- <form class="form w-40" method="POST" novalidate="novalidate" id="kt_sign_in_form" action=""> -->
             <!--begin::Heading-->
             <div class="text-center mb-10">
                 <!--begin::Title-->
                 <h1 class="text-dark mb-3">
-                    Login In PJ Group Admin
+                    PJ Group Admin
                 </h1>
                 <!--end::Title-->
 

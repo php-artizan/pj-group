@@ -49,7 +49,27 @@
                         <span class="menu-title">User Management</span><span class="menu-arrow"></span></span><!--end:Menu link--><!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-accordion"><!--begin:Menu item-->
                         <div class="menu-item"><!--begin:Menu link--><a class="menu-link" href="admins.php"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Admins</span></a><!--end:Menu link--></div><!--end:Menu item--><!--begin:Menu item-->
-                        <div class="menu-item"><!--begin:Menu link--><a class="menu-link" href="users.php"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Users</span></a><!--end:Menu link--></div><!--end:Menu item--><!--begin:Menu item-->
+                        <div class="menu-item"><!--begin:Menu link--><a class="menu-link" href=""><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Users</span></a><!--end:Menu link--></div><!--end:Menu item--><!--begin:Menu item-->
+
+                    </div><!--end:Menu sub-->
+                </div>
+                <div class="menu-item pt-5"><!--begin:Menu content-->
+                    <div class="menu-content"><span class="fw-bold text-muted text-uppercase fs-7">Ads</span></div><!--end:Menu content-->
+                </div><!--end:Menu item--><!--begin:Menu item-->
+                <div data-kt-menu-trigger="click" class="menu-item menu-accordion"><!--begin:Menu link-->
+                    <span class="menu-link">
+                        <span class="menu-icon">
+                            <i class="ki-duotone ki-element-11 fs-2">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                                <span class="path3"></span>
+                                <span class="path4"></span>
+                            </i>
+                        </span>
+                        <span class="menu-title">Ads Management</span><span class="menu-arrow"></span></span><!--end:Menu link--><!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-accordion"><!--begin:Menu item-->
+                        <div class="menu-item"><!--begin:Menu link--><a class="menu-link" href="all-ads.php"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Active</span></a><!--end:Menu link--></div><!--end:Menu item--><!--begin:Menu item-->
+                        <div class="menu-item"><!--begin:Menu link--><a class="menu-link" href=""><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Pending</span></a><!--end:Menu link--></div><!--end:Menu item--><!--begin:Menu item-->
 
                     </div><!--end:Menu sub-->
                 </div>
@@ -57,8 +77,8 @@
                     <div class="menu-content"><span class="fw-bold text-muted text-uppercase fs-7">Miscellaneous</span></div><!--end:Menu content-->
                 </div><!--end:Menu item--><!--begin:Menu item-->
 
-                <div class="menu-item"><a class="menu-link" href="https://preview.keenthemes.com/html/craft/docs/getting-started/changelog" target="_blank"><span class="menu-icon"><i class="ki-duotone ki-code fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i></span><span class="menu-title">Amenties Groups </span></a></div>
-                <div class="menu-item"><!--begin:Menu link--><a class="menu-link" href="https://preview.keenthemes.com/html/craft/docs/base/utilities" target="_blank"><span class="menu-icon"><i class="ki-duotone ki-row-vertical fs-2"><span class="path1"></span><span class="path2"></span></i></span><span class="menu-title">Amenties</span></a><!--end:Menu link--></div><!--end:Menu item--><!--begin:Menu item-->
+                <div class="menu-item"><a class="menu-link" href="amenties_groups.php"><span class="menu-icon"><i class="ki-duotone ki-code fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i></span><span class="menu-title">Amenties Groups </span></a></div>
+                <div class="menu-item"><!--begin:Menu link--><a class="menu-link" href="amenties.php"><span class="menu-icon"><i class="ki-duotone ki-row-vertical fs-2"><span class="path1"></span><span class="path2"></span></i></span><span class="menu-title">Amenties</span></a><!--end:Menu link--></div><!--end:Menu item--><!--begin:Menu item-->
                 <div class="menu-item"><!--begin:Menu link--><a class="menu-link" href="https://preview.keenthemes.com/html/craft/docs" target="_blank"><span class="menu-icon"><i class="ki-duotone ki-abstract-41 fs-2"><span class="path1"></span><span class="path2"></span></i></span><span class="menu-title">Ad Types</span></a><!--end:Menu link--></div><!--end:Menu item--><!--begin:Menu item-->
                 <div class="menu-item"><!--begin:Menu link--><a class="menu-link" href="../../../layout-builder.html"><span class="menu-icon"><i class="ki-duotone ki-abstract-13 fs-2"><span class="path1"></span><span class="path2"></span></i></span><span class="menu-title">Features</span></a><!--end:Menu link--></div><!--end:Menu item--><!--begin:Menu item-->
 
