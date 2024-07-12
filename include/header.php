@@ -132,7 +132,7 @@
 									</a>
 								</li>
 								<li class="add-listing">
-									<a href="submit-property.html" class="bg-primary">
+									<a href="submit-property.php" class="bg-primary">
 										<span class="svg-icon svg-icon-muted svg-icon-2hx me-1">
 											<svg width="22" height="22" viewBox="0 0 24 24" fill="none"
 												xmlns="http://www.w3.org/2000/svg">

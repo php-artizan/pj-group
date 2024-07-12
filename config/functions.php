@@ -1,5 +1,5 @@
 <?php 
-
+include_once __DIR__ . '/../init.php';
 
 function dd($array){
 
@@ -95,4 +95,177 @@ function createSlug($string) {
 
 
 
+function selectAllData($tableName, $conditions = [], $bool = false) {
+    global $db;
+    // Base query
+    $sql = "SELECT * FROM $tableName";
+
+    // Add conditions if provided
+    if (!empty($conditions)) {
+        $sql .= " WHERE ";
+        $conditionArray = [];
+        foreach ($conditions as $column => $value) {
+            $conditionArray[] = "$column = '" . mysqli_real_escape_string($db,$value) . "'";
+        }
+        $sql .= implode(" AND ", $conditionArray);
+    }
+
+    // Execute the query
+    $result = mysqli_query($db, $sql);
+
+
+
+    // Fetch all results
+    $data = [];
+    while ($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
+
+
+    // Return the data
+    return $data;
+}
+
+
+
+function insertRowsIntoDatabase($table, $rows = [], $bool= false) {
+    global $db;
+
+        foreach ($rows as $row) {
+
+            $columns = implode(", ", array_keys($row));
+            $values = array_map(function($value) use ($db) {
+                return "'" . mysqli_real_escape_string($db, $value) . "'";
+            }, array_values($row));
+            $values = implode(", ", $values);
+
+            $query = "INSERT INTO $table ($columns) VALUES ($values)";
+
+            mysqli_query($db, $query);
+     
+        }
+}
+
+function insertRowAndGetID($table, $row = [], $bool= false) {
+    global $db;
+
+            $columns = implode(", ", array_keys($row));
+            $values = array_map(function($value) use ($db) {
+                return "'" . mysqli_real_escape_string($db, $value) . "'";
+            }, array_values($row));
+            $values = implode(", ", $values);
+
+            $query = "INSERT INTO $table ($columns) VALUES ($values)";
+
+            
+            if($bool){
+                return $query;
+            }
+
+            if(mysqli_query($db, $query)){
+                $inserted_id = mysqli_insert_id($db);
+                return $inserted_id;
+            }else{
+                return false;
+            }
+}
+
+
+function transformArrayAmenity($inputArray, $ad_id) {
+    $outputArray = [];
+
+    if (isset($inputArray) && is_array($inputArray)) {
+        foreach ($inputArray as $amenity_id) {
+            $outputArray[] = [
+                'ad_id' => $ad_id,
+                'amenty_id' => $amenity_id
+            ];
+        }
+    }
+
+    return $outputArray;
+}
+
+function transformArrayMetaKey($inputArray, $ad_id) {
+    $outputArray = [];
+
+    if (isset($inputArray) && is_array($inputArray)) {
+        foreach ($inputArray as $key => $value) {
+            $outputArray[] = [
+                'ad_id' => $ad_id,
+                'meta_key' => $key,
+                'meta_value'=>$value,
+            ];
+        }
+    }
+
+    return $outputArray;
+}
+
+
+function uploadMultipleFiles($files, $uploadDir = "assets/img",$ad_id ,$allowedTypes = ["jpg", "jpeg", "png", "gif","jfif"], $maxSize = 2 * 1024 * 1024) {
+    $response = [];
+
+    // Ensure the upload directory exists
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0755, true);
+    }
+
+    foreach ($files['name'] as $key => $fileName) {
+        $fileTmpName = $files['tmp_name'][$key];
+        $fileSize = $files['size'][$key];
+        $fileError = $files['error'][$key];
+        $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
+
+        // Validate file type
+        if (!in_array(strtolower($fileType), $allowedTypes)) {
+            $response[] = [
+                "fileName" => $fileName,
+                "status" => "error",
+                "message" => "Invalid file type."
+            ];
+            continue;
+        }
+
+        // Validate file size
+        if ($fileSize > $maxSize) {
+            $response[] = [
+                "fileName" => $fileName,
+                "status" => "error",
+                "message" => "File size exceeds the maximum limit."
+            ];
+            continue;
+        }
+
+        // Check for errors
+        if ($fileError !== UPLOAD_ERR_OK) {
+            $response[] = [
+                "fileName" => $fileName,
+                "status" => "error",
+                "message" => "Error uploading file."
+            ];
+            continue;
+        }
+
+        // Generate a unique file name to prevent overwriting
+        $uniqueFileName = uniqid() . "." . $fileType;
+
+        // Move the file to the upload directory
+        if (move_uploaded_file($fileTmpName, $uploadDir . $uniqueFileName)) {
+            $response[] = [
+                "ad_id" => $ad_id,
+                "image_type" => $fileType,
+                "path" => $uploadDir . $uniqueFileName,
+            ];
+        } else {
+            $response[] = [
+                "fileName" => $fileName,
+                "status" => "error",
+                "message" => "Failed to move uploaded file."
+            ];
+        }
+    }
+
+    return $response;
+}
 ?>

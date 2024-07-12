@@ -13,11 +13,28 @@
 		
 		<!-- Custom Color Option -->
 		<link href="assets/css/colors.css" rel="stylesheet">
-		
+		<style>
+        /* Hide the actual file input */
+        #fileInput {
+            display: none;
+        }
+
+        /* Style for the icon */
+        .file-upload-icon {
+            font-size: 2rem;
+            cursor: pointer;
+            color: #074da3; /* You can change the color as needed */
+			width: 71px;
+        }
+		</style>
     </head>
 	
     <body class="blue-skin">
-	
+	<?php
+
+include('config/functions.php');
+
+?>
 		 <!-- ============================================================== -->
         <!-- Preloader - style you can find in spinners.css -->
         <!-- ============================================================== -->
@@ -59,7 +76,7 @@
 										</a>
 									</li>
 									<li>
-										<a href="submit-property.html" class="text-primary">
+										<a href="submit-property.php" class="text-primary">
 											<span class="svg-icon svg-icon-2hx">
 												<svg width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 													<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"/>
@@ -500,281 +517,258 @@
 					<!-- /row -->
 					
 					<div class="row">
+					<form action="submit_process_property.php" method="post" enctype="multipart/form-data">
 						
 						<!-- Submit Form -->
 						<div class="col-lg-12 col-md-12">
-						
-							<div class="submit-page">
-								
-								<!-- Basic Information -->
-								<div class="form-submit">	
-									<h3>Basic Information</h3>
-									<div class="submit-section">
-										<div class="row">
-										
-											<div class="form-group col-md-12">
-												<label>Property Title<span class="tip-topdata" data-tip="Property Title"><i class="fa-solid fa-info"></i></span></label>
-												<input type="text" class="form-control">
-											</div>
-											
-											<div class="form-group col-md-6">
-												<label>Status</label>
-												<select id="status" class="form-control">
-													<option value="">&nbsp;</option>
-													<option value="1">For Rent</option>
-													<option value="2">For Sale</option>
-												</select>
-											</div>
-											
-											<div class="form-group col-md-6">
-												<label>Property Type</label>
-												<select id="ptypes" class="form-control">
-													<option value="">&nbsp;</option>
-													<option value="1">Houses</option>
-													<option value="2">Apartment</option>
-													<option value="3">Villas</option>
-													<option value="4">Commercial</option>
-													<option value="5">Offices</option>
-													<option value="6">Garage</option>
-												</select>
-											</div>
-											
-											<div class="form-group col-md-6">
-												<label>Price</label>
-												<input type="text" class="form-control" placeholder="USD">
-											</div>
-											
-											<div class="form-group col-md-6">
-												<label>Area</label>
-												<input type="text" class="form-control">
-											</div>
-											
-											<div class="form-group col-md-6">
-												<label>Bedrooms</label>
-												<select id="bedrooms" class="form-control">
-													<option value="">&nbsp;</option>
-													<option value="1">1</option>
-													<option value="2">2</option>
-													<option value="3">3</option>
-													<option value="4">4</option>
-													<option value="5">5</option>
-												</select>
-											</div>
-											
-											<div class="form-group col-md-6">
-												<label>Bathrooms</label>
-												<select id="bathrooms" class="form-control">
-													<option value="">&nbsp;</option>
-													<option value="1">1</option>
-													<option value="2">2</option>
-													<option value="3">3</option>
-													<option value="4">4</option>
-													<option value="5">5</option>
-												</select>
-											</div>
-											
-										</div>
-									</div>
-								</div>
-								
-								<!-- Gallery -->
-								<div class="form-submit">	
-									<h3>Gallery</h3>
-									<div class="submit-section">
-										<div class="row">
-										
-											<div class="form-group col-md-12">
-												<label>Upload Gallery</label>
-												<form action="https://shreethemes.net/upload-target" class="dropzone dz-clickable primary-dropzone">
-													<div class="dz-default dz-message">
-														<i class="fa-solid fa-images"></i>
-														<span>Drag & Drop To Change Logo</span>
-													</div>
-												</form>
-											</div>
-											
-										</div>
-									</div>
-								</div>
-								
-								<!-- Location -->
-								<div class="form-submit">	
-									<h3>Location</h3>
-									<div class="submit-section">
-										<div class="row">
-										
-											<div class="form-group col-md-6">
-												<label>Address</label>
-												<input type="text" class="form-control">
-											</div>
-											
-											<div class="form-group col-md-6">
-												<label>City</label>
-												<input type="text" class="form-control">
-											</div>
-											
-											<div class="form-group col-md-6">
-												<label>State</label>
-												<input type="text" class="form-control">
-											</div>
-											
-											<div class="form-group col-md-6">
-												<label>Zip Code</label>
-												<input type="text" class="form-control">
-											</div>
-											
-										</div>
-									</div>
-								</div>
-								
-								<!-- Detailed Information -->
-								<div class="form-submit">	
-									<h3>Detailed Information</h3>
-									<div class="submit-section">
-										<div class="row">
-										
-											<div class="form-group col-md-12">
-												<label>Description</label>
-												<textarea class="form-control h-120"></textarea>
-											</div>
-											
-											<div class="form-group col-md-4">
-												<label>Building Age (optional)</label>
-												<select id="bage" class="form-control">
-													<option value="">&nbsp;</option>
-													<option value="1">0 - 5 Years</option>
-													<option value="2">0 - 10Years</option>
-													<option value="3">0 - 15 Years</option>
-													<option value="4">0 - 20 Years</option>
-													<option value="5">20+ Years</option>
-												</select>
-											</div>
-											
-											<div class="form-group col-md-4">
-												<label>Garage (optional)</label>
-												<select id="garage" class="form-control">
-													<option value="">&nbsp;</option>
-													<option value="1">1</option>
-													<option value="2">2</option>
-													<option value="3">3</option>
-													<option value="4">4</option>
-													<option value="5">5</option>
-												</select>
-											</div>
-											
-											<div class="form-group col-md-4">
-												<label>Rooms (optional)</label>
-												<select id="rooms" class="form-control">
-													<option value="">&nbsp;</option>
-													<option value="1">1</option>
-													<option value="2">2</option>
-													<option value="3">3</option>
-													<option value="4">4</option>
-													<option value="5">5</option>
-												</select>
-											</div>
-											
-											<div class="form-group col-md-12">
-												<label>Other Features (optional)</label>
-												<div class="o-features">
-													<ul class="no-ul-list third-row">
-														<li>
-															<input id="a-1" class="form-check-input" name="a-1" type="checkbox">
-															<label for="a-1" class="form-check-label">Air Condition</label>
-														</li>
-														<li>
-															<input id="a-2" class="form-check-input" name="a-2" type="checkbox">
-															<label for="a-2" class="form-check-label">Bedding</label>
-														</li>
-														<li>
-															<input id="a-3" class="form-check-input" name="a-3" type="checkbox">
-															<label for="a-3" class="form-check-label">Heating</label>
-														</li>
-														<li>
-															<input id="a-4" class="form-check-input" name="a-4" type="checkbox">
-															<label for="a-4" class="form-check-label">Internet</label>
-														</li>
-														<li>
-															<input id="a-5" class="form-check-input" name="a-5" type="checkbox">
-															<label for="a-5" class="form-check-label">Microwave</label>
-														</li>
-														<li>
-															<input id="a-6" class="form-check-input" name="a-6" type="checkbox">
-															<label for="a-6" class="form-check-label">Smoking Allow</label>
-														</li>
-														<li>
-															<input id="a-7" class="form-check-input" name="a-7" type="checkbox">
-															<label for="a-7" class="form-check-label">Terrace</label>
-														</li>
-														<li>
-															<input id="a-8" class="form-check-input" name="a-8" type="checkbox">
-															<label for="a-8" class="form-check-label">Balcony</label>
-														</li>
-														<li>
-															<input id="a-9" class="form-check-input" name="a-9" type="checkbox">
-															<label for="a-9" class="form-check-label">Icon</label>
-														</li>
-														<li>
-															<input id="a-10" class="form-check-input" name="a-10" type="checkbox">
-															<label for="a-10" class="form-check-label">Wi-Fi</label>
-														</li>
-														<li>
-															<input id="a-11" class="form-check-input" name="a-11" type="checkbox">
-															<label for="a-11" class="form-check-label">Beach</label>
-														</li>
-														<li>
-															<input id="a-12" class="form-check-input" name="a-12" type="checkbox">
-															<label for="a-12" class="form-check-label">Parking</label>
-														</li>
-													</ul>
+
+								<div class="submit-page">
+									
+									<!-- Basic Information -->
+									<div class="form-submit">	
+										<h3>Basic Information</h3>
+				
+
+										<div class="submit-section">
+											<div class="row">
+												<div class="form-group col-md-12">
+													<label>Property Title<span class="tip-topdata" data-tip="Property Title"><i class="fa-solid fa-info"></i></span></label>
+													<input type="text" class="form-control" name="title" required>
 												</div>
+												
+												<div class="form-group col-md-6">
+													<label>Status</label>
+													<select id="status" class="form-control" name="public_status" required>
+														<option value="" selected disabled >Choose Property status</option>
+														<option value="rent">For Rent</option>
+														<option value="sale">For Sale</option>
+													</select>
+												</div>
+												
+												<div class="form-group col-md-6">
+													<label>Property Type</label>
+													<select id="ptypes" class="form-control" name="property_type" required> 
+														<option value="" selected disabled>Choose Property Type</option>
+														<option value="houses">Houses</option>
+														<option value="appartment">Apartment</option>
+														<option value="villas">Villas</option>
+														<option value="commercial">Commercial</option>
+														<option value="offices">Offices</option>
+														<option value="garage">Garage</option>
+													</select>
+												</div>
+												
+												<div class="form-group col-md-6">
+													<label>Price</label>
+													<input type="text" name="price" class="form-control" placeholder="USD" required>
+												</div>
+												
+												<div class="form-group col-md-6">
+													<label>Area</label>
+													<input type="text" name="area" class="form-control">
+												</div>
+												
+												<div class="form-group col-md-6">
+													<label>Bedrooms</label>
+													<select id="bedrooms" name ="bedrooms" class="form-control" >
+														<option value="" selected disabled>Choose Bedrooms</option>
+														<option value="1">1</option>
+														<option value="2">2</option>
+														<option value="3">3</option>
+														<option value="4">4</option>
+														<option value="5">5</option>
+													</select>
+												</div>
+												
+												<div class="form-group col-md-6">
+													<label>Bathrooms</label>
+													<select id="bathrooms" name="bathrooms" class="form-control">
+														<option value="" selected disabled>Choose Bathrooms</option>
+														<option value="1">1</option>
+														<option value="2">2</option>
+														<option value="3">3</option>
+														<option value="4">4</option>
+														<option value="5">5</option>
+													</select>
+												</div>
+												
 											</div>
-											
 										</div>
 									</div>
-								</div>
-								
-								<!-- Contact Information -->
-								<div class="form-submit">	
-									<h3>Contact Information</h3>
-									<div class="submit-section">
-										<div class="row">
-										
-											<div class="form-group col-md-4">
-												<label>Name</label>
-												<input type="text" class="form-control">
-											</div>
+									
+									<!-- Gallery -->
+									<div class="form-submit">	
+										<h3>Gallery</h3>
+										<div class="submit-section">
+											<div class="row">
 											
-											<div class="form-group col-md-4">
-												<label>Email</label>
-												<input type="text" class="form-control">
+												<div class="form-group col-md-12">
+													<label>Upload Gallery</label>
+													<input type="file" id="fileInput" name="images[]" multiple>
+														<div class="dz-default dz-message">
+															<i class="fa-solid fa-images file-upload-icon"></i>
+															<span>Drag & Drop To Change Logo</span>
+														</div>
+													</form>
+												</div>
+												
 											</div>
-											
-											<div class="form-group col-md-4">
-												<label>Phone (optional)</label>
-												<input type="text" class="form-control">
-											</div>
-											
 										</div>
 									</div>
-								</div>
-								
-								<div class="form-group col-lg-12 col-md-12">
-									<label>GDPR Agreement *</label>
-									<ul class="no-ul-list">
-										<li>
-											<input id="aj-1" class="form-check-input" name="aj-1" type="checkbox">
-											<label for="aj-1" class="form-check-label">I consent to having this website store my submitted information so they can respond to my inquiry.</label>
-										</li>
-									</ul>
-								</div>
-								
-								<div class="form-group col-lg-12 col-md-12">
-									<button class="btn btn-primary fw-medium px-5" type="button">Submit & Preview</button>
-								</div>
+									
+									<!-- Location -->
+									<div class="form-submit">	
+										<h3>Location</h3>
+										<div class="submit-section">
+											<div class="row">
 											
-							</div>
+												<div class="form-group col-md-6">
+													<label>Address</label>
+													<input type="text" name ="address" class="form-control">
+												</div>
+												
+												<div class="form-group col-md-6">
+													<label>City</label>
+													<input type="text" name ="city" class="form-control">
+												</div>
+												
+												<div class="form-group col-md-6">
+													<label>State</label>
+													<input type="text" name ="state" class="form-control">
+												</div>
+												
+												<div class="form-group col-md-6">
+													<label>Zip Code</label>
+													<input type="text" name ="zip_code" class="form-control">
+												</div>
+												
+											</div>
+										</div>
+									</div>
+									
+									<!-- Detailed Information -->
+									<div class="form-submit">	
+										<h3>Detailed Information</h3>
+										<div class="submit-section">
+											<div class="row">
+											
+												<div class="form-group col-md-12">
+													<label>Description</label>
+													<textarea name="description" class="form-control h-120"></textarea>
+												</div>
+												
+												<div class="form-group col-md-4">
+													<label>Building Age (optional)</label>
+													<select id="bage" class="form-control" name="billing_age">
+														<option value="">&nbsp;</option>
+														<option value="1">0 - 5 Years</option>
+														<option value="2">0 - 10Years</option>
+														<option value="3">0 - 15 Years</option>
+														<option value="4">0 - 20 Years</option>
+														<option value="5">20+ Years</option>
+													</select>
+												</div>
+												
+												<div class="form-group col-md-4">
+													<label>Garage (optional)</label>
+													<select id="garage" class="form-control" name="garage">
+														<option value="">&nbsp;</option>
+														<option value="1">1</option>
+														<option value="2">2</option>
+														<option value="3">3</option>
+														<option value="4">4</option>
+														<option value="5">5</option>
+													</select>
+												</div>
+												
+												<div class="form-group col-md-4">
+													<label>Rooms (optional)</label>
+													<select id="rooms" class="form-control" name="rooms">
+														<option value="">&nbsp;</option>
+														<option value="1">1</option>
+														<option value="2">2</option>
+														<option value="3">3</option>
+														<option value="4">4</option>
+														<option value="5">5</option>
+													</select>
+												</div>
+												<?php 
+												$row = 1;
+													$groups = selectAllData('amenties_groups');
+													foreach($groups as $group){
+													?>
+												<div class="form-group col-md-12">
+													<label> <?php echo $group['name']; ?> </label>
+													<div class="o-features">
+														<ul class="no-ul-list third-row">
+																<?php 
+																$num =1;
+																	$amenities = selectAllData('amenties',['group_slug' => $group['slug']]); 
+																	foreach($amenities as $amenity){
+																?>
+																	<li>
+																		<input id="a<?php echo $row; ?>-<?php echo $num; ?>" class="form-check-input" name="amenity_id[]" type="checkbox" value="<?php echo $amenity['id']; ?>">
+																		<label for="a<?php echo $row; ?>-<?php echo $num; ?>" class="form-check-label"> <?php echo $amenity['name']; ?></label>
+																	</li>
+															<?php 
+															$num++;
+															};
+															?>
+														</ul>
+													</div>
+												</div>
+												<?php
+												$row++;
+													};
+												?>
+											</div>
+										</div>
+									</div>
+									
+									<!-- Contact Information -->
+									<div class="form-submit">	
+										<h3>Contact Information</h3>
+										<div class="submit-section">
+											<div class="row">
+											
+												<div class="form-group col-md-4">
+													<label>Name</label>
+													<input type="text" name="contact_name" class="form-control">
+												</div>
+												
+												<div class="form-group col-md-4">
+													<label>Email</label>
+													<input type="text" name="email" class="form-control">
+												</div>
+												
+												<div class="form-group col-md-4">
+													<label>Phone (optional)</label>
+													<input type="text" phone="phone" class="form-control">
+												</div>
+												
+											</div>
+										</div>
+									</div>
+									
+									<div class="form-group col-lg-12 col-md-12">
+										<label>GDPR Agreement *</label>
+										<ul class="no-ul-list">
+											<li>
+												<input id="aj-1" class="form-check-input" name="gdpr_agreement" type="checkbox" value="true" required>
+												<label for="aj-1" class="form-check-label">I consent to having this website store my submitted information so they can respond to my inquiry.</label>
+											</li>
+										</ul>
+									</div>
+									
+									<div class="form-group col-lg-12 col-md-12">
+										<button class="btn btn-primary fw-medium px-5" name="submitBtn" type="submit">Submit & Preview</button>
+									</div>
+												
+								
+								</div>
+
 						</div>
+						</form>
 						
 					</div>
 				</div>
@@ -1017,11 +1011,13 @@
 		<!-- ============================================================== -->
 		<!-- All Jquery -->
 		<!-- ============================================================== -->
+		 
 		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/select2.min.js"></script>
+
 		<script src="assets/js/popper.min.js"></script>
 		<script src="assets/js/bootstrap.min.js"></script>
 		<script src="assets/js/rangeslider.js"></script>
-		<script src="assets/js/select2.min.js"></script>
 		<script src="assets/js/jquery.magnific-popup.min.js"></script>
 		<script src="assets/js/slick.js"></script>
 		<script src="assets/js/slider-bg.js"></script>

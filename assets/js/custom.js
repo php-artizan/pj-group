@@ -735,5 +735,7 @@
 			searchTypeButtons();
 		});
 	}
-	
+	document.querySelector('.file-upload-icon').addEventListener('click', function() {
+		document.getElementById('fileInput').click();
+	});
 })(this.jQuery);
