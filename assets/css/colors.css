@@ -1,6 +1,67 @@
 /*===============================================
 	All Colors Option 
 ================================================ */
+:root {
+    --primary-color: #af7c2d;
+}
+
 .theme-bg.call-to-act-wrap {
     background: #193845;
+}
+.bg-primary {
+    background: var(--primary-color) !important;
+}
+.bg-primary:hover {
+    background-color: #7b5621 !important;
+}
+
+.btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    transition: all .3s ease;
+
+}
+.btn-primary:hover {
+    background: #7b5621 !important;
+    border-color: var(--primary-color) !important;
+    color: #fff !important;
+    transition: all .3s ease;
+    
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+
+}
+
+.form-check-input:checked {
+    background-color:  var(--primary-color) !important;
+    border-color:  var(--primary-color) !important;
+}
+.form-check-input:focus {
+    border-color: #fef286;
+    outline: 0;
+    box-shadow: 0 0 0 .25rem rgb(253 239 13 / 25%);
+}
+
+.header.header-fixed {
+   
+    margin-top: 0;
+    padding-top: 0 !important;
+}
+
+.top-bar {
+ 
+    height: 30px;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    justify-content: center;
 }
