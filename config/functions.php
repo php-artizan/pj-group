@@ -1,5 +1,5 @@
 <?php 
-include_once __DIR__ . '/../init.php';
+include __DIR__ . '/../init.php';
 
 function dd($array){
 
@@ -268,4 +268,39 @@ function uploadMultipleFiles($files, $uploadDir = "assets/img",$ad_id ,$allowedT
 
     return $response;
 }
+
+function displaylogo($width="60"){
+
+    echo '<img src="assets/img/logo.png" width="'.$width.'px">';
+
+    return;
+}
+function is_user_logged_in(){
+    if (!isset($_SESSION['user_id'])) {
+       return false;
+    } else {
+        return true;
+        
+    }
+}
+function check_user_session(){
+    if (!isset($_SESSION['user_id'])) {
+        redirect("login");
+    } else {
+        redirect("index");
+    }
+}
+
+function site_name(){
+    return "PJ Group";
+}
+
+function page_title($name=""){
+
+    $title = $name." | ".site_name();
+    return $title;
+
+}   
+
+
 ?>

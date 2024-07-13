@@ -1,9 +1,17 @@
+
+<?php 
+require "config/global.php";
+?>
+
 <!DOCTYPE html>
 <html lang="zxx">
+<head>
+	<title><?=page_title("Homepage"); ?></title>
+	<?php
+	include("include/head.php");
+	?>
+</head>
 
-<?php
-                include("include/head.php");
-                ?>
 
 
 <body class="blue-skin">
@@ -12,9 +20,9 @@
 	<!-- ============================================================== -->
 	<!-- Preloader - style you can find in spinners.css -->
 	<!-- ============================================================== -->
-	<div id="preloader">
+	<!-- <div id="preloader">
 		<div class="preloader"><span></span><span></span></div>
-	</div>
+	</div> -->
 
 	<!-- ============================================================== -->
 	<!-- Main wrapper - style you can find in pages.scss -->

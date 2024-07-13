@@ -1,5 +1,5 @@
 <?php 
-require "CustomOperations.php";
+
 
 
 class Ad extends CustomOperations {

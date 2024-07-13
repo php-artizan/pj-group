@@ -1,6 +1,6 @@
 
 <?php
-include_once('config/functions.php');
+include_once('../config/functions.php');
 
 
 
@@ -43,7 +43,7 @@ if(isset($_POST['submitBtn'])){
         insertRowsIntoDatabase('ads_meta',$dataMeta);
 
         if(!empty($_FILES['images']) && !empty($_FILES['images']['name'][0])){
-            $filesInfo = uploadMultipleFiles($_FILES['images'],"assets/propertyImages/",$insertAndGetID);
+            $filesInfo = uploadMultipleFiles($_FILES['images'],"uploads/images/ads/",$insertAndGetID);
             insertRowsIntoDatabase('ads_images',$filesInfo);
         }
 

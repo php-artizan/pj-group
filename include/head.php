@@ -1,8 +1,7 @@
-<head>
+
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-	<title>Zameen</title>
+	<link rel="icon" href="<?=ROOT_PATH?>assets/img/logo.png">
 
 	<!-- Custom CSS -->
 	<link rel="stylesheet" href="assets/css/styles.css">
@@ -14,4 +13,3 @@
 	<!-- Custom Color Option -->
 	<link href="assets/css/colors.css" rel="stylesheet">
 
-</head>
