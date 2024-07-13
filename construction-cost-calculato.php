@@ -1,3 +1,6 @@
+<?php 
+require "config/global.php";
+?>
 <!DOCTYPE html>
 <html lang="zxx">
 
