@@ -10,11 +10,8 @@
 								<ul class="footer-menu">
 									<li><a href="about.php">About Us</a></li>
 									<li><a href="contact-us.php">Contact Us</a></li>
-									<li><a href="#">Jobs</a></li>
-									<li><a href="#">Help & Support</a></li>
-									<li><a href="">Advertise On Zameen</a></li>
-									<li><a href="">Privacy Policy</a></li>
-									<li><a href="">Terms Of Use</a></li>
+									<li><a href="privacy.php">Privacy Policy</a></li>
+									<li><a href="termsofuse.php">Terms Of Use</a></li>
 								</ul>
 							</div>
 						</div>
