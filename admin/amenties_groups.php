@@ -3,6 +3,7 @@ require "config/global.php";
 $error = false;
 $errorMessage = '';
 $success = false;
+
 try {
     // CRUD operations
     if (isset($_POST['action'])) {
@@ -190,21 +191,23 @@ while ($row = mysqli_fetch_assoc($result)) {
                     </div>
                     <!--end::Toolbar-->
                     <?php 
-                    
-                    // Check for any errors that occurred
-                    $error = error_get_last();
-                    if ($error) {
-                        $errorMessage = $error['message'];
-                    }  ?>
-                    
-                    <?php if($errorMessage) {?>
-                        <div class="alert alert-danger">
-                            <?=$errorMessage; ?>
-                        </div>
-                    <?php } ?>
+//
+//                    // Check for any errors that occurred
+//                    $error = error_get_last();
+//                    if ($error) {
+//                        $errorMessage = $error['message'];
+//                    }  ?>
+<!---->
+<!--                    --><?php //if($errorMessage) {?>
+<!--                        <div class="alert alert-danger">-->
+<!--                            --><?php //=$errorMessage; ?>
+<!--                        </div>-->
+<!--                    --><?php //} ?>
                     <?php if($success) {?>
                         <div class="alert alert-success">
-                            <?=$message; ?>
+                            --><?php //=$message; ?>
+                            <?=$_SESSION['success_msg']; ?>
+                            <?php unset($_SESSION['success_msg']); ?>
                         </div>
                     <?php } ?>
                                 <!--begin::Post-->
@@ -420,7 +423,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                     <!--begin::Modal body-->
                                                     <div class="modal-body px-5 my-7">
                                                         <!--begin::Form-->
-                                                        <form  class="form" action="" method="POST" enctype="multipart/form-data">
+                                                        <form  class="form" action="controller/adminController.php" method="POST" enctype="multipart/form-data">
                                                             <input type="hidden" name="action" value="create" />
                                                             <!--begin::Scroll-->
                                                             <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_add_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_user_header" data-kt-scroll-wrappers="#kt_modal_add_user_scroll" data-kt-scroll-offset="300px">
@@ -434,12 +437,20 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                                     <!--end::Label-->
 
                                                                     <!--begin::Input-->
-                                                                    <input type="text" name="name" class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Full name" value="" />
-                                                                    <p class="small">Slug: &nbsp;<span class="text-success" id="slug">name-123</span></p>
+                                                                    <input type="text" name="name"  required class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Full name" value="" />
                                                                     <!--end::Input-->
                                                                 </div>
                                                                 <!--end::Input group-->
-                                                                
+                                                                <div class="fv-row mb-7">
+                                                                    <!--begin::Label-->
+                                                                    <label class="required fw-semibold fs-6 mb-2">Slug</label>
+                                                                    <!--end::Label-->
+
+                                                                    <!--begin::Input-->
+                                                                    <input type="text" required name="slug" class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Enter Slug" value="" />
+                                                                    <p class="small">Slug: &nbsp;<span class="text-success" id="slug">name-123</span></p>
+                                                                    <!--end::Input-->
+                                                                </div>
 
                                                                 <!--begin::Input group-->
                                                                 <div class="fv-row mb-7">
@@ -447,7 +458,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                                     <label class="required fw-semibold fs-6 mb-2">Description</label>
                                                                     <!--end::Label-->
 
-                                                                    <textarea class="form-control" aria-label="With textarea" name="description"> </textarea>
+                                                                    <textarea class="form-control" aria-label="With textarea" name="description" required> </textarea>
                                                                 </div>
                                                                 <!--end::Input group-->
                                                                 
@@ -460,7 +471,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                                     Discard
                                                                 </button>
                                                                 
-                                                                <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
+                                                                <button type="submit" name="submitAmnGrpBtn" class="btn btn-primary" data-kt-users-modal-action="submit">
                                                                     <span class="indicator-label">
                                                                         Submit
                                                                     </span>
@@ -485,6 +496,99 @@ while ($row = mysqli_fetch_assoc($result)) {
                                 </div>
                                 <!--end::Card header-->
 
+                                <!--begin::Modal - Add task-->
+                                <div class="modal fade" id="kt_modal_update_user" tabindex="-1" aria-hidden="true">
+                                    <!--begin::Modal dialog-->
+                                    <div class="modal-dialog modal-dialog-centered mw-650px">
+                                        <!--begin::Modal content-->
+                                        <div class="modal-content">
+                                            <!--begin::Modal header-->
+                                            <div class="modal-header" id="kt_modal_update_user_header">
+                                                <!--begin::Modal title-->
+                                                <h2 class="fw-bold">Update</h2>
+                                                <!--end::Modal title-->
+
+                                                <!--begin::Close-->
+                                                <div class="btn btn-icon btn-sm close btn-active-icon-primary" data-kt-users-modal-action="close">
+                                                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                                </div>
+                                                <!--end::Close-->
+                                            </div>
+                                            <!--end::Modal header-->
+
+                                            <!--begin::Modal body-->
+                                            <div class="modal-body px-5 my-7">
+                                                <!--begin::Form-->
+                                                <form  class="form" action="controller/adminController.php" method="POST" id="updateAmenityGroup" enctype="multipart/form-data">
+                                                    <input type="hidden" name="action" value="update" />
+                                                    <input type="hidden" id="id_field_update" name="id"  />
+
+                                                    <!--begin::Scroll-->
+                                                    <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_update_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_update_user_header" data-kt-scroll-wrappers="#kt_modal_update_user_scroll" data-kt-scroll-offset="300px">
+                                                        <!--begin::Input group-->
+
+                                                        <!--end::Input group-->
+                                                        <!--begin::Input group-->
+                                                        <div class="fv-row mb-7">
+                                                            <!--begin::Label-->
+                                                            <label class="required fw-semibold fs-6 mb-2">Name</label>
+                                                            <!--end::Label-->
+
+                                                            <!--begin::Input-->
+                                                            <input type="text" name="name"  required class="form-control  mb-3 mb-lg-0" id="name_field_update" placeholder="Full name" value="" />
+                                                            <!--end::Input-->
+                                                        </div>
+                                                        <!--end::Input group-->
+                                                        <div class="fv-row mb-7">
+                                                            <!--begin::Label-->
+                                                            <label class="required fw-semibold fs-6 mb-2">Slug</label>
+                                                            <!--end::Label-->
+
+                                                            <!--begin::Input-->
+                                                            <input type="text" required name="slug" class="form-control  mb-3 mb-lg-0" id="slug_field_update" placeholder="Enter Slug" value="" />
+                                                            <p class="small">Slug: &nbsp;<span class="text-success" id="slug">name-123</span></p>
+                                                            <!--end::Input-->
+                                                        </div>
+
+                                                        <!--begin::Input group-->
+                                                        <div class="fv-row mb-7">
+                                                            <!--begin::Label-->
+                                                            <label class="required fw-semibold fs-6 mb-2">Description</label>
+                                                            <!--end::Label-->
+
+                                                            <textarea class="form-control" aria-label="With textarea" name="description" required id="description_field_update"> </textarea>
+                                                        </div>
+                                                        <!--end::Input group-->
+
+                                                    </div>
+                                                    <!--end::Scroll-->
+
+                                                    <!--begin::Actions-->
+                                                    <div class="text-center pt-10">
+                                                        <button type="reset" class="btn btn-light me-3" data-kt-users-modal-action="cancel">
+                                                            Discard
+                                                        </button>
+
+                                                        <button type="submit" name="submitAmnGrpBtnUpdate"  class="btn btn-primary" data-kt-users-modal-action="submit">
+                                                                    <span class="indicator-label">
+                                                                        Update
+                                                                    </span>
+                                                            <span class="indicator-progress">
+                                                                        Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                                            </span>
+                                                        </button>
+                                                    </div>
+                                                    <!--end::Actions-->
+                                                </form>
+                                                <!--end::Form-->
+                                            </div>
+                                            <!--end::Modal body-->
+                                        </div>
+                                        <!--end::Modal content-->
+                                    </div>
+                                    <!--end::Modal dialog-->
+                                </div>
+                                <!--end::Modal - Add task-->
                                 <!--begin::Card body-->
                                 <div class="card-body py-4">
 
@@ -538,7 +642,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                         <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                                             <!--begin::Menu item-->
                                                             <div class="menu-item px-3">
-                                                                <a href="view.html" class="menu-link px-3">
+                                                                <a href="#" data-bs-toggle="modal" data-edit-id="<?=$item['id']?>" data-bs-target="#kt_modal_update_user" class="menu-link grpAmntEdit px-3">
                                                                     Edit
                                                                 </a>
                                                             </div>
@@ -546,7 +650,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 
                                                             <!--begin::Menu item-->
                                                             <div class="menu-item px-3">
-                                                                <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">
+                                                                <a href="controller/adminController.php?del_id=<?php echo $item['id']?>&del_type=grp_amnt" class="menu-link px-3" data-kt-users-table-filter="delete_row">
                                                                     Delete
                                                                 </a>
                                                             </div>
@@ -608,6 +712,28 @@ while ($row = mysqli_fetch_assoc($result)) {
                     .replace(/-+/g, '-'); // collapse dashes
                 return str;
             }
+
+            $(".grpAmntEdit").on("click",function(){
+                let editId = $(this).attr("data-edit-id");
+
+                $.ajax({
+                    url: 'controller/adminController.php',
+                    type: 'POST',
+                    data: {
+                        id:editId,
+                        getEditField:1,
+            }, // Serialize the form data
+                    success: function(response) {
+                        let res = JSON.parse(response);
+                        $("#id_field_update").val(editId);
+                        $("#name_field_update").val(res[0].name)
+                        $("#slug_field_update").val(res[0].slug)
+                        $("#description_field_update").val(res[0].description)
+                    }
+                });
+            })
+
+
 
         });
     </script>                                     

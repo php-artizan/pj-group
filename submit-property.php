@@ -517,7 +517,7 @@ include('config/functions.php');
 					<!-- /row -->
 					
 					<div class="row">
-					<form action="submit_process_property.php" method="post" enctype="multipart/form-data">
+					<form action="endpoints/submit_process_property.php" method="post" enctype="multipart/form-data">
 						
 						<!-- Submit Form -->
 						<div class="col-lg-12 col-md-12">

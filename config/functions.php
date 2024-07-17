@@ -18,6 +18,13 @@ function redirect($route){
     }
 }
 
+function redirectBack($route){
+    $pageName = basename($_SERVER['PHP_SELF']);
+    if($pageName != "$route.php"){
+        header("Location: $route");
+    }
+}
+
 function uploadFile($fileInput, $directory, $allowedTypes = array('jpg', 'jpeg', 'png'), $maxFileSize = 500000) {
     $uploadOk = 1;
     $errorMessage = '';
@@ -49,6 +56,7 @@ function uploadFile($fileInput, $directory, $allowedTypes = array('jpg', 'jpeg',
     // }
 
     // Check if $uploadOk is set to 0 by an error
+
     if ($uploadOk == 0) {
         return array('success' => false, 'message' => $errorMessage);
     }
@@ -302,5 +310,95 @@ function page_title($name=""){
 
 }   
 
+  function returnJson($array){
+      return json_encode($array);
+  }
 
+
+function deleteRow($table, $conditions) {
+
+    global $db;
+
+    $whereClauses = [];
+    foreach ($conditions as $key => $value) {
+        $whereClauses[] = "$key = '" . $db->real_escape_string($value) . "'";
+    }
+    $where = implode(' AND ', $whereClauses);
+
+    $query = "DELETE FROM $table WHERE $where";
+
+
+
+    if(mysqli_query($db, $query)){
+        return  true;
+    }else{
+        return false;
+    }
+}
+
+
+function updateRow($table, $row = [], $conditions = [], $bool = false) {
+    global $db;
+
+    // Construct the SET clause
+    $setClauses = [];
+    foreach ($row as $column => $value) {
+        $setClauses[] = "$column = '" . mysqli_real_escape_string($db, $value) . "'";
+    }
+    $setClause = implode(", ", $setClauses);
+
+    // Construct the WHERE clause from the conditions array
+    $whereClauses = [];
+    foreach ($conditions as $column => $value) {
+        $whereClauses[] = "$column = '" . mysqli_real_escape_string($db, $value) . "'";
+    }
+    $whereClause = implode(" AND ", $whereClauses);
+
+    // Create the UPDATE SQL query
+    $query = "UPDATE $table SET $setClause WHERE $whereClause";
+
+    // Return the query if $bool is true
+    if ($bool) {
+        return $query;
+    }
+
+    // Execute the query
+    if (mysqli_query($db, $query)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+function uploadSingleFile($uploadDir, $inputName, $pathSave="icons/",$allowedTypes = ['jpg', 'jpeg', 'png', 'gif']) {
+    // Check if the upload directory exists, if not create it
+
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0755, true);
+    }
+
+    // Check if file was uploaded without errors
+    if ($_FILES[$inputName]['error'] === UPLOAD_ERR_OK) {
+        // Validate file type
+        $fileInfo = pathinfo($_FILES[$inputName]['name']);
+        $extension = strtolower($fileInfo['extension']);
+        if (!in_array($extension, $allowedTypes)) {
+            return false; // Return false if file type is not allowed
+        }
+
+        // Generate unique filename to avoid overwriting existing files
+        $fileName = uniqid() . '.' . $extension;
+        $targetFile = $uploadDir . '/' . $fileName;
+
+        // Move the uploaded file to the destination directory
+        if (move_uploaded_file($_FILES[$inputName]['tmp_name'], $targetFile)) {
+            return $pathSave.$fileName; // Return the file path if upload was successful
+        } else {
+            return false; // Return false if file move failed
+        }
+    } else {
+        return false; // Return false if there was an upload error
+    }
+}
 ?>
