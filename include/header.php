@@ -146,9 +146,7 @@
 
 										if( is_user_logged_in() ){ 
 											
-											$user = User::find($_SESSION['user_id']);
-											// dd($user);
-											$user_name = $user ? $user['name'] : false;
+										
 											
 											?>
 											<a href="my-account.php" 
