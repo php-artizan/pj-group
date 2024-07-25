@@ -3,7 +3,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-6">
-						<span class="me-3">Welcome to Zameen!</span>
+						<span class="me-3">Welcome to <?=site_name()?>!</span>
 						<a href="#" class="text-decoration-none text-light">About Us</a>
 					</div>
 					<div class="col-md-6 text-end">
@@ -108,7 +108,7 @@
 
 								
 								<li class="add-listing">
-									<a href="submit-property.php" class="bg-primary">
+									<a href="post-ad.php" class="bg-primary">
 										<span class="svg-icon svg-icon-muted svg-icon-2hx me-1">
 											<svg width="22" height="22" viewBox="0 0 24 24" fill="none"
 												xmlns="http://www.w3.org/2000/svg">

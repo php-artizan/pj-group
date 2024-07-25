@@ -1,20 +1,53 @@
+
+<?php 
+require "config/global.php";
+if(!isset($_GET['slug'])){
+	redirect(ROOT_PATH, '');
+}
+$slug = $_GET['slug'];
+if($slug==""){
+	redirect(ROOT_PATH, '');
+}
+
+
+
+$property = Ad::get_ad(array(
+	"slug" => $slug
+));
+if(!$property){
+	redirect(ROOT_PATH, '');
+}
+
+// dd($property);
+$id = $property['id'];
+$publisher = $property['publisher'];
+?>
+
 <!DOCTYPE html>
 <html lang="zxx">
-	
-<!-- Mirrored from shreethemes.net/resido-live/resido/single-property-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Jun 2024 15:37:35 GMT -->
 <head>
-		<meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		
-        <title>Resido - Residence & Real Estate HTML Template</title>	
-		
-        <!-- Custom CSS -->
-        <link href="assets/css/styles.css" rel="stylesheet">
-		
-		<!-- Custom Color Option -->
-		<link href="assets/css/colors.css" rel="stylesheet">
-		
-    </head>
+	<title><?=page_title($property['title']); ?></title>
+	<?php
+	include("include/head.php");
+	?>
+	<style>
+		.avl-features li {
+			padding-left: 0 !important;
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+		.avl-features li::before {
+			display: none !important
+		}
+		.avl-features li img {
+			width: 31px;
+			background: #f0f0f0;
+			padding: 5px;
+			border-radius: 35%;
+		}
+	</style>
+</head>
 	
     <body class="blue-skin">
 	
@@ -42,10 +75,23 @@
 			<!-- ============================ Hero Banner  Start================================== -->
 			<div class="featured_slick_gallery gray">
 				<div class="featured_slick_gallery-slide">
-					<div class="featured_slick_padd"><a href="assets/img/p-1.jpg" class="mfp-gallery"><img src="assets/img/p-1.jpg" class="img-fluid mx-auto" alt="" /></a></div>
-					<div class="featured_slick_padd"><a href="assets/img/p-2.jpg" class="mfp-gallery"><img src="assets/img/p-2.jpg" class="img-fluid mx-auto" alt="" /></a></div>
+					
+				<?php 
+					if(count($property['images'])!=0) {
+						foreach($property['images'] as $image){  ?>
+							<div class="featured_slick_padd">
+								<a href="<?=$image['path']?>" class="mfp-gallery">
+									<img src="<?=$image['path']?>" class="img-fluid mx-auto" alt="" />
+								</a>
+							</div>
+				<?php 
+						}
+					} 
+				?>
+					
+					<!-- <div class="featured_slick_padd"><a href="assets/img/p-2.jpg" class="mfp-gallery"><img src="assets/img/p-2.jpg" class="img-fluid mx-auto" alt="" /></a></div>
 					<div class="featured_slick_padd"><a href="assets/img/p-3.jpg" class="mfp-gallery"><img src="assets/img/p-3.jpg" class="img-fluid mx-auto" alt="" /></a></div>
-					<div class="featured_slick_padd"><a href="assets/img/p-4.jpg" class="mfp-gallery"><img src="assets/img/p-4.jpg" class="img-fluid mx-auto" alt="" /></a></div>
+					<div class="featured_slick_padd"><a href="assets/img/p-4.jpg" class="mfp-gallery"><img src="assets/img/p-4.jpg" class="img-fluid mx-auto" alt="" /></a></div> -->
 				</div>
 				<a href="JavaScript:Void(0);" class="btn-view-pic">View photos</a>
 			</div>
@@ -62,9 +108,9 @@
 							<div class="property_block_wrap style-2 p-4">
 								<div class="prt-detail-title-desc">
 									<span class="label text-light bg-success">For Sale</span>
-									<h3>Jannat Graynight Mood In Siver Colony, London</h3>
-									<span><i class="lni-map-marker"></i> 778 Country St. Panama City, FL</span>
-									<h3 class="prt-price-fix text-primary">$7,600<sub>/month</sub></h3>
+									<h3><?=$property['title'] ?></h3>
+									<span><i class="lni-map-marker"></i><?=Ad::get_ad_meta($id, "address"); ?> </span>
+									<h3 class="prt-price-fix text-primary"><?=CustomOperations::price($property['price']);?><sub>/month</sub></h3>
 									<div class="list-fx-features">
 										<div class="listing-card-info-icon">
 											<div class="inc-fleat-icon me-1"><img src="assets/img/bed.svg" width="13" alt=""></div>3 Beds
@@ -88,7 +134,17 @@
 								<div id="clOne" class="panel-collapse collapse show" aria-labelledby="clOne">
 									<div class="block-body">
 										<ul class="deatil_features">
-											<li><strong>Bedrooms:</strong>3 Beds</li>
+											
+											<?php
+											// dd($property['meta']);
+											foreach($property['meta'] as $meta){
+												?>
+													<li><strong><?=CustomOperations::keyToText($meta['name']);?></strong> <span class="<?php  if($meta['name']=="email"){ ?>text-lowercase <?php } else { ?> text-capitalize<?php } ?>"><?=$meta['value'];?></span></li>
+												<?php
+											} ?>
+										
+										
+										<!-- <li><strong>Bedrooms:</strong>3 Beds</li>
 											<li><strong>Bathrooms:</strong>2 Bath</li>
 											<li><strong>Areas:</strong>4,240 sq ft</li>
 											<li><strong>Garage</strong>1</li>
@@ -102,7 +158,7 @@
 											<li><strong>Swimming Pool:</strong>Yes</li>
 											<li><strong>Elevetor:</strong>Yes</li>
 											<li><strong>Fireplace:</strong>Yes</li>
-											<li><strong>Free WiFi:</strong>No</li>
+											<li><strong>Free WiFi:</strong>No</li> -->
 											
 										</ul>
 									</div>
@@ -118,8 +174,8 @@
 								</div>
 								<div id="clTwo" class="panel-collapse collapse show">
 									<div class="block-body">
-										<p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.</p>
-										<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+									<p><?=$property['description'];?></p>
+										
 									</div>
 								</div>
 							</div>
@@ -133,8 +189,8 @@
 								
 								<div id="clThree" class="panel-collapse collapse show">
 									<div class="block-body">
-										<ul class="avl-features third color">
-											<li>Air Conditioning</li>
+										
+											<!-- <li>Air Conditioning</li>
 											<li>Swimming Pool</li>
 											<li>Central Heating</li>
 											<li>Laundry Room</li>
@@ -144,9 +200,31 @@
 											<li>Internet</li>
 											<li>Pets Allow</li>
 											<li>Free WiFi</li>
-											<li>Car Parking</li>
-											<li>Spa & Massage</li>
-										</ul>
+											<li>Car Parking</li> -->
+											
+											<?php 
+											foreach ($property['amenties'] as $amenty){
+												// dd($amenty, false);
+												$group_name = $amenty['title'];
+
+												?>
+													<h6><?=$group_name;?></h6>
+													
+													<ul class="avl-features third color">
+														<?php 
+														if( count($amenty['items']) != 0 ) {
+															foreach ($amenty['items'] as $item){
+																?>
+																<li><img src="<?=$item['icon']?>"><?=$item['name'];?></li>
+																<?php
+															}
+														}
+														?>
+													</ul>
+												<?php
+											}
+											?>
+											
 									</div>
 								</div>
 							</div>
@@ -180,7 +258,7 @@
 							</div>
 							
 							<!-- Single Block Wrap -->
-							<div class="property_block_wrap style-2">
+							<div class="property_block_wrap style-2 d-none">
 								
 								<div class="property_block_wrap_header">
 									<a data-bs-toggle="collapse" data-parent="#floor"  data-bs-target="#clFive" aria-controls="clFive" href="javascript:void(0);" aria-expanded="true" class="collapsed"><h4 class="property_block_title">Floor Plan</h4></a>
@@ -253,30 +331,27 @@
 							<div class="property_block_wrap style-2">
 								
 								<div class="property_block_wrap_header">
-									<a data-bs-toggle="collapse" data-parent="#clSev"  data-bs-target="#clSev" aria-controls="clOne" href="javascript:void(0);" aria-expanded="true" class="collapsed"><h4 class="property_block_title">Gallery</h4></a>
+									<a data-bs-toggle="collapse" data-parent="#clSev"  data-bs-target="#clSev" aria-controls="clOne" href="javascript:void(0);" aria-expanded="true" class=""><h4 class="property_block_title">Gallery</h4></a>
 								</div>
 								
-								<div id="clSev" class="panel-collapse collapse">
+								<div id="clSev" class="panel-collapse collapse show">
 									<div class="block-body">
 										<ul class="list-gallery-inline">
-											<li>
+											<!-- <li>
 												<a href="assets/img/p-1.jpg" class="mfp-gallery"><img src="assets/img/p-1.jpg" class="img-fluid mx-auto" alt="" /></a>
-											</li>
-											<li>
-												<a href="assets/img/p-2.jpg" class="mfp-gallery"><img src="assets/img/p-2.jpg" class="img-fluid mx-auto" alt="" /></a>
-											</li>
-											<li>
-												<a href="assets/img/p-3.jpg" class="mfp-gallery"><img src="assets/img/p-3.jpg" class="img-fluid mx-auto" alt="" /></a>
-											</li>
-											<li>
-												<a href="assets/img/p-4.jpg" class="mfp-gallery"><img src="assets/img/p-4.jpg" class="img-fluid mx-auto" alt="" /></a>
-											</li>
-											<li>
-												<a href="assets/img/p-5.jpg" class="mfp-gallery"><img src="assets/img/p-5.jpg" class="img-fluid mx-auto" alt="" /></a>
-											</li>
-											<li>
-												<a href="assets/img/p-6.jpg" class="mfp-gallery"><img src="assets/img/p-6.jpg" class="img-fluid mx-auto" alt="" /></a>
-											</li>
+											</li> -->
+											<?php 
+												if(count($property['images'])!=0) {
+													foreach($property['images'] as $image){  ?>
+													
+														<li>
+															<a href="<?=$image['path']?>" class="mfp-gallery"><img src="<?=$image['path']?>" class="img-fluid mx-auto" alt="" /></a>
+														</li>
+											<?php 
+													}
+												} 
+											?>
+											
 										</ul>
 									</div>
 								</div>
@@ -394,7 +469,7 @@
 							</div>
 							
 							<!-- Single Block Wrap -->
-							<div class="property_block_wrap style-2">
+							<div class="property_block_wrap style-2 d-none">
 								
 								<div class="property_block_wrap_header">
 									<a data-bs-toggle="collapse" data-parent="#nearby" data-bs-target="#clNine" aria-controls="clNine" href="javascript:void(0);" aria-expanded="true"><h4 class="property_block_title">Nearby</h4></a>
@@ -592,35 +667,35 @@
 							</div>
 							
 							<div class="details-sidebar">
-							
-								<!-- Agent Detail -->
-								<div class="sides-widget">
-									<div class="sides-widget-header bg-primary">
-										<div class="agent-photo"><img src="assets/img/user-6.png" alt=""></div>
-										<div class="sides-widget-details">
-											<h4><a href="#">Shivangi Preet</a></h4>
-											<span><i class="lni-phone-handset"></i>(91) 123 456 7895</span>
+								<?php  if($publisher){ ?>
+									<!-- Agent Detail -->
+									<div class="sides-widget">
+										<div class="sides-widget-header bg-primary">
+											<div class="agent-photo"><img src="assets/img/user-6.png" alt=""></div>
+											<div class="sides-widget-details">
+												<h4><a href="#"><?= $publisher['name'];?></a></h4>
+												<span><i class="lni-phone-handset"></i><?= $publisher['phone'];?></span>
+											</div>
+											<div class="clearfix"></div>
 										</div>
-										<div class="clearfix"></div>
+										
+										<div class="sides-widget-body simple-form">
+											<div class="form-group">
+												<label>Email</label>
+												<input type="text" class="form-control" placeholder="Your Email">
+											</div>
+											<div class="form-group">
+												<label>Phone No.</label>
+												<input type="text" class="form-control" placeholder="Your Phone">
+											</div>
+											<div class="form-group">
+												<label>Description</label>
+												<textarea class="form-control">I'm interested in this property.</textarea>
+											</div>
+											<button class="btn btn-light-primary fw-medium rounded full-width">Send Message</button>
+										</div>
 									</div>
-									
-									<div class="sides-widget-body simple-form">
-										<div class="form-group">
-											<label>Email</label>
-											<input type="text" class="form-control" placeholder="Your Email">
-										</div>
-										<div class="form-group">
-											<label>Phone No.</label>
-											<input type="text" class="form-control" placeholder="Your Phone">
-										</div>
-										<div class="form-group">
-											<label>Description</label>
-											<textarea class="form-control">I'm interested in this property.</textarea>
-										</div>
-										<button class="btn btn-light-primary fw-medium rounded full-width">Send Message</button>
-									</div>
-								</div>
-								
+								<?php } ?>
 								<!-- Mortgage Calculator -->
 								<div class="sides-widget">
 

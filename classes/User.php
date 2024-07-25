@@ -14,7 +14,7 @@ class User extends CustomOperations {
             return false;
         }
 
-        $query = $db->query("SELECT * FROM  users WHERE id= $id");
+        $query = "SELECT * FROM  users WHERE id= $id";
 
 
         $user = parent::get_row($query);        
