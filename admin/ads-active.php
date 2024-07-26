@@ -4,71 +4,14 @@ $error = false;
 $errorMessage = '';
 $success = false;
 
-try {
-    // CRUD operations
-    if (isset($_POST['action'])) {
-        $action = $_POST['action'];
 
-        // Create
-        if ($action == 'create') {
-            
-            $name = $_POST['name'] ?? '';
-            $description = $_POST['description'] ?? '';
-            $slug = createSlug($name) ?? '';
-           
-         
-            // Insert into database
-            $query = $db->query("SELECT * FROM amenties_groups WHERE slug = '$slug'");
-            $date = date("Y-m-d");
-            if(mysqli_num_rows($query)==0){
-                $query = "INSERT INTO amenties_groups (name, description, slug, created_at) VALUES ('$name', '$description', '$slug', '$date')";
-                if (!mysqli_query($db, $query)) {
-                    throw new Exception('Error inserting into database: ' . mysqli_error($db));
-                } else {
-                    $success = true;
-                    $message = "Added Successfully";
-                }
-
-            } else {
-                throw new Exception('Already Exists: '.$name);
-            }
-                
-           
-        }
-
-        // Update
-        elseif ($action == 'update') {
-            $id = $_POST['id'];
-            $name = $_POST['name'];
-            $values = $_POST['values'];
-            $query = "UPDATE amenties SET name = '$name', values = '$values' WHERE id = '$id'";
-            if (!mysqli_query($db, $query)) {
-                throw new Exception('Error updating database: ' . mysqli_error($db));
-            }
-        }
-
-        // Delete
-        elseif ($action == 'delete') {
-            $id = $_POST['id'];
-            $query = "DELETE FROM amenties WHERE id = '$id'";
-            if (!mysqli_query($db, $query)) {
-                throw new Exception('Error deleting from database: ' . mysqli_error($db));
-            }
-        }
-    }
-
-} catch(Exception $e){
-    $errorMessage = $e->getMessage();
-}
-
-
-// Read
-$query = "SELECT * FROM amenties_groups";
+// Read Ads
+$query = "SELECT * FROM ads where status=2";
 $result = mysqli_query($db, $query);
 
-$amenties_groups = array();
+$ads = array();
 while ($row = mysqli_fetch_assoc($result)) {
-    $amenties_groups[] = $row;
+    $ads[] = $row;
 }
 
 ?>
@@ -80,7 +23,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 
 <head>
-    <title>Amenties Groups | </title>
+    <title>Ads Active | </title>
 
     <?php
     include("includes/head.php");
@@ -128,6 +71,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     <div class="d-flex flex-column flex-root">
         <!--begin::Page-->
         <div class="page d-flex flex-row flex-column-fluid">
+            <input type="hidden" id="document_root" value="<?php echo str_replace("\\admin", "", __DIR__);?>">
             <!--begin::Aside-->
             <?php
             include("includes/sidebar.php");
@@ -153,24 +97,32 @@ while ($row = mysqli_fetch_assoc($result)) {
                             <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
                                 <!--begin::Title-->
                                 <h1 class="text-dark fw-bold my-1 fs-2">
-                                Amenties Groups</h1>
+                                Ads Active </h1>
                                 <!--end::Title-->
 
                                 <!--begin::Breadcrumb-->
                                 <ul class="breadcrumb fw-semibold fs-base my-1">
-                                    <li class="breadcrumb-item text-muted">
+                                <li class="breadcrumb-item text-muted">
                                         <a href="<?=ADMIN_PATH?>" class="text-muted text-hover-primary">
                                             Home </a>
                                     </li>
 
-                                    <li class="breadcrumb-item text-muted">
+                                    <!-- <li class="breadcrumb-item text-muted">
                                         
                                         <a href="javascript::void(0)" class="text-muted text-hover-primary">
-                                        Miscellaneous </a>
-                                    </li>
+                                            Miscellaneous 
+                                        </a>
+                                    </li> -->
 
+                                    <!-- <li class="breadcrumb-item text-muted">
+                                    
+                                        <a href="amenties_groups.php" class="text-muted text-hover-primary">
+                                        Amenties Groups  </a>
+                                    </li> -->
+                                    <!-- 
                                     <li class="breadcrumb-item text-dark">
-                                        Amenties Groups</li>
+                                        Amenties
+                                    </li> -->
 
                                 </ul>
                                 <!--end::Breadcrumb-->
@@ -197,19 +149,20 @@ while ($row = mysqli_fetch_assoc($result)) {
 //                    if ($error) {
 //                        $errorMessage = $error['message'];
 //                    }  ?>
-<!---->
+<!--                    -->
 <!--                    --><?php //if($errorMessage) {?>
 <!--                        <div class="alert alert-danger">-->
 <!--                            --><?php //=$errorMessage; ?>
 <!--                        </div>-->
 <!--                    --><?php //} ?>
-                    <?php if($success) {?>
-                        <div class="alert alert-success">
-                            --><?php //=$message; ?>
-                            <?=$_SESSION['success_msg']; ?>
-                            <?php unset($_SESSION['success_msg']); ?>
-                        </div>
-                    <?php } ?>
+                        <?php if( $success || !empty($_SESSION['success_msg'])) {?>
+                            <div class="alert alert-success">
+                                <!-- <?php //=$message; ?> -->
+                                <?=$_SESSION['success_msg']; ?>
+                                <?php unset($_SESSION['success_msg']); ?>
+
+                            </div>
+                        <?php } ?>
                                 <!--begin::Post-->
                     <div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
                         <!--begin::Container-->
@@ -293,9 +246,9 @@ while ($row = mysqli_fetch_assoc($result)) {
                                             <!--end::Export-->
 
                                             <!--begin::Add user-->
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user">
+                                            <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user">
                                                 <i class="ki-duotone ki-plus fs-2"></i> New 
-                                            </button>
+                                            </button> -->
                                             <!--end::Add user-->
                                         </div>
                                         <!--end::Toolbar-->
@@ -303,7 +256,8 @@ while ($row = mysqli_fetch_assoc($result)) {
                                         <!--begin::Group actions-->
                                         <div class="d-flex justify-content-end align-items-center d-none" data-kt-user-table-toolbar="selected">
                                             <div class="fw-bold me-5">
-                                                <span class="me-2" data-kt-user-table-select="selected_count"></span> Selected
+                                                <span class="me-2" data-kt-user-table-select="selected_count"></span> 
+                                                Selected
                                             </div>
 
                                             <button type="button" class="btn btn-danger" data-kt-user-table-select="delete_selected">
@@ -428,7 +382,55 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                             <!--begin::Scroll-->
                                                             <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_add_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_user_header" data-kt-scroll-wrappers="#kt_modal_add_user_scroll" data-kt-scroll-offset="300px">
                                                                  <!--begin::Input group-->
-                                                                 
+                                                                 <div class="fv-row mb-7">
+                                                                                <!--begin::Label-->
+                                                                                <label class="d-block fw-semibold fs-6 mb-5">Icon</label>
+                                                                                <!--end::Label-->
+
+                                                                                                        
+                                                                            <!--begin::Image placeholder-->
+                                                                            <style>
+                                                                                .image-input-placeholder {
+                                                                                    background-image: url('/craft/assets/media/svg/files/blank-image.svg');
+                                                                                }
+
+                                                                                        [data-bs-theme="dark"] .image-input-placeholder {
+                                                                                        background-image: url('/craft/assets/media/svg/files/blank-image-dark.svg');
+                                                                                    }               
+                                                                                </style>
+                                                                            <!--end::Image placeholder-->
+                                                                    <!--begin::Image input-->
+                                                                    <div class="image-input image-input-outline image-input-placeholder image-input-changed" data-kt-image-input="true">
+                                                                        <!--begin::Preview existing avatar-->
+                                                                        <div class="image-input-wrapper w-125px h-125px" style=""></div>
+                                                                        <!--end::Preview existing avatar-->
+
+                                                                        <!--begin::Label-->
+                                                                        <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" aria-label="Change avatar" data-bs-original-title="Change avatar" data-kt-initialized="1">
+                                                                            <i class="ki-duotone ki-pencil fs-7"><span class="path1"></span><span class="path2"></span></i>
+                                                                            <!--begin::Inputs-->
+                                                                            <input type="file" name="icon">
+                                                                            <input type="hidden" name="icon_remove">
+                                                                            <!--end::Inputs-->
+                                                                        </label>
+                                                                        <!--end::Label-->
+
+                                                                        <!--begin::Cancel-->
+                                                                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" aria-label="Cancel avatar" data-bs-original-title="Cancel avatar" data-kt-initialized="1">
+                                                                            <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span class="path2"></span></i>                                </span>
+                                                                        <!--end::Cancel-->
+
+                                                                        <!--begin::Remove-->
+                                                                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" aria-label="Remove avatar" data-bs-original-title="Remove avatar" data-kt-initialized="1">
+                                                                            <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span class="path2"></span></i>                                </span>
+                                                                        <!--end::Remove-->
+                                                                    </div>
+                                                                    <!--end::Image input-->
+
+                                                                    <!--begin::Hint-->
+                                                                    <div class="form-text">Allowed file types: png, jpg, jpeg.</div>
+                                                                    <!--end::Hint-->
+                                                                </div>
                                                                 <!--end::Input group-->
                                                                 <!--begin::Input group-->
                                                                 <div class="fv-row mb-7">
@@ -437,30 +439,60 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                                     <!--end::Label-->
 
                                                                     <!--begin::Input-->
-                                                                    <input type="text" name="name"  required class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Full name" value="" />
+                                                                    <input type="text" name="name" class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Full name"  />
                                                                     <!--end::Input-->
                                                                 </div>
                                                                 <!--end::Input group-->
+
                                                                 <div class="fv-row mb-7">
                                                                     <!--begin::Label-->
                                                                     <label class="required fw-semibold fs-6 mb-2">Slug</label>
                                                                     <!--end::Label-->
 
                                                                     <!--begin::Input-->
-                                                                    <input type="text" required name="slug" class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Enter Slug" value="" />
+                                                                    <input type="text" required name="slug" class="form-control  mb-3 mb-lg-0"  placeholder="Enter Slug" value="" />
                                                                     <p class="small">Slug: &nbsp;<span class="text-success" id="slug">name-123</span></p>
                                                                     <!--end::Input-->
                                                                 </div>
-
                                                                 <!--begin::Input group-->
                                                                 <div class="fv-row mb-7">
                                                                     <!--begin::Label-->
                                                                     <label class="required fw-semibold fs-6 mb-2">Description</label>
                                                                     <!--end::Label-->
 
-                                                                    <textarea class="form-control" aria-label="With textarea" name="description" required> </textarea>
+                                                                    <textarea class="form-control" aria-label="With textarea" name="description"> </textarea>
                                                                 </div>
                                                                 <!--end::Input group-->
+                                                                <div class="mb-5">
+                                                                    <!--begin::Label-->
+                                                                    <label class="required fw-semibold fs-6 mb-5">Amenties Group</label>
+                                                                    <!--end::Label-->
+
+                                                                    <!--begin::Roles-->
+                                                                    <?php foreach($amenties_groups as $item){ ?>                               
+                                                                    <!--begin::Input row-->
+                                                                        <div class="d-flex fv-row">
+                                                                            <!--begin::Radio-->
+                                                                            <div class="form-check form-check-custom form-check-solid">
+                                                                                <!--begin::Input-->
+                                                                                <input class="form-check-input me-3" name="group_slug" type="radio" value="<?=$item['slug'];?>" id="kt_modal_update_role_option_<?=$item['id'];?>" >
+                                                                                <!--end::Input-->
+
+                                                                                <!--begin::Label-->
+                                                                                <label class="form-check-label" for="kt_modal_update_role_option_<?=$item['id'];?>">
+                                                                                    <div class="fw-bold text-gray-800"><?=$item['name'];?></div>
+                                                                                    <div class="text-gray-600"><?=$item['description'];?></div>
+                                                                                </label>
+                                                                                <!--end::Label-->
+                                                                            </div>
+                                                                            <!--end::Radio-->
+                                                                        </div>
+                                                                        <!--end::Input row-->
+
+                                                                        <div class="separator separator-dashed my-5"></div>                                                            <!--begin::Input row-->
+                                                                    <?php } ?>    
+                                                                                                                                <!--end::Roles-->
+                                                                </div>
                                                                 
                                                             </div>
                                                             <!--end::Scroll-->
@@ -471,9 +503,181 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                                     Discard
                                                                 </button>
                                                                 
-                                                                <button type="submit" name="submitAmnGrpBtn" class="btn btn-primary" data-kt-users-modal-action="submit">
+                                                                <button type="submit" class="btn btn-primary" name="submitAmnBtn" data-kt-users-modal-action="submit">
                                                                     <span class="indicator-label">
                                                                         Submit
+                                                                    </span>
+                                                                    <span class="indicator-progress">
+                                                                        Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                                                    </span>
+                                                                </button>
+                                                            </div>
+                                                            <!--end::Actions-->
+                                                        </form>
+                                                        <!--end::Form-->
+                                                    </div>
+                                                    <!--end::Modal body-->
+                                                </div>
+                                                <!--end::Modal content-->
+                                            </div>
+                                            <!--end::Modal dialog-->
+                                        </div>
+                                        <!--end::Modal - Add task-->
+
+                                        <!--begin::Modal - Add task-->
+                                        <div class="modal fade" id="kt_modal_update_user" tabindex="-1" aria-hidden="true">
+                                            <!--begin::Modal dialog-->
+                                            <div class="modal-dialog modal-dialog-centered mw-650px">
+                                                <!--begin::Modal content-->
+                                                <div class="modal-content">
+                                                    <!--begin::Modal header-->
+                                                    <div class="modal-header" id="kt_modal_add_user_header">
+                                                        <!--begin::Modal title-->
+                                                        <h2 class="fw-bold">Update</h2>
+                                                        <!--end::Modal title-->
+
+                                                        <!--begin::Close-->
+                                                        <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
+                                                            <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                                        </div>
+                                                        <!--end::Close-->
+                                                    </div>
+                                                    <!--end::Modal header-->
+
+                                                    <!--begin::Modal body-->
+                                                    <div class="modal-body px-5 my-7">
+                                                        <!--begin::Form-->
+                                                        <form  class="form" action="controller/adminController.php" method="POST" enctype="multipart/form-data">
+                                                            <input type="hidden" name="action" value="update" />
+                                                            <input type="hidden" id="id_field_update" name="id"  />
+
+                                                            <!--begin::Scroll-->
+                                                            <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_update_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_update_user_header" data-kt-scroll-wrappers="#kt_modal_update_user_scroll" data-kt-scroll-offset="300px">
+                                                                <!--begin::Input group-->
+                                                                <div class="fv-row mb-7">
+                                                                    <!--begin::Label-->
+                                                                    <label class="d-block fw-semibold fs-6 mb-5">Icon</label>
+                                                                    <!--end::Label-->
+
+
+                                                                    <!--begin::Image placeholder-->
+                                                                    <style>
+                                                                        .image-input-placeholder {
+                                                                            background-image: url('/craft/assets/media/svg/files/blank-image.svg');
+                                                                        }
+
+                                                                        [data-bs-theme="dark"] .image-input-placeholder {
+                                                                            background-image: url('/craft/assets/media/svg/files/blank-image-dark.svg');
+                                                                        }
+                                                                    </style>
+                                                                    <!--end::Image placeholder-->
+                                                                    <!--begin::Image input-->
+                                                                    <div class="image-input image-input-outline image-input-placeholder image-input-changed" data-kt-image-input="true">
+                                                                        <!--begin::Preview existing avatar-->
+                                                                        <div class="image-input-wrapper w-125px h-125px" id="image-input-wrapper-update" style=""></div>
+                                                                        <!--end::Preview existing avatar-->
+
+                                                                        <!--begin::Label-->
+                                                                        <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" aria-label="Change avatar" data-bs-original-title="Change avatar" data-kt-initialized="1">
+                                                                            <i class="ki-duotone ki-pencil fs-7"><span class="path1"></span><span class="path2"></span></i>
+                                                                            <!--begin::Inputs-->
+                                                                            <input type="file" name="icon" accept=".png, .jpg, .jpeg">
+                                                                            <input type="hidden" name="icon_remove">
+                                                                            <!--end::Inputs-->
+                                                                        </label>
+                                                                        <!--end::Label-->
+
+                                                                        <!--begin::Cancel-->
+                                                                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" aria-label="Cancel avatar" data-bs-original-title="Cancel avatar" data-kt-initialized="1">
+                                                                            <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span class="path2"></span></i>                                </span>
+                                                                        <!--end::Cancel-->
+
+                                                                        <!--begin::Remove-->
+                                                                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" aria-label="Remove avatar" data-bs-original-title="Remove avatar" data-kt-initialized="1">
+                                                                            <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span class="path2"></span></i>                                </span>
+                                                                        <!--end::Remove-->
+                                                                    </div>
+                                                                    <!--end::Image input-->
+
+                                                                    <!--begin::Hint-->
+                                                                    <div class="form-text">Allowed file types: png, jpg, jpeg.</div>
+                                                                    <!--end::Hint-->
+                                                                </div>
+                                                                <!--end::Input group-->
+                                                                <!--begin::Input group-->
+                                                                <div class="fv-row mb-7">
+                                                                    <!--begin::Label-->
+                                                                    <label class="required fw-semibold fs-6 mb-2">Name</label>
+                                                                    <!--end::Label-->
+
+                                                                    <!--begin::Input-->
+                                                                    <input type="text" name="name" class="form-control  mb-3 mb-lg-0" id="name_field_update" placeholder="Full name"  />
+                                                                    <!--end::Input-->
+                                                                </div>
+                                                                <!--end::Input group-->
+                                                                <div class="fv-row mb-7">
+                                                                    <!--begin::Label-->
+                                                                    <label class="required fw-semibold fs-6 mb-2">Slug</label>
+                                                                    <!--end::Label-->
+
+                                                                    <!--begin::Input-->
+                                                                    <input type="text" required name="slug" class="form-control  mb-3 mb-lg-0" id="slug_field_update" placeholder="Enter Slug" value="" />
+                                                                    <p class="small">Slug: &nbsp;<span class="text-success" id="slug">name-123</span></p>
+                                                                    <!--end::Input-->
+                                                                </div>
+
+                                                                <!--begin::Input group-->
+                                                                <div class="fv-row mb-7">
+                                                                    <!--begin::Label-->
+                                                                    <label class="required fw-semibold fs-6 mb-2">Description</label>
+                                                                    <!--end::Label-->
+
+                                                                    <textarea class="form-control" aria-label="With textarea" id="description_field_update" name="description"> </textarea>
+                                                                </div>
+                                                                <!--end::Input group-->
+                                                                <div class="mb-5">
+                                                                    <!--begin::Label-->
+                                                                    <label class="required fw-semibold fs-6 mb-5">Amenties Group</label>
+                                                                    <!--end::Label-->
+
+                                                                    <!--begin::Roles-->
+                                                                    <?php foreach($amenties_groups as $item){ ?>
+                                                                        <!--begin::Input row-->
+                                                                        <div class="d-flex fv-row">
+                                                                            <!--begin::Radio-->
+                                                                            <div class="form-check form-check-custom form-check-solid">
+                                                                                <!--begin::Input-->
+                                                                                <input class="form-check-input me-3 kt_modal_update_role_option_<?php echo $item['id'];?>" name="group_slug" type="radio" value="<?=$item['slug'];?>" id="kt_modal_update_role_option_<?=$item['id'];?>" >
+                                                                                <!--end::Input-->
+
+                                                                                <!--begin::Label-->
+                                                                                <label class="form-check-label" for="kt_modal_update_role_option_<?=$item['id'];?>">
+                                                                                    <div class="fw-bold text-gray-800"><?=$item['name'];?></div>
+                                                                                    <div class="text-gray-600"><?=$item['description'];?></div>
+                                                                                </label>
+                                                                                <!--end::Label-->
+                                                                            </div>
+                                                                            <!--end::Radio-->
+                                                                        </div>
+                                                                        <!--end::Input row-->
+
+                                                                        <div class="separator separator-dashed my-5"></div>                                                            <!--begin::Input row-->
+                                                                    <?php } ?>
+                                                                    <!--end::Roles-->
+                                                                </div>
+
+                                                            </div>
+                                                            <!--end::Scroll-->
+
+                                                            <!--begin::Actions-->
+                                                            <div class="text-center pt-10">
+                                                                <button type="reset" class="btn btn-light me-3" data-kt-users-modal-action="cancel">
+                                                                    Discard
+                                                                </button>
+
+                                                                <button type="submit" class="btn btn-primary" name="submitAmnBtnUpdate" data-kt-users-modal-action="submit">
+                                                                    <span class="indicator-label">
+                                                                        Update
                                                                     </span>
                                                                     <span class="indicator-progress">
                                                                         Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
@@ -496,99 +700,6 @@ while ($row = mysqli_fetch_assoc($result)) {
                                 </div>
                                 <!--end::Card header-->
 
-                                <!--begin::Modal - Add task-->
-                                <div class="modal fade" id="kt_modal_update_user" tabindex="-1" aria-hidden="true">
-                                    <!--begin::Modal dialog-->
-                                    <div class="modal-dialog modal-dialog-centered mw-650px">
-                                        <!--begin::Modal content-->
-                                        <div class="modal-content">
-                                            <!--begin::Modal header-->
-                                            <div class="modal-header" id="kt_modal_update_user_header">
-                                                <!--begin::Modal title-->
-                                                <h2 class="fw-bold">Update</h2>
-                                                <!--end::Modal title-->
-
-                                                <!--begin::Close-->
-                                                <div class="btn btn-icon btn-sm close btn-active-icon-primary" data-kt-users-modal-action="close">
-                                                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
-                                                </div>
-                                                <!--end::Close-->
-                                            </div>
-                                            <!--end::Modal header-->
-
-                                            <!--begin::Modal body-->
-                                            <div class="modal-body px-5 my-7">
-                                                <!--begin::Form-->
-                                                <form  class="form" action="controller/adminController.php" method="POST" id="updateAmenityGroup" enctype="multipart/form-data">
-                                                    <input type="hidden" name="action" value="update" />
-                                                    <input type="hidden" id="id_field_update" name="id"  />
-
-                                                    <!--begin::Scroll-->
-                                                    <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_update_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_update_user_header" data-kt-scroll-wrappers="#kt_modal_update_user_scroll" data-kt-scroll-offset="300px">
-                                                        <!--begin::Input group-->
-
-                                                        <!--end::Input group-->
-                                                        <!--begin::Input group-->
-                                                        <div class="fv-row mb-7">
-                                                            <!--begin::Label-->
-                                                            <label class="required fw-semibold fs-6 mb-2">Name</label>
-                                                            <!--end::Label-->
-
-                                                            <!--begin::Input-->
-                                                            <input type="text" name="name"  required class="form-control  mb-3 mb-lg-0" id="name_field_update" placeholder="Full name" value="" />
-                                                            <!--end::Input-->
-                                                        </div>
-                                                        <!--end::Input group-->
-                                                        <div class="fv-row mb-7">
-                                                            <!--begin::Label-->
-                                                            <label class="required fw-semibold fs-6 mb-2">Slug</label>
-                                                            <!--end::Label-->
-
-                                                            <!--begin::Input-->
-                                                            <input type="text" required name="slug" class="form-control  mb-3 mb-lg-0" id="slug_field_update" placeholder="Enter Slug" value="" />
-                                                            <p class="small">Slug: &nbsp;<span class="text-success" id="slug">name-123</span></p>
-                                                            <!--end::Input-->
-                                                        </div>
-
-                                                        <!--begin::Input group-->
-                                                        <div class="fv-row mb-7">
-                                                            <!--begin::Label-->
-                                                            <label class="required fw-semibold fs-6 mb-2">Description</label>
-                                                            <!--end::Label-->
-
-                                                            <textarea class="form-control" aria-label="With textarea" name="description" required id="description_field_update"> </textarea>
-                                                        </div>
-                                                        <!--end::Input group-->
-
-                                                    </div>
-                                                    <!--end::Scroll-->
-
-                                                    <!--begin::Actions-->
-                                                    <div class="text-center pt-10">
-                                                        <button type="reset" class="btn btn-light me-3" data-kt-users-modal-action="cancel">
-                                                            Discard
-                                                        </button>
-
-                                                        <button type="submit" name="submitAmnGrpBtnUpdate"  class="btn btn-primary" data-kt-users-modal-action="submit">
-                                                                    <span class="indicator-label">
-                                                                        Update
-                                                                    </span>
-                                                            <span class="indicator-progress">
-                                                                        Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                                                            </span>
-                                                        </button>
-                                                    </div>
-                                                    <!--end::Actions-->
-                                                </form>
-                                                <!--end::Form-->
-                                            </div>
-                                            <!--end::Modal body-->
-                                        </div>
-                                        <!--end::Modal content-->
-                                    </div>
-                                    <!--end::Modal dialog-->
-                                </div>
-                                <!--end::Modal - Add task-->
                                 <!--begin::Card body-->
                                 <div class="card-body py-4">
 
@@ -601,13 +712,14 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                         <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_table_users .form-check-input" value="1" />
                                                     </div>
                                                 </th>
-                                                <th class="min-w-125px">Name</th>
-                                                <th class="min-w-125px">Joined Date</th>
+                                                <th class="min-w-125px">Title</th>
+                                                <th class="min-w-125px">Description</th>
+                                                <th class="min-w-125px">Public Status</th>
                                                 <th class="text-end min-w-100px">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody class="text-gray-600 fw-semibold">
-                                            <?php  foreach($amenties_groups as $item) { ?>
+                                            <?php  foreach($ads as $item) { ?>
                                                 <tr>
                                                     <td>
                                                         <div class="form-check form-check-sm form-check-custom form-check-solid">
@@ -620,16 +732,17 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                         <!--end::Avatar-->
                                                         <!--begin::User details-->
                                                         <div class="d-flex flex-column">
-                                                            <a href="view.html" class="text-gray-800 text-hover-primary mb-1"><?=$item['name']?></a>
-                                                            <span><?=$item['description']?></span>
+                                                            <a href="view.html" class="text-gray-800 text-hover-primary mb-1"><?=$item['title']?></a>
+                                                            <span><?=$item['title']?></span>
                                                         </div>
                                                         <!--begin::User details-->
                                                     </td>
-                                                   
                                                     
-                                                   
                                                     <td>
-                                                        19 Aug 2024, 11:05 am 
+                                                        <?=$item['description']?>
+                                                    </td>
+                                                    <td>
+                                                        <?=$item['public_status']?>
                                                     </td>
                                                     <td class="text-end">
                                                         <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
@@ -640,16 +753,32 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                         <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                                             <!--begin::Menu item-->
                                                             <div class="menu-item px-3">
-                                                                <a href="#" data-bs-toggle="modal" data-edit-id="<?=$item['id']?>" data-bs-target="#kt_modal_update_user" class="menu-link grpAmntEdit px-3">
-                                                                    Edit
+                                                                <a href="controller/adminController.php?dsfsfsgsfid=<?php echo $item['id']?>&ad_update_status=2" class="menu-link px-3">
+                                                                    Accepted
                                                                 </a>
                                                             </div>
                                                             <!--end::Menu item-->
 
                                                             <!--begin::Menu item-->
                                                             <div class="menu-item px-3">
-                                                                <a href="controller/adminController.php?del_id=<?php echo $item['id']?>&del_type=grp_amnt" class="menu-link px-3" data-kt-users-table-filter="delete_row">
-                                                                    Delete
+                                                                <a href="controller/adminController.php?dsfsfsgsfid=<?php echo $item['id']?>&ad_update_status=0" class="menu-link px-3">
+                                                                    Rejected
+                                                                </a>
+                                                            </div>
+                                                            <!--end::Menu item-->
+
+                                                            <!--begin::Menu item-->
+                                                            <div class="menu-item px-3">
+                                                                <a href="ad_detail.php?id=<?php echo $item['id']?>" class="menu-link px-3">
+                                                                    View Detail
+                                                                </a>
+                                                            </div>
+                                                            <!--end::Menu item-->
+
+                                                            <!--begin::Menu item-->
+                                                            <div class="menu-item px-3">
+                                                                <a href="ad_edit.php?id=<?php echo $item['id']?>" class="menu-link px-3">
+                                                                    Edit
                                                                 </a>
                                                             </div>
                                                             <!--end::Menu item-->
@@ -687,54 +816,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     <!--begin::Javascript-->
     <?php 
     include("includes/footer_scripts.php");
-    ?>                           
-    <script>
-        $(document).ready(function(){
-
-            $("#name_field").keyup(function(){
-                var name = $("#name_field").val();
-                var slug = convertToSlug(name);
-                $("#slug").html(slug);
-            });
-
-            function convertToSlug(str) {
-                str = str.replace(/^\s+|\s+$/g, ''); // trim
-                str = str.toLowerCase();
-                var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
-                var to   = "aaaaeeeeiiiioooouuuunc------";
-                for (var i=0, l=from.length ; i<l ; i++) {
-                    str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-                }
-                str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-                    .replace(/\s+/g, '-') // collapse whitespace and replace by -
-                    .replace(/-+/g, '-'); // collapse dashes
-                return str;
-            }
-
-            $(".grpAmntEdit").on("click",function(){
-                let editId = $(this).attr("data-edit-id");
-
-                $.ajax({
-                    url: 'controller/adminController.php',
-                    type: 'POST',
-                    data: {
-                        id:editId,
-                        getEditField:1,
-            }, // Serialize the form data
-                    success: function(response) {
-                        let res = JSON.parse(response);
-                        $("#id_field_update").val(editId);
-                        $("#name_field_update").val(res[0].name)
-                        $("#slug_field_update").val(res[0].slug)
-                        $("#description_field_update").val(res[0].description)
-                    }
-                });
-            })
-
-
-
-        });
-    </script>                                     
+    ?>                                                           
     <!--end::Custom Javascript-->
     <!--end::Javascript-->
 

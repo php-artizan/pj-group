@@ -327,8 +327,6 @@ function deleteRow($table, $conditions) {
 
     $query = "DELETE FROM $table WHERE $where";
 
-
-
     if(mysqli_query($db, $query)){
         return  true;
     }else{
@@ -400,5 +398,46 @@ function uploadSingleFile($uploadDir, $inputName, $pathSave="icons/",$allowedTyp
     } else {
         return false; // Return false if there was an upload error
     }
+
+    
+
+}
+
+
+function getAdminRoot($url){
+ // Parse the URL to get its components
+$parsed_url = parse_url($url);
+
+// Extract the path component
+$path = $parsed_url['path'];
+
+// Find the position of "admin/" in the path
+$admin_pos = strpos($path, 'admin/');
+
+// Extract the part of the path up to "admin/"
+$path_up_to_admin = substr($path, 0, $admin_pos + strlen('admin/'));
+
+// Rebuild the full URL up to "admin/"
+$full_url_up_to_admin = $parsed_url['scheme'] . '://' . $parsed_url['host'] . $path_up_to_admin;
+
+// Output the result
+return $full_url_up_to_admin;
+}
+
+function getCurrentUri(){
+    // Get the request scheme (http or https)
+    $scheme = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+
+    // Get the host
+    $host = $_SERVER['HTTP_HOST'];
+
+    // Get the request URI
+    $uri = $_SERVER['REQUEST_URI'];
+
+    // Combine them to form the full URL
+    $current_url = $scheme . '://' . $host . $uri;
+
+    // Output the current URL
+    return $current_url;
 }
 ?>

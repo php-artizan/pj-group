@@ -4,71 +4,14 @@ $error = false;
 $errorMessage = '';
 $success = false;
 
-try {
-    // CRUD operations
-    if (isset($_POST['action'])) {
-        $action = $_POST['action'];
-
-        // Create
-        if ($action == 'create') {
-            
-            $name = $_POST['name'] ?? '';
-            $description = $_POST['description'] ?? '';
-            $slug = createSlug($name) ?? '';
-           
-         
-            // Insert into database
-            $query = $db->query("SELECT * FROM amenties_groups WHERE slug = '$slug'");
-            $date = date("Y-m-d");
-            if(mysqli_num_rows($query)==0){
-                $query = "INSERT INTO amenties_groups (name, description, slug, created_at) VALUES ('$name', '$description', '$slug', '$date')";
-                if (!mysqli_query($db, $query)) {
-                    throw new Exception('Error inserting into database: ' . mysqli_error($db));
-                } else {
-                    $success = true;
-                    $message = "Added Successfully";
-                }
-
-            } else {
-                throw new Exception('Already Exists: '.$name);
-            }
-                
-           
-        }
-
-        // Update
-        elseif ($action == 'update') {
-            $id = $_POST['id'];
-            $name = $_POST['name'];
-            $values = $_POST['values'];
-            $query = "UPDATE amenties SET name = '$name', values = '$values' WHERE id = '$id'";
-            if (!mysqli_query($db, $query)) {
-                throw new Exception('Error updating database: ' . mysqli_error($db));
-            }
-        }
-
-        // Delete
-        elseif ($action == 'delete') {
-            $id = $_POST['id'];
-            $query = "DELETE FROM amenties WHERE id = '$id'";
-            if (!mysqli_query($db, $query)) {
-                throw new Exception('Error deleting from database: ' . mysqli_error($db));
-            }
-        }
-    }
-
-} catch(Exception $e){
-    $errorMessage = $e->getMessage();
-}
-
 
 // Read
-$query = "SELECT * FROM amenties_groups";
+$query = "SELECT * FROM ads_types";
 $result = mysqli_query($db, $query);
 
-$amenties_groups = array();
+$ads_types = array();
 while ($row = mysqli_fetch_assoc($result)) {
-    $amenties_groups[] = $row;
+    $ads_types[] = $row;
 }
 
 ?>
@@ -80,7 +23,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 
 <head>
-    <title>Amenties Groups | </title>
+    <title>Ad Types | </title>
 
     <?php
     include("includes/head.php");
@@ -153,7 +96,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                             <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
                                 <!--begin::Title-->
                                 <h1 class="text-dark fw-bold my-1 fs-2">
-                                Amenties Groups</h1>
+                                Ad Types</h1>
                                 <!--end::Title-->
 
                                 <!--begin::Breadcrumb-->
@@ -163,14 +106,14 @@ while ($row = mysqli_fetch_assoc($result)) {
                                             Home </a>
                                     </li>
 
-                                    <li class="breadcrumb-item text-muted">
+                                    <!-- <li class="breadcrumb-item text-muted">
                                         
                                         <a href="javascript::void(0)" class="text-muted text-hover-primary">
                                         Miscellaneous </a>
-                                    </li>
+                                    </li> -->
 
-                                    <li class="breadcrumb-item text-dark">
-                                        Amenties Groups</li>
+                                    <!-- <li class="breadcrumb-item text-dark">
+                                        Amenties Groups</li> -->
 
                                 </ul>
                                 <!--end::Breadcrumb-->
@@ -255,7 +198,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                         <label class="form-label fs-6 fw-semibold">Role:</label>
                                                         <select class="form-select form-select-solid fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-user-table-filter="role" data-hide-search="true">
                                                             <option></option>
-                                                            <?php foreach($amenties_groups as $item){ ?>
+                                                            <?php foreach($ads_types as $item){ ?>
                                                                 <option value="<?=$item['name']?>"><?=$item['name']?></option>
 
                                                             <?php } ?>
@@ -409,7 +352,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                     <!--begin::Modal header-->
                                                     <div class="modal-header" id="kt_modal_add_user_header">
                                                         <!--begin::Modal title-->
-                                                        <h2 class="fw-bold">Add</h2>
+                                                        <h2 class="fw-bold">Add Type</h2>
                                                         <!--end::Modal title-->
 
                                                         <!--begin::Close-->
@@ -441,6 +384,17 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                                     <!--end::Input-->
                                                                 </div>
                                                                 <!--end::Input group-->
+
+                                                                <!--begin::Input group-->
+                                                                <div class="fv-row mb-7">
+                                                                    <!--begin::Label-->
+                                                                    <label class="required fw-semibold fs-6 mb-2">Description</label>
+                                                                    <!--end::Label-->
+
+                                                                    <textarea class="form-control" aria-label="With textarea" name="descr" required> </textarea>
+                                                                </div>
+                                                                <!--end::Input group-->
+                                                                
                                                                 <div class="fv-row mb-7">
                                                                     <!--begin::Label-->
                                                                     <label class="required fw-semibold fs-6 mb-2">Slug</label>
@@ -451,17 +405,6 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                                     <p class="small">Slug: &nbsp;<span class="text-success" id="slug">name-123</span></p>
                                                                     <!--end::Input-->
                                                                 </div>
-
-                                                                <!--begin::Input group-->
-                                                                <div class="fv-row mb-7">
-                                                                    <!--begin::Label-->
-                                                                    <label class="required fw-semibold fs-6 mb-2">Description</label>
-                                                                    <!--end::Label-->
-
-                                                                    <textarea class="form-control" aria-label="With textarea" name="description" required> </textarea>
-                                                                </div>
-                                                                <!--end::Input group-->
-                                                                
                                                             </div>
                                                             <!--end::Scroll-->
 
@@ -471,7 +414,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                                     Discard
                                                                 </button>
                                                                 
-                                                                <button type="submit" name="submitAmnGrpBtn" class="btn btn-primary" data-kt-users-modal-action="submit">
+                                                                <button type="submit" name="submitAtypeGrpBtn" class="btn btn-primary" data-kt-users-modal-action="submit">
                                                                     <span class="indicator-label">
                                                                         Submit
                                                                     </span>
@@ -539,6 +482,17 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                             <!--end::Input-->
                                                         </div>
                                                         <!--end::Input group-->
+
+                                                        <!--begin::Input group-->
+                                                        <div class="fv-row mb-7">
+                                                            <!--begin::Label-->
+                                                            <label class="required fw-semibold fs-6 mb-2">Description</label>
+                                                            <!--end::Label-->
+
+                                                            <textarea class="form-control" aria-label="With textarea" name="descr" required id="descr_field_update"> </textarea>
+                                                        </div>
+                                                        <!--end::Input group-->
+
                                                         <div class="fv-row mb-7">
                                                             <!--begin::Label-->
                                                             <label class="required fw-semibold fs-6 mb-2">Slug</label>
@@ -550,15 +504,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                             <!--end::Input-->
                                                         </div>
 
-                                                        <!--begin::Input group-->
-                                                        <div class="fv-row mb-7">
-                                                            <!--begin::Label-->
-                                                            <label class="required fw-semibold fs-6 mb-2">Description</label>
-                                                            <!--end::Label-->
-
-                                                            <textarea class="form-control" aria-label="With textarea" name="description" required id="description_field_update"> </textarea>
-                                                        </div>
-                                                        <!--end::Input group-->
+                                                        
 
                                                     </div>
                                                     <!--end::Scroll-->
@@ -569,7 +515,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                             Discard
                                                         </button>
 
-                                                        <button type="submit" name="submitAmnGrpBtnUpdate"  class="btn btn-primary" data-kt-users-modal-action="submit">
+                                                        <button type="submit" name="submitAdTypeBtnUpdate"  class="btn btn-primary" data-kt-users-modal-action="submit">
                                                                     <span class="indicator-label">
                                                                         Update
                                                                     </span>
@@ -602,12 +548,13 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                     </div>
                                                 </th>
                                                 <th class="min-w-125px">Name</th>
-                                                <th class="min-w-125px">Joined Date</th>
+                                                <th class="min-w-125px">Description</th>
+                                                <th class="min-w-125px">Slug</th>
                                                 <th class="text-end min-w-100px">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody class="text-gray-600 fw-semibold">
-                                            <?php  foreach($amenties_groups as $item) { ?>
+                                            <?php  foreach($ads_types as $item) { ?>
                                                 <tr>
                                                     <td>
                                                         <div class="form-check form-check-sm form-check-custom form-check-solid">
@@ -621,15 +568,15 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                         <!--begin::User details-->
                                                         <div class="d-flex flex-column">
                                                             <a href="view.html" class="text-gray-800 text-hover-primary mb-1"><?=$item['name']?></a>
-                                                            <span><?=$item['description']?></span>
+                                                            <span><?=$item['name']?></span>
                                                         </div>
                                                         <!--begin::User details-->
                                                     </td>
-                                                   
-                                                    
-                                                   
                                                     <td>
-                                                        19 Aug 2024, 11:05 am 
+                                                        <?=$item['descr']?> 
+                                                    </td>
+                                                    <td>
+                                                        <?=$item['slug']?> 
                                                     </td>
                                                     <td class="text-end">
                                                         <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
@@ -640,7 +587,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                         <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                                             <!--begin::Menu item-->
                                                             <div class="menu-item px-3">
-                                                                <a href="#" data-bs-toggle="modal" data-edit-id="<?=$item['id']?>" data-bs-target="#kt_modal_update_user" class="menu-link grpAmntEdit px-3">
+                                                                <a href="#" data-bs-toggle="modal" data-edit-id="<?=$item['id']?>" data-bs-target="#kt_modal_update_user" class="menu-link adsTypeEdit px-3">
                                                                     Edit
                                                                 </a>
                                                             </div>
@@ -648,7 +595,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 
                                                             <!--begin::Menu item-->
                                                             <div class="menu-item px-3">
-                                                                <a href="controller/adminController.php?del_id=<?php echo $item['id']?>&del_type=grp_amnt" class="menu-link px-3" data-kt-users-table-filter="delete_row">
+                                                                <a href="controller/adminController.php?id=<?php echo $item['id']?>&del_type=ad_type" class="menu-link px-3" data-kt-users-table-filter="delete_row">
                                                                     Delete
                                                                 </a>
                                                             </div>
@@ -711,7 +658,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                 return str;
             }
 
-            $(".grpAmntEdit").on("click",function(){
+            $(".adsTypeEdit").on("click",function(){
                 let editId = $(this).attr("data-edit-id");
 
                 $.ajax({
@@ -719,14 +666,14 @@ while ($row = mysqli_fetch_assoc($result)) {
                     type: 'POST',
                     data: {
                         id:editId,
-                        getEditField:1,
+                        getEditField:3,
             }, // Serialize the form data
                     success: function(response) {
                         let res = JSON.parse(response);
                         $("#id_field_update").val(editId);
                         $("#name_field_update").val(res[0].name)
+                        $("#descr_field_update").val(res[0].descr)
                         $("#slug_field_update").val(res[0].slug)
-                        $("#description_field_update").val(res[0].description)
                     }
                 });
             })

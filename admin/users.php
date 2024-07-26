@@ -4,71 +4,14 @@ $error = false;
 $errorMessage = '';
 $success = false;
 
-try {
-    // CRUD operations
-    if (isset($_POST['action'])) {
-        $action = $_POST['action'];
-
-        // Create
-        if ($action == 'create') {
-            
-            $name = $_POST['name'] ?? '';
-            $description = $_POST['description'] ?? '';
-            $slug = createSlug($name) ?? '';
-           
-         
-            // Insert into database
-            $query = $db->query("SELECT * FROM amenties_groups WHERE slug = '$slug'");
-            $date = date("Y-m-d");
-            if(mysqli_num_rows($query)==0){
-                $query = "INSERT INTO amenties_groups (name, description, slug, created_at) VALUES ('$name', '$description', '$slug', '$date')";
-                if (!mysqli_query($db, $query)) {
-                    throw new Exception('Error inserting into database: ' . mysqli_error($db));
-                } else {
-                    $success = true;
-                    $message = "Added Successfully";
-                }
-
-            } else {
-                throw new Exception('Already Exists: '.$name);
-            }
-                
-           
-        }
-
-        // Update
-        elseif ($action == 'update') {
-            $id = $_POST['id'];
-            $name = $_POST['name'];
-            $values = $_POST['values'];
-            $query = "UPDATE amenties SET name = '$name', values = '$values' WHERE id = '$id'";
-            if (!mysqli_query($db, $query)) {
-                throw new Exception('Error updating database: ' . mysqli_error($db));
-            }
-        }
-
-        // Delete
-        elseif ($action == 'delete') {
-            $id = $_POST['id'];
-            $query = "DELETE FROM amenties WHERE id = '$id'";
-            if (!mysqli_query($db, $query)) {
-                throw new Exception('Error deleting from database: ' . mysqli_error($db));
-            }
-        }
-    }
-
-} catch(Exception $e){
-    $errorMessage = $e->getMessage();
-}
-
 
 // Read
-$query = "SELECT * FROM amenties_groups";
+$query = "SELECT * FROM users";
 $result = mysqli_query($db, $query);
 
-$amenties_groups = array();
+$users = array();
 while ($row = mysqli_fetch_assoc($result)) {
-    $amenties_groups[] = $row;
+    $users[] = $row;
 }
 
 ?>
@@ -80,7 +23,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 
 <head>
-    <title>Amenties Groups | </title>
+    <title>Users | </title>
 
     <?php
     include("includes/head.php");
@@ -153,7 +96,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                             <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
                                 <!--begin::Title-->
                                 <h1 class="text-dark fw-bold my-1 fs-2">
-                                Amenties Groups</h1>
+                                Users</h1>
                                 <!--end::Title-->
 
                                 <!--begin::Breadcrumb-->
@@ -163,14 +106,14 @@ while ($row = mysqli_fetch_assoc($result)) {
                                             Home </a>
                                     </li>
 
-                                    <li class="breadcrumb-item text-muted">
+                                    <!-- <li class="breadcrumb-item text-muted">
                                         
                                         <a href="javascript::void(0)" class="text-muted text-hover-primary">
                                         Miscellaneous </a>
-                                    </li>
+                                    </li> -->
 
-                                    <li class="breadcrumb-item text-dark">
-                                        Amenties Groups</li>
+                                    <!-- <li class="breadcrumb-item text-dark">
+                                        Amenties Groups</li> -->
 
                                 </ul>
                                 <!--end::Breadcrumb-->
@@ -255,7 +198,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                         <label class="form-label fs-6 fw-semibold">Role:</label>
                                                         <select class="form-select form-select-solid fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-user-table-filter="role" data-hide-search="true">
                                                             <option></option>
-                                                            <?php foreach($amenties_groups as $item){ ?>
+                                                            <?php foreach($users as $item){ ?>
                                                                 <option value="<?=$item['name']?>"><?=$item['name']?></option>
 
                                                             <?php } ?>
@@ -409,7 +352,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                     <!--begin::Modal header-->
                                                     <div class="modal-header" id="kt_modal_add_user_header">
                                                         <!--begin::Modal title-->
-                                                        <h2 class="fw-bold">Add</h2>
+                                                        <h2 class="fw-bold">Add User</h2>
                                                         <!--end::Modal title-->
 
                                                         <!--begin::Close-->
@@ -441,27 +384,38 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                                     <!--end::Input-->
                                                                 </div>
                                                                 <!--end::Input group-->
-                                                                <div class="fv-row mb-7">
-                                                                    <!--begin::Label-->
-                                                                    <label class="required fw-semibold fs-6 mb-2">Slug</label>
-                                                                    <!--end::Label-->
-
-                                                                    <!--begin::Input-->
-                                                                    <input type="text" required name="slug" class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Enter Slug" value="" />
-                                                                    <p class="small">Slug: &nbsp;<span class="text-success" id="slug">name-123</span></p>
-                                                                    <!--end::Input-->
-                                                                </div>
 
                                                                 <!--begin::Input group-->
                                                                 <div class="fv-row mb-7">
                                                                     <!--begin::Label-->
-                                                                    <label class="required fw-semibold fs-6 mb-2">Description</label>
+                                                                    <label class="required fw-semibold fs-6 mb-2">Email</label>
                                                                     <!--end::Label-->
-
-                                                                    <textarea class="form-control" aria-label="With textarea" name="description" required> </textarea>
+                                                                    <input type="email" name="email"  required class="form-control  mb-3 mb-lg-0" placeholder="Enter Email" value="" />
                                                                 </div>
                                                                 <!--end::Input group-->
-                                                                
+
+                                                                <!--begin::Input group-->
+                                                                <div class="fv-row mb-7">
+                                                                    <!--begin::Label-->
+                                                                    <label class="required fw-semibold fs-6 mb-2">Password</label>
+                                                                    <!--end::Label-->
+                                                                    <input type="password" name="pass"  required class="form-control  mb-3 mb-lg-0" placeholder="Enter Password" value="" />
+                                                                </div>
+                                                                <!--end::Input group-->
+                                                        
+                                                                <!--begin::Input group-->
+                                                                <div class="fv-row mb-7">
+                                                                    <!--begin::Label-->
+                                                                    <label class="required fw-semibold fs-6 mb-2">Status</label>
+                                                                    <!--end::Label-->
+                                                                    <select required class="form-control" name="status">
+                                                                        <option value="">Select Status</option>
+                                                                        <option value="0">InActive</option>
+                                                                        <option value="1">Active</option>
+                                                                    </select>
+                                                                </div>
+                                                                <!--end::Input group-->
+
                                                             </div>
                                                             <!--end::Scroll-->
 
@@ -471,7 +425,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                                     Discard
                                                                 </button>
                                                                 
-                                                                <button type="submit" name="submitAmnGrpBtn" class="btn btn-primary" data-kt-users-modal-action="submit">
+                                                                <button type="submit" name="submitUser" class="btn btn-primary" data-kt-users-modal-action="submit">
                                                                     <span class="indicator-label">
                                                                         Submit
                                                                     </span>
@@ -519,7 +473,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                             <!--begin::Modal body-->
                                             <div class="modal-body px-5 my-7">
                                                 <!--begin::Form-->
-                                                <form  class="form" action="controller/adminController.php" method="POST" id="updateAmenityGroup" enctype="multipart/form-data">
+                                                <form  class="form" action="controller/adminController.php" method="POST" id="updateUser" enctype="multipart/form-data">
                                                     <input type="hidden" name="action" value="update" />
                                                     <input type="hidden" id="id_field_update" name="id"  />
 
@@ -528,37 +482,49 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                         <!--begin::Input group-->
 
                                                         <!--end::Input group-->
-                                                        <!--begin::Input group-->
                                                         <div class="fv-row mb-7">
-                                                            <!--begin::Label-->
-                                                            <label class="required fw-semibold fs-6 mb-2">Name</label>
-                                                            <!--end::Label-->
+                                                                    <!--begin::Label-->
+                                                                    <label class="required fw-semibold fs-6 mb-2">Name</label>
+                                                                    <!--end::Label-->
 
-                                                            <!--begin::Input-->
-                                                            <input type="text" name="name"  required class="form-control  mb-3 mb-lg-0" id="name_field_update" placeholder="Full name" value="" />
-                                                            <!--end::Input-->
-                                                        </div>
-                                                        <!--end::Input group-->
-                                                        <div class="fv-row mb-7">
-                                                            <!--begin::Label-->
-                                                            <label class="required fw-semibold fs-6 mb-2">Slug</label>
-                                                            <!--end::Label-->
+                                                                    <!--begin::Input-->
+                                                                    <input type="text" name="name"  required class="form-control  mb-3 mb-lg-0" id="name_field_update" placeholder="Full name" value="" />
+                                                                    <!--end::Input-->
+                                                                </div>
+                                                                <!--end::Input group-->
 
-                                                            <!--begin::Input-->
-                                                            <input type="text" required name="slug" class="form-control  mb-3 mb-lg-0" id="slug_field_update" placeholder="Enter Slug" value="" />
-                                                            <p class="small">Slug: &nbsp;<span class="text-success" id="slug">name-123</span></p>
-                                                            <!--end::Input-->
-                                                        </div>
+                                                                <!--begin::Input group-->
+                                                                <div class="fv-row mb-7">
+                                                                    <!--begin::Label-->
+                                                                    <label class="required fw-semibold fs-6 mb-2">Email</label>
+                                                                    <!--end::Label-->
+                                                                    <input type="email" name="email"  required class="form-control  mb-3 mb-lg-0" id="email_field_update" placeholder="Enter Email" value="" />
+                                                                </div>
+                                                                <!--end::Input group-->
 
-                                                        <!--begin::Input group-->
-                                                        <div class="fv-row mb-7">
-                                                            <!--begin::Label-->
-                                                            <label class="required fw-semibold fs-6 mb-2">Description</label>
-                                                            <!--end::Label-->
+                                                                <!--begin::Input group-->
+                                                                <div class="fv-row mb-7">
+                                                                    <!--begin::Label-->
+                                                                    <label class="required fw-semibold fs-6 mb-2">Password</label>
+                                                                    <!--end::Label-->
+                                                                    <input type="password" name="pass"  required class="form-control  mb-3 mb-lg-0" id="pass_field_update" placeholder="Enter Password" value="" />
+                                                                </div>
+                                                                <!--end::Input group-->
+                                                        
+                                                                <!--begin::Input group-->
+                                                                <div class="fv-row mb-7">
+                                                                    <!--begin::Label-->
+                                                                    <label class="required fw-semibold fs-6 mb-2">Status</label>
+                                                                    <!--end::Label-->
+                                                                    <select class="form-control" name="status" id="status_field_update">
+                                                                        <option value="">Select Status</option>
+                                                                        <option value="0">InActive</option>
+                                                                        <option value="1">Active</option>
+                                                                    </select>
+                                                                </div>
+                                                                <!--end::Input group-->
 
-                                                            <textarea class="form-control" aria-label="With textarea" name="description" required id="description_field_update"> </textarea>
-                                                        </div>
-                                                        <!--end::Input group-->
+                                                        
 
                                                     </div>
                                                     <!--end::Scroll-->
@@ -569,7 +535,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                             Discard
                                                         </button>
 
-                                                        <button type="submit" name="submitAmnGrpBtnUpdate"  class="btn btn-primary" data-kt-users-modal-action="submit">
+                                                        <button type="submit" name="updateUser"  class="btn btn-primary" data-kt-users-modal-action="submit">
                                                                     <span class="indicator-label">
                                                                         Update
                                                                     </span>
@@ -593,7 +559,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                 <div class="card-body py-4">
 
                                     <!--begin::Table-->
-                                    <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
+                                    <table class="table align-middle table-row-dashed fs-6 gy-5" id="">
                                         <thead>
                                             <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
                                                 <th class="w-10px pe-2">
@@ -602,12 +568,14 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                     </div>
                                                 </th>
                                                 <th class="min-w-125px">Name</th>
-                                                <th class="min-w-125px">Joined Date</th>
+                                                <th class="min-w-125px">Email</th>
+                                                <th class="min-w-125px">Password</th>
+                                                <th class="min-w-125px">Status</th>
                                                 <th class="text-end min-w-100px">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody class="text-gray-600 fw-semibold">
-                                            <?php  foreach($amenties_groups as $item) { ?>
+                                            <?php  foreach($users as $item) { ?>
                                                 <tr>
                                                     <td>
                                                         <div class="form-check form-check-sm form-check-custom form-check-solid">
@@ -621,15 +589,24 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                         <!--begin::User details-->
                                                         <div class="d-flex flex-column">
                                                             <a href="view.html" class="text-gray-800 text-hover-primary mb-1"><?=$item['name']?></a>
-                                                            <span><?=$item['description']?></span>
+                                                            <span><?=$item['name']?></span>
                                                         </div>
                                                         <!--begin::User details-->
                                                     </td>
-                                                   
-                                                    
-                                                   
                                                     <td>
-                                                        19 Aug 2024, 11:05 am 
+                                                        <?=$item['email']?> 
+                                                    </td>
+                                                    <td>
+                                                        <?=$item['pass']?> 
+                                                    </td>
+                                                    <td>
+                                                        <?php 
+                                                            if ($item['status']==0) {
+                                                                echo '<span class="label text-dark badge bg-danger">InActive</span>';
+                                                            }elseif($item['status']==1){
+                                                                echo '<span class="label text-dark badge bg-success">Active</span>';
+                                                            }
+                                                        ?>
                                                     </td>
                                                     <td class="text-end">
                                                         <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
@@ -640,7 +617,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                         <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                                             <!--begin::Menu item-->
                                                             <div class="menu-item px-3">
-                                                                <a href="#" data-bs-toggle="modal" data-edit-id="<?=$item['id']?>" data-bs-target="#kt_modal_update_user" class="menu-link grpAmntEdit px-3">
+                                                                <a href="#" data-bs-toggle="modal" data-edit-id="<?=$item['id']?>" data-bs-target="#kt_modal_update_user" class="menu-link userEdit px-3">
                                                                     Edit
                                                                 </a>
                                                             </div>
@@ -648,7 +625,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 
                                                             <!--begin::Menu item-->
                                                             <div class="menu-item px-3">
-                                                                <a href="controller/adminController.php?del_id=<?php echo $item['id']?>&del_type=grp_amnt" class="menu-link px-3" data-kt-users-table-filter="delete_row">
+                                                                <a href="controller/adminController.php?id=<?php echo $item['id']?>&del_user=user" class="menu-link px-3" data-kt-users-table-filter="delete_row">
                                                                     Delete
                                                                 </a>
                                                             </div>
@@ -687,31 +664,16 @@ while ($row = mysqli_fetch_assoc($result)) {
     <!--begin::Javascript-->
     <?php 
     include("includes/footer_scripts.php");
-    ?>                           
+    ?>                                   
+    <!--end::Custom Javascript-->
     <script>
         $(document).ready(function(){
 
             $("#name_field").keyup(function(){
                 var name = $("#name_field").val();
-                var slug = convertToSlug(name);
-                $("#slug").html(slug);
             });
 
-            function convertToSlug(str) {
-                str = str.replace(/^\s+|\s+$/g, ''); // trim
-                str = str.toLowerCase();
-                var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
-                var to   = "aaaaeeeeiiiioooouuuunc------";
-                for (var i=0, l=from.length ; i<l ; i++) {
-                    str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-                }
-                str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-                    .replace(/\s+/g, '-') // collapse whitespace and replace by -
-                    .replace(/-+/g, '-'); // collapse dashes
-                return str;
-            }
-
-            $(".grpAmntEdit").on("click",function(){
+            $(".userEdit").on("click",function(){
                 let editId = $(this).attr("data-edit-id");
 
                 $.ajax({
@@ -719,14 +681,15 @@ while ($row = mysqli_fetch_assoc($result)) {
                     type: 'POST',
                     data: {
                         id:editId,
-                        getEditField:1,
+                        getEditField:4,
             }, // Serialize the form data
                     success: function(response) {
                         let res = JSON.parse(response);
                         $("#id_field_update").val(editId);
                         $("#name_field_update").val(res[0].name)
-                        $("#slug_field_update").val(res[0].slug)
-                        $("#description_field_update").val(res[0].description)
+                        $("#email_field_update").val(res[0].email)
+                        $("#pass_field_update").val(res[0].pass)
+                        $("#status_field_update").val(res[0].status)
                     }
                 });
             })
@@ -734,8 +697,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 
 
         });
-    </script>                                     
-    <!--end::Custom Javascript-->
+    </script>              
     <!--end::Javascript-->
 
 </body>
