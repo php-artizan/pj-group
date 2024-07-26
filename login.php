@@ -1,44 +1,41 @@
 <?php
 require "config/global.php";
 
-
 $error = false;
 
 if (isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Debugging: Check if form data is received
-    // echo "Username: $username, Password: $password";
+    // Prepare the SQL query to prevent SQL injection
+    $stmt = $db->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    $query = $db->query("SELECT * FROM users WHERE email = '$username' AND pass = '$password' ");
-
-    
-
-    if (mysqli_num_rows($query) != 0) {
-        $user = mysqli_fetch_assoc($query);
+    if ($result->num_rows != 0) {
+        $user = $result->fetch_assoc();
        
         if ($user) {
-
-            if($user['status']!=0){
-                $_SESSION['user_id'] = $user['id'];
-
-                header("Location: index.php");
+            // Verify the provided password against the hashed password in the database
+            if (password_verify($password, $user['pass'])) {
+                if ($user['status'] != 0) {
+                    $_SESSION['user_id'] = $user['id'];
+                    header("Location: my-account.php");
+                } else {
+                    $error = "Please verify your account first";
+                }
             } else {
-                $error = "Please verify your account first";
+                $error = "Invalid credentials";
             }
-
-            
         }
-       
-
     } else {
         $error = "Invalid credentials";
     }
+
+    // Close the statement
+    $stmt->close();
 }
-
-
-
 ?>
 
 
