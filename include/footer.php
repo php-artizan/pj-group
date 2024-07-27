@@ -1,3 +1,10 @@
+
+<style>
+.ft-logo img{
+	width: 150px;
+	border: 1px solid #00305C;
+}
+</style>
 <footer class="dark-footer skin-dark-footer">
 			<div>
 				<div class="container">
@@ -6,27 +13,26 @@
 						
 						<div class="col-lg-3 col-md-4">
 							<div class="footer-widget">
-								<h4 class="widget-title">Company</h4>
-								<ul class="footer-menu">
-									<li><a href="about.php">About Us</a></li>
-									<li><a href="contact-us.php">Contact Us</a></li>
-									<li><a href="#">Jobs</a></li>
-									<li><a href="#">Help & Support</a></li>
-									<li><a href="">Advertise On Zameen</a></li>
-									<li><a href="">Privacy Policy</a></li>
-									<li><a href="">Terms Of Use</a></li>
-								</ul>
+							
+								<a class="nav-brand text-logo " href="<?=ROOT_PATH?>">
+								<span class="svg-icon text-primary svg-icon-2hx ft-logo" >
+									<?php displaylogo(); ?>
+								</span>
+								<!-- <h5 class="fs-3 fw-bold ms-1 my-0">Zameen</h5> -->
+							</a>
 							</div>
 						</div>
 
 						<div class="col-lg-3 col-md-4">
 							<div class="footer-widget">
-								<h4 class="widget-title">Connect</h4>
+								<h4 class="widget-title">Company</h4>
 								<ul class="footer-menu">
-									<li><a href="#">Blog</a></li>
-									<li><a href="#">News</a></li>
-									<li><a href="#">Forum</a></li>
-									<li><a href="#">Expo</a></li>
+								<li><a href="about.php">About Us</a></li>
+									<li><a href="contact-us.php">Contact Us</a></li>
+									
+									<li><a href="">Advertise On Zameen</a></li>
+									<li><a href="">Privacy Policy</a></li>
+									<li><a href="">Terms Of Use</a></li>
 									<li><a href="">Real Estate Agents</a></li>
 									<li><a href="">Add Property</a></li>
 								</ul>
@@ -48,11 +54,7 @@
 
 						<div class="col-lg-3 col-md-6">
 							<div class="footer-widget">
-								<h4 class="widget-title">Roshan Digital Account</h4>
-								<div>
-									<img src="./assets/img/partners/logo.svg" alt="">
-									<img src="./assets/img//partners/logo-text.svg" alt="">
-								</div>
+							
 								<h4 class="widget-title my-3" >Get Connected</h4>
 								<div >
 									<ul class="footer-bottom-social">
@@ -70,16 +72,14 @@
 
 			<div class="footer-bottom">
 				<div class="container">
-					<div class="row align-items-center">
+					<div class="row align-items-center text-center">
 
-						<div class="col-lg-6 col-md-6">
-							<p class="mb-0">© 2023 Resido. Designd By <a href="https://themezhub.com/">Romail</a>
+						<div class="col-lg-12 col-md-12">
+							<p class="mb-0 ">© 2023 Resido. Designd By <a href="https://themezhub.com/">Romail</a>
 								All Rights Reserved</p>
 						</div>
 
-						<div class="col-lg-6 col-md-6 text-right">
-							
-						</div>
+						
 
 					</div>
 				</div>

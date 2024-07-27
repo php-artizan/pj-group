@@ -25,53 +25,23 @@ class Ad extends CustomOperations {
         
         return $ret;
     }
-
-    public static function get_ads_by_user_id($user_id, $status ) {
-        global $db; // Ensure the global $db variable is available in this function
-    
-        if (!$user_id) {
+    public static function get_ads_by_user_id($user_id = false){
+        if(!$user_id){
             return false;
         }
-    
-        $query = "SELECT id FROM ads WHERE user_id = ? AND status = ?";
-        $stmt = $db->prepare($query);
-        $stmt->bind_param("is", $user_id, $status);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $data = $result->fetch_all(MYSQLI_ASSOC);
-        $stmt->close();
-    
+        $query = "SELECT id FROM ads WHERE user_id = $user_id ";
+        $data = parent::get_rows($query);
         $ret = [];
-        foreach ($data as $item) {
+        foreach($data as $item){
             $options = array(
-                "id" => $item['id']
+                "id"=>$item['id']
             );
             $ret[] = self::get_ad($options);    
         }
-    
+        
         return $ret;
+
     }
-    
-    public static function trash_ad($ad_id, $user_id) {
-        global $db;
-        $query = "UPDATE ads SET status='trash' WHERE id=? AND user_id=?";
-        $stmt = $db->prepare($query);
-        $stmt->bind_param("ii", $ad_id, $user_id);
-        return $stmt->execute();
-    }
-    public static function delete_ad($ad_id, $user_id) {
-        global $db;
-        
-        $query = "DELETE FROM ads WHERE id=? AND user_id=?";
-        
-     
-        $stmt = $db->prepare($query);
-        
-        $stmt->bind_param("ii", $ad_id, $user_id);
-        
-        return $stmt->execute();
-    }
-    
 
     public static function get_ad($options){
         $where = false;
