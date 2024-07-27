@@ -1,5 +1,6 @@
 <?php
 require "config/global.php";
+
 ?>
 
 <!DOCTYPE html>

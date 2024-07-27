@@ -25,6 +25,44 @@ class Ad extends CustomOperations {
         
         return $ret;
     }
+    public static function search($options=[]){
+        
+        $options_count = count($options);
+        $query = "SELECT DISTINCT(ad_id) as ad_id FROM `ads_meta` ";
+        if( $options_count > 0){
+            $query .= "  WHERE ";
+        }
+        $count = 1;
+        foreach ($options as $key => $value){
+
+            $query .= " ( meta_key='$key' AND meta_value='$value' ) ";
+            if( $count  < $options_count){
+                $query .= " OR ";
+            }
+            $count++;
+
+
+        }
+
+
+        $data = parent::get_rows($query);
+        
+
+        if(!$data){
+            return false;
+        }
+        $ret = [];
+        foreach($data as $item){
+            $options = array(
+                "id"=>$item['ad_id']
+            );
+            $ret[] = self::get_ad($options);    
+        }
+
+        // dd($ret, false);
+        
+        return $ret;
+    }
     public static function get_ads_by_user_id($user_id = false){
         if(!$user_id){
             return false;

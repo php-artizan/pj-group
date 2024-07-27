@@ -1,3 +1,25 @@
+<?php 
+require "config/global.php";
+// if(!isset($_GET['slug'])){
+// 	redirect(ROOT_PATH, '');
+// }
+// $slug = $_GET['slug'];
+// if($slug==""){
+// 	redirect(ROOT_PATH, '');
+// } 
+
+unset($_GET['submit']);
+
+$query_params = $_GET;
+// dd($query_params);
+
+
+$search_results = Ad::search($query_params);
+dd($search_results);
+
+
+
+?>
 <!DOCTYPE html>
 <html lang="zxx">
 	

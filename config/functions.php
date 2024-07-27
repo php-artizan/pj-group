@@ -206,7 +206,7 @@ function transformArrayMetaKey($inputArray, $ad_id) {
 }
 
 
-function uploadMultipleFiles($files, $uploadDir = "assets/img",$ad_id ,$allowedTypes = ["jpg", "jpeg", "png", "gif","jfif"], $maxSize = 2 * 1024 * 1024) {
+function uploadMultipleFiles($files, $uploadDir = "assets/img",$ad_id = 0 ,$allowedTypes = ["jpg", "jpeg", "png", "gif","jfif"], $maxSize = 2 * 1024 * 1024) {
     $response = [];
 
     // Ensure the upload directory exists
