@@ -67,18 +67,18 @@ require "config/global.php";
                     </div>
                     <div class="success-message alert alert-success" style="display:none;"></div>
                     <div class="error-message alert alert-danger" style="display:none;"></div>
-					<div class="row" id="ads-container">
-    <!-- Ads will be loaded here -->
+                    <div class="row" id="ads-container">
+ 
     <?php 
-    $active_ads = Ad::get_ads_by_user_id($user_id, "active");
-    if (empty($active_ads)): 
+    $trash_ads = Ad::get_ads_by_user_id($user_id, "trash");
+    if (empty($trash_ads)): 
     ?>
         <div class="col-12">
-            <div class="alert alert-info">No Properties Available</div>
+            <div class="alert alert-info">No Trash Property</div>
         </div>
     <?php 
     else: 
-        foreach ($active_ads as $ad): 
+        foreach ($trash_ads as $ad): 
             $image = $ad['images'][0];
             $id = $ad['id'];
     ?>
@@ -207,7 +207,7 @@ require "config/global.php";
 $(document).ready(function () {
     function loaddata() {
         $.ajax({
-            url: 'record-loader.php',
+            url: 'trash-loader.php',
             type: 'post',
             success: function (data) {
                 $('#ads-container').html(data); // Update the ads container with the new data
@@ -216,20 +216,20 @@ $(document).ready(function () {
     }
 
     $(document).on("click", '.delete', function () {
-        if (confirm("Are you sure you want to trash this ad?")) {
+        if (confirm("Do you Really want to delete this ?")) {
             var id = $(this).data("id");
             var element = this;
             $.ajax({
-                url: "trash_ad.php",
+                url: "delete.php",
                 type: "POST",
                 data: { id: id },
                 success: function (data) {
                     if (data == 1) {
-						$('.error-message').html('Error in moving record to Trash.').slideDown().delay(3000).slideUp();
+						$('.error-message').html('Error in Deleting Property.').slideDown().delay(3000).slideUp();
                     } else {
                        
 						loaddata(); // Reload the data after deleting
-                        $('.success-message').html('Record Moved to trash').slideDown().delay(3000).slideUp();
+                        $('.success-message').html('property Deleted Successfully').slideDown().delay(3000).slideUp();
                     }
                 }
             });

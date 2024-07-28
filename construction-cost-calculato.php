@@ -146,12 +146,12 @@ include("include/head.php");
                                 <h2>Construction Cost Calculator </h2>
                                 <p>Use our Construction Cost Calculator to get a quick estimate of required building materials along with their costs.</p>
                             </div>
-                            <div class="full-search-2 eclip-search italian-search hero-search-radius shadow-hard mt-5  "  >
+                            <div class="full-search-2 eclip-search italian-search hero-search-radius shadow-hard mt-5  " style="width: 1000px; ">
                                 <div class="hero-search-content">
-                                    <div class="row align-items-center">
+                                    <div class="row ">
 
                                         <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
-                                            <div class="form-group ">
+                                            <div class="form-group mb-2">
                                                 <div class="" placeholder="Lahore">
                                                     City
                                                     <select id="town" class="form-control">
@@ -176,7 +176,7 @@ include("include/head.php");
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-1 col-lg-1 col-md-1 col-sm-2 d-flex align-items-center mt-4">
+                                        <div class="col-xl-1 col-lg-1 col-md-1 col-sm-2 d-flex align-items-end">
                                             <div class="form-group">
                                                 <a class="collapsed ad-search" data-bs-toggle="collapse" data-bs-parent="#search" data-bs-target="#advance-search" href="javascript:void(0);" aria-expanded="false" aria-controls="advance-search"><i class="fa fa-sliders-h"></i></a>
                                             </div>
