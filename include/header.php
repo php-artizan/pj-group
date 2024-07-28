@@ -167,8 +167,8 @@
 											</a>
 											<ul class="nav-dropdown nav-submenu">
 											<li>
-											<li><a href="list-layout-new.php">My Account</a></li>
-											<li><a href="list-layout-new-3.php">My Ads</a></li>
+											<li><a href="my-account.php">My Account</a></li>
+											<li><a href="my-ads.php">My Ads</a></li>
 											<li><a href="logout.php">Log Out</a></li>
 											</li>
 										</ul>

@@ -491,6 +491,20 @@ require "config/global.php";
 				</div>
 
 				<div class="row justify-content-center gx-3 gy-3">
+				<?php
+// Assuming $db is your database connection
+$sql = "SELECT * FROM categories ORDER BY id DESC LIMIT 8";
+$query = mysqli_query($db, $sql);
+
+// Check if the query executed successfully
+if (!$query) {
+    die("Query failed: " . mysqli_error($db));
+}
+
+// Fetch and display the results
+if (mysqli_num_rows($query) > 0) {
+    while ($row = mysqli_fetch_assoc($query)) {
+					?>
 					<div class="col-lg-3 col-md-4 col-sm-6">
 						<div class="classical-cats-wrap d-flex align-items-center">
 							<a class="classical-cats-boxs d-flex align-items-center w-100" href="calculator.html">
@@ -498,108 +512,19 @@ require "config/global.php";
 									<i class="fa-solid fa-house"></i>
 								</div>
 								<div class="classical-cats-wrap-content ms-3">
-									<h4>New Projects</h4>
-									<p>The best investment opportunities</p>
+									<h4><?=$row['name']?></h4>
+									
 								</div>
 							</a>
 						</div>
 					</div>
+<?php 
+    }
+} else {
+    echo "No categories found.";
+}
+?>
 
-					<div class="col-lg-3 col-md-4 col-sm-6">
-						<div class="classical-cats-wrap d-flex align-items-center">
-							<a class="classical-cats-boxs d-flex align-items-center w-100" href="construction-cost-calculato.php">
-								<div class="classical-cats-icon px-4 py-4 rounded bg-light-warning text-warning fs-2">
-									<i class="fa-solid fa-building"></i>
-								</div>
-								<div class="classical-cats-wrap-content ms-3">
-									<h4>Construction Cost Calculation</h4>
-									<p>Get Construction Cost Estimate</p>
-								</div>
-							</a>
-						</div>
-					</div>
-
-					<div class="col-lg-3 col-md-4 col-sm-6">
-						<div class="classical-cats-wrap d-flex align-items-center">
-							<a class="classical-cats-boxs d-flex align-items-center w-100" href="home-loan.php">
-								<div class="classical-cats-icon px-4 py-4 rounded bg-light-danger text-danger fs-2">
-									<i class="fa-solid fa-building-shield"></i>
-								</div>
-								<div class="classical-cats-wrap-content ms-3">
-									<h4>Home Loan Calculator</h4>
-									<p>Find affordable loan package</p>
-								</div>
-							</a>
-						</div>
-					</div>
-
-					<div class="col-lg-3 col-md-4 col-sm-6">
-						<div class="classical-cats-wrap d-flex align-items-center">
-							<a class="classical-cats-boxs d-flex align-items-center w-100" href="area-guide.php">
-								<div class="classical-cats-icon px-4 py-4 rounded bg-light-info text-primary fs-2">
-									<i class="fa-solid fa-synagogue"></i>
-								</div>
-								<div class="classical-cats-wrap-content ms-3">
-									<h4>Area Guide</h4>
-									<p>Explore housing societies in pakistan</p>
-								</div>
-							</a>
-						</div>
-					</div>
-
-					<div class="col-lg-3 col-md-4 col-sm-6">
-						<div class="classical-cats-wrap d-flex align-items-center">
-							<a class="classical-cats-boxs d-flex align-items-center w-100">
-								<div class="classical-cats-icon px-4 py-4 rounded bg-light-success text-success fs-2">
-									<i class="fa-solid fa-mosque"></i>
-								</div>
-								<div class="classical-cats-wrap-content ms-3">
-									<h4>Plot Finder</h4>
-									<p>Find plot in any housing society</p>
-								</div>
-							</a>
-						</div>
-					</div>
-
-					<div class="col-lg-3 col-md-4 col-sm-6">
-						<div class="classical-cats-wrap d-flex align-items-center">
-							<a class="classical-cats-boxs d-flex align-items-center w-100" href="property-index.php">
-								<div class="classical-cats-icon px-4 py-4 rounded bg-light-danger text-danger fs-2">
-									<i class="fa-solid fa-tree-city"></i>
-								</div>
-								<div class="classical-cats-wrap-content ms-3">
-									<h4>Property Index</h4>
-									<p>Track Changes in real estate prices</p>
-								</div>
-							</a>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-sm-6">
-						<div class="classical-cats-wrap d-flex align-items-center">
-							<a class="classical-cats-boxs d-flex align-items-center w-100" href="area-unit-convertor.php">
-								<div class="classical-cats-icon px-4 py-4 rounded bg-light-danger text-danger fs-2">
-									<i class="fa-solid fa-tree-city"></i>
-								</div>
-								<div class="classical-cats-wrap-content ms-3">
-									<h4>Area Unit Converter</h4>
-									<p>Convert any area unit instantly</p>
-								</div>
-							</a>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-sm-6">
-						<div class="classical-cats-wrap d-flex align-items-center">
-							<a class="classical-cats-boxs d-flex align-items-center w-100" href="property-trend.php">
-								<div class="classical-cats-icon px-4 py-4 rounded bg-light-danger text-danger fs-2">
-									<i class="fa-solid fa-tree-city"></i>
-								</div>
-								<div class="classical-cats-wrap-content ms-3">
-									<h4>Property Trends </h4>
-									<p>Find popular area to buy property</p>
-								</div>
-							</a>
-						</div>
-					</div>
 				</div>
 			</div>
 
@@ -775,7 +700,8 @@ require "config/global.php";
 										<div class="classical-cats-wrap d-flex align-items-center">
 											<a class="classical-cats-boxs d-flex align-items-center w-100">
 												<div class="classical-cats-icon px-4 py-4 rounded bg-light-danger text-danger fs-2">
-													<i class="fa-solid fa-gas-pump"></i>
+										
+												<i class="fa-solid fa-gas-pump"></i>
 												</div>
 												<div class="classical-cats-wrap-content ms-3">
 													<h4>Gas Station</h4>
@@ -882,197 +808,64 @@ require "config/global.php";
 
 				<div class="row justify-content-center g-xl-4 g-md-3 g-4">
 
-					<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-						<div class="location-property-wrap rounded-4 p-2">
-							<div class="location-property-thumb rounded-4">
-								<a href="listings-list-with-sidebar.php"><img src="assets/img/c-1.png" class="img-fluid" alt="" /></a>
-							</div>
-							<div class="location-property-content">
-								<div class="lp-content-flex">
-									<h4 class="lp-content-title">San Francisco, California</h4>
-									<span class="text-muted-2">95 Properties</span>
-								</div>
-								<div class="lp-content-right">
-									<a href="listings-list-with-sidebar.php" class="text-primary">
-										<span class="svg-icon svg-icon-2hx">
-											<svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor" />
-												<path d="M11.9343 12.5657L9.53696 14.963C9.22669 15.2733 9.18488 15.7619 9.43792 16.1204C9.7616 16.5789 10.4211 16.6334 10.8156 16.2342L14.3054 12.7029C14.6903 12.3134 14.6903 11.6866 14.3054 11.2971L10.8156 7.76582C10.4211 7.3666 9.7616 7.42107 9.43792 7.87962C9.18488 8.23809 9.22669 8.72669 9.53696 9.03696L11.9343 11.4343C12.2467 11.7467 12.2467 12.2533 11.9343 12.5657Z" fill="currentColor" />
-											</svg>
-										</span>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
+				<?php
+// Assuming $db is your database connection
+$sql = "SELECT * FROM location ORDER BY id DESC";
+$query = mysqli_query($db, $sql);
 
-					<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-						<div class="location-property-wrap rounded-4 p-2">
-							<div class="location-property-thumb rounded-4">
-								<a href="listings-list-with-sidebar.php"><img src="assets/img/c-2.png" class="img-fluid" alt="" /></a>
-							</div>
-							<div class="location-property-content">
-								<div class="lp-content-flex">
-									<h4 class="lp-content-title">Dunao, California</h4>
-									<span class="text-muted-2">95 Properties</span>
-								</div>
-								<div class="lp-content-right">
-									<a href="listings-list-with-sidebar.php" class="text-primary">
-										<span class="svg-icon svg-icon-2hx">
-											<svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor" />
-												<path d="M11.9343 12.5657L9.53696 14.963C9.22669 15.2733 9.18488 15.7619 9.43792 16.1204C9.7616 16.5789 10.4211 16.6334 10.8156 16.2342L14.3054 12.7029C14.6903 12.3134 14.6903 11.6866 14.3054 11.2971L10.8156 7.76582C10.4211 7.3666 9.7616 7.42107 9.43792 7.87962C9.18488 8.23809 9.22669 8.72669 9.53696 9.03696L11.9343 11.4343C12.2467 11.7467 12.2467 12.2533 11.9343 12.5657Z" fill="currentColor" />
-											</svg>
-										</span>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
+// Check if the query executed successfully
+if (!$query) {
+    die("Query failed: " . mysqli_error($db));
+}
 
-					<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-						<div class="location-property-wrap rounded-4 p-2">
-							<div class="location-property-thumb rounded-4">
-								<a href="listings-list-with-sidebar.php"><img src="assets/img/c-3.png" class="img-fluid" alt="" /></a>
-							</div>
-							<div class="location-property-content">
-								<div class="lp-content-flex">
-									<h4 class="lp-content-title">Liverpool, London</h4>
-									<span class="text-muted-2">95 Properties</span>
-								</div>
-								<div class="lp-content-right">
-									<a href="listings-list-with-sidebar.php" class="text-primary">
-										<span class="svg-icon svg-icon-2hx">
-											<svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor" />
-												<path d="M11.9343 12.5657L9.53696 14.963C9.22669 15.2733 9.18488 15.7619 9.43792 16.1204C9.7616 16.5789 10.4211 16.6334 10.8156 16.2342L14.3054 12.7029C14.6903 12.3134 14.6903 11.6866 14.3054 11.2971L10.8156 7.76582C10.4211 7.3666 9.7616 7.42107 9.43792 7.87962C9.18488 8.23809 9.22669 8.72669 9.53696 9.03696L11.9343 11.4343C12.2467 11.7467 12.2467 12.2533 11.9343 12.5657Z" fill="currentColor" />
-											</svg>
-										</span>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
+// Check if there are any results
+if (mysqli_num_rows($query) > 0) {
+    // Loop through and display the results
+    while ($row = mysqli_fetch_array($query)) {
+?>
+        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
+            <div class="location-property-wrap rounded-4 p-2">
+                <div class="location-property-thumb rounded-4">
+                    <a href="listings-list-with-sidebar.php"><img src="<?=$row['images']?>" class="img-fluid" alt="" /></a>
+                </div>
+                <div class="location-property-content">
+                    <div class="lp-content-flex">
+                        <h4 class="lp-content-title"><?=$row['name']?></h4>
+						<?php 
+						$id = $row['id'];
+						$ads_sql = "SELECT * FROM ads WHERE location_id = '$id'";
+						$ads_query = mysqli_query($db, $ads_sql);
+						
+						// Check if the query executed successfully
+						if (!$ads_query) {
+						    die("Query failed: " . mysqli_error($db));
+						}
+						
+						$num_properties = mysqli_num_rows($ads_query);
+						?>
+                        <span class="text-muted-2"><?=$num_properties?> Properties</span>
+                    </div>
+                    <div class="lp-content-right">
+                        <a href="listings-list-with-sidebar.php" class="text-primary">
+                            <span class="svg-icon svg-icon-2hx">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor" />
+                                    <path d="M11.9343 12.5657L9.53696 14.963C9.22669 15.2733 9.18488 15.7619 9.43792 16.1204C9.7616 16.5789 10.4211 16.6334 10.8156 16.2342L14.3054 12.7029C14.6903 12.3134 14.6903 11.6866 14.3054 11.2971L10.8156 7.76582C10.4211 7.3666 9.7616 7.42107 9.43792 7.87962C9.18488 8.23809 9.22669 8.72669 9.53696 9.03696L11.9343 11.4343C12.2467 11.7467 12.2467 12.2533 11.9343 12.5657Z" fill="currentColor" />
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+<?php
+    }
+} else {
+    echo "No locations found.";
+}
+?>
 
-					<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-						<div class="location-property-wrap rounded-4 p-2">
-							<div class="location-property-thumb rounded-4">
-								<a href="listings-list-with-sidebar.php"><img src="assets/img/c-4.png" class="img-fluid" alt="" /></a>
-							</div>
-							<div class="location-property-content">
-								<div class="lp-content-flex">
-									<h4 class="lp-content-title">San Francisco, New York</h4>
-									<span class="text-muted-2">95 Properties</span>
-								</div>
-								<div class="lp-content-right">
-									<a href="listings-list-with-sidebar.php" class="text-primary">
-										<span class="svg-icon svg-icon-2hx">
-											<svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor" />
-												<path d="M11.9343 12.5657L9.53696 14.963C9.22669 15.2733 9.18488 15.7619 9.43792 16.1204C9.7616 16.5789 10.4211 16.6334 10.8156 16.2342L14.3054 12.7029C14.6903 12.3134 14.6903 11.6866 14.3054 11.2971L10.8156 7.76582C10.4211 7.3666 9.7616 7.42107 9.43792 7.87962C9.18488 8.23809 9.22669 8.72669 9.53696 9.03696L11.9343 11.4343C12.2467 11.7467 12.2467 12.2533 11.9343 12.5657Z" fill="currentColor" />
-											</svg>
-										</span>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
 
-					<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-						<div class="location-property-wrap rounded-4 p-2">
-							<div class="location-property-thumb rounded-4">
-								<a href="listings-list-with-sidebar.php"><img src="assets/img/c-5.png" class="img-fluid" alt="" /></a>
-							</div>
-							<div class="location-property-content">
-								<div class="lp-content-flex">
-									<h4 class="lp-content-title">New Orleans, Louisiana</h4>
-									<span class="text-muted-2">95 Properties</span>
-								</div>
-								<div class="lp-content-right">
-									<a href="listings-list-with-sidebar.php" class="text-primary">
-										<span class="svg-icon svg-icon-2hx">
-											<svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor" />
-												<path d="M11.9343 12.5657L9.53696 14.963C9.22669 15.2733 9.18488 15.7619 9.43792 16.1204C9.7616 16.5789 10.4211 16.6334 10.8156 16.2342L14.3054 12.7029C14.6903 12.3134 14.6903 11.6866 14.3054 11.2971L10.8156 7.76582C10.4211 7.3666 9.7616 7.42107 9.43792 7.87962C9.18488 8.23809 9.22669 8.72669 9.53696 9.03696L11.9343 11.4343C12.2467 11.7467 12.2467 12.2533 11.9343 12.5657Z" fill="currentColor" />
-											</svg>
-										</span>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-						<div class="location-property-wrap rounded-4 p-2">
-							<div class="location-property-thumb rounded-4">
-								<a href="listings-list-with-sidebar.php"><img src="assets/img/c-6.png" class="img-fluid" alt="" /></a>
-							</div>
-							<div class="location-property-content">
-								<div class="lp-content-flex">
-									<h4 class="lp-content-title">Los Angeles</h4>
-									<span class="text-muted-2">95 Properties</span>
-								</div>
-								<div class="lp-content-right">
-									<a href="listings-list-with-sidebar.php" class="text-primary">
-										<span class="svg-icon svg-icon-2hx">
-											<svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor" />
-												<path d="M11.9343 12.5657L9.53696 14.963C9.22669 15.2733 9.18488 15.7619 9.43792 16.1204C9.7616 16.5789 10.4211 16.6334 10.8156 16.2342L14.3054 12.7029C14.6903 12.3134 14.6903 11.6866 14.3054 11.2971L10.8156 7.76582C10.4211 7.3666 9.7616 7.42107 9.43792 7.87962C9.18488 8.23809 9.22669 8.72669 9.53696 9.03696L11.9343 11.4343C12.2467 11.7467 12.2467 12.2533 11.9343 12.5657Z" fill="currentColor" />
-											</svg>
-										</span>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-						<div class="location-property-wrap rounded-4 p-2">
-							<div class="location-property-thumb rounded-4">
-								<a href="listings-list-with-sidebar.php"><img src="assets/img/c-7.png" class="img-fluid" alt="" /></a>
-							</div>
-							<div class="location-property-content">
-								<div class="lp-content-flex">
-									<h4 class="lp-content-title">Dubai, UAE</h4>
-									<span class="text-muted-2">18 Properties</span>
-								</div>
-								<div class="lp-content-right">
-									<a href="listings-list-with-sidebar.php" class="text-primary">
-										<span class="svg-icon svg-icon-2hx">
-											<svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor" />
-												<path d="M11.9343 12.5657L9.53696 14.963C9.22669 15.2733 9.18488 15.7619 9.43792 16.1204C9.7616 16.5789 10.4211 16.6334 10.8156 16.2342L14.3054 12.7029C14.6903 12.3134 14.6903 11.6866 14.3054 11.2971L10.8156 7.76582C10.4211 7.3666 9.7616 7.42107 9.43792 7.87962C9.18488 8.23809 9.22669 8.72669 9.53696 9.03696L11.9343 11.4343C12.2467 11.7467 12.2467 12.2533 11.9343 12.5657Z" fill="currentColor" />
-											</svg>
-										</span>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-						<div class="location-property-wrap rounded-4 p-2">
-							<div class="location-property-thumb rounded-4">
-								<a href="listings-list-with-sidebar.php"><img src="assets/img/c-8.png" class="img-fluid" alt="" /></a>
-							</div>
-							<div class="location-property-content">
-								<div class="lp-content-flex">
-									<h4 class="lp-content-title">Dhaka, UAE</h4>
-									<span class="text-muted-2">26 Properties</span>
-								</div>
-								<div class="lp-content-right">
-									<a href="listings-list-with-sidebar.php" class="text-primary">
-										<span class="svg-icon svg-icon-2hx">
-											<svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor" />
-												<path d="M11.9343 12.5657L9.53696 14.963C9.22669 15.2733 9.18488 15.7619 9.43792 16.1204C9.7616 16.5789 10.4211 16.6334 10.8156 16.2342L14.3054 12.7029C14.6903 12.3134 14.6903 11.6866 14.3054 11.2971L10.8156 7.76582C10.4211 7.3666 9.7616 7.42107 9.43792 7.87962C9.18488 8.23809 9.22669 8.72669 9.53696 9.03696L11.9343 11.4343C12.2467 11.7467 12.2467 12.2533 11.9343 12.5657Z" fill="currentColor" />
-											</svg>
-										</span>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
 
 				</div>
 
