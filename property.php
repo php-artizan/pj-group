@@ -359,7 +359,7 @@ $publisher = $property['publisher'];
 							</div>
 							
 							<!-- All over Review -->
-							<div class="rating-overview">
+							<div class="rating-overview" style="display:none;">
 								<div class="rating-overview-box">
 									<span class="rating-overview-box-total">4.2</span>
 									<span class="rating-overview-box-percent">out of 5.0</span>
@@ -410,7 +410,7 @@ $publisher = $property['publisher'];
 							<!-- All over Review -->
 							
 							<!-- Single Reviews Block -->
-							<div class="property_block_wrap style-2">
+							<div class="property_block_wrap style-2" style="display:none;">
 								
 								<div class="property_block_wrap_header">
 									<a data-bs-toggle="collapse" data-parent="#rev"  data-bs-target="#clEight" aria-controls="clEight" href="javascript:void(0);" aria-expanded="true"><h4 class="property_block_title">102 Reviews</h4></a>
@@ -469,7 +469,7 @@ $publisher = $property['publisher'];
 							</div>
 							
 							<!-- Single Block Wrap -->
-							<div class="property_block_wrap style-2 d-none">
+							<div class="property_block_wrap style-2 d-none" style="display:none;">
 								
 								<div class="property_block_wrap_header">
 									<a data-bs-toggle="collapse" data-parent="#nearby" data-bs-target="#clNine" aria-controls="clNine" href="javascript:void(0);" aria-expanded="true"><h4 class="property_block_title">Nearby</h4></a>
@@ -598,7 +598,7 @@ $publisher = $property['publisher'];
 							</div>
 							
 							<!-- Single Write a Review -->
-							<div class="property_block_wrap style-2">
+							<div class="property_block_wrap style-2" style="display:none;">
 								
 								<div class="property_block_wrap_header">
 									<a data-bs-toggle="collapse" data-parent="#comment" data-bs-target="#clTen" aria-controls="clTen" href="javascript:void(0);" aria-expanded="true"><h4 class="property_block_title">Write a Review</h4></a>
@@ -656,10 +656,10 @@ $publisher = $property['publisher'];
 						</div>
 						
 						<!-- property Sidebar -->
-						<div class="col-lg-4 col-md-12 col-sm-12">
+						<div class="col-lg-4 col-md-12 col-sm-12" >
 							
 							<!-- Like And Share -->
-							<div class="like_share_wrap b-0">
+							<div class="like_share_wrap b-0" style="display:none;">
 								<ul class="like_share_list">
 									<li><a href="JavaScript:Void(0);" class="btn btn-likes" data-toggle="tooltip" data-original-title="Share"><i class="fas fa-share"></i>Share</a></li>
 									<li><a href="JavaScript:Void(0);" class="btn btn-likes" data-toggle="tooltip" data-original-title="Save"><i class="fas fa-heart"></i>Save</a></li>
@@ -667,37 +667,77 @@ $publisher = $property['publisher'];
 							</div>
 							
 							<div class="details-sidebar">
-								<?php  if($publisher){ ?>
-									<!-- Agent Detail -->
-									<div class="sides-widget">
-										<div class="sides-widget-header bg-primary">
-											<div class="agent-photo"><img src="assets/img/user-6.png" alt=""></div>
-											<div class="sides-widget-details">
-												<h4><a href="#"><?= $publisher['name'];?></a></h4>
-												<span><i class="lni-phone-handset"></i><?= $publisher['phone'];?></span>
-											</div>
-											<div class="clearfix"></div>
-										</div>
-										
-										<div class="sides-widget-body simple-form">
-											<div class="form-group">
-												<label>Email</label>
-												<input type="text" class="form-control" placeholder="Your Email">
-											</div>
-											<div class="form-group">
-												<label>Phone No.</label>
-												<input type="text" class="form-control" placeholder="Your Phone">
-											</div>
-											<div class="form-group">
-												<label>Description</label>
-												<textarea class="form-control">I'm interested in this property.</textarea>
-											</div>
-											<button class="btn btn-light-primary fw-medium rounded full-width">Send Message</button>
-										</div>
-									</div>
-								<?php } ?>
+							<?php if ($publisher) {
+    $msg = ""; 
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Check if the required fields are set and not empty
+        if (!empty($_POST['email']) && !empty($_POST['phone']) && !empty($_POST['description']) && !empty($_POST['ad_id'])) {
+            $email = $_POST['email'];
+            $phone = $_POST['phone'];
+            $description = $_POST['description'];
+            $ad_id = $_POST['ad_id']; 
+
+            $stmt = $db->prepare("INSERT INTO user_request (email, phone, description, ad_id) VALUES (?, ?, ?, ?)");
+            if ($stmt) {
+                $stmt->bind_param("ssss", $email, $phone, $description, $ad_id); // Include ad_id in the binding
+
+                if ($stmt->execute()) {
+                    $msg = "<div class='alert alert-success'>Request sent successfully</div>";
+                
+                } else {
+                    $msg = "<div class='alert alert-danger'>Error: " . $stmt->error . "</div>";
+                }
+                $stmt->close();
+            } else {
+                $msg = "<div class='alert alert-danger'>Query Failed</div>";
+            }
+            $db->close();
+        } else {
+            $msg = "<div class='alert alert-danger'>All fields are required</div>";
+        }
+    } else {
+        $msg = "";
+    }
+    ?>
+
+    <!-- Agent Detail -->
+    <div class="sides-widget">
+        <div class="sides-widget-header bg-primary">
+            <div class="agent-photo"><img src="assets/img/user-6.png" alt=""></div>
+            <div class="sides-widget-details">
+                <h4><a href="#"><?= htmlspecialchars($publisher['name']); ?></a></h4>
+                <span><i class="lni-phone-handset"></i><?= htmlspecialchars($publisher['phone']); ?></span>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="sides-widget-body simple-form">
+            <?php if (!empty($msg)) {
+                echo $msg;
+            }
+            ?>
+            <form action="" method="post"> 
+                <input type="hidden" name="ad_id" value="<?= htmlspecialchars($id); ?>">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" class="form-control" name="email" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone No.</label>
+                    <input type="text" class="form-control" name="phone" placeholder="Your Phone" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" name="description" required>I'm interested in this property.</textarea>
+                </div>
+                <button type="submit" class="btn btn-light-primary fw-medium rounded full-width">Send Message</button>
+            </form>
+        </div>
+    </div>
+<?php } ?>
+
 								<!-- Mortgage Calculator -->
-								<div class="sides-widget">
+								<div class="sides-widget" style="display:none;">
 
 									<div class="sides-widget-header bg-primary">
 										<div class="sides-widget-details">

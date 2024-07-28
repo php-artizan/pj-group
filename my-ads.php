@@ -99,7 +99,7 @@ require "config/global.php";
                         <a href="" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
                         <a href="property.php?slug=<?= $ad['slug'] ?>" data-bs-toggle="tooltip" data-bs-placement="top" title="202 User View"><i class="fa-regular fa-eye"></i></a>
                         <a href="#" data-id="<?= $ad['id'] ?>" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Property" class="delete"><i class="fa-regular fa-circle-xmark"></i></a>
-                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Make Featured" class="delete"><i class="fa-solid fa-star"></i></a>
+                        <a href="requests.php?slug=<?= $ad['slug'] ?>" data-bs-toggle="tooltip" data-bs-placement="top" title="Requests"><i class="fa-solid fa-file-alt"></i></a>
                     </div>
                 </div>
             </div>
