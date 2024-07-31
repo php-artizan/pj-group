@@ -1,6 +1,6 @@
 
 <?php
-include_once('../config/functions.php');
+include_once('config/functions.php');
 
 
 
@@ -48,7 +48,7 @@ if(isset($_POST['submitBtn'])){
         }
 
 
-        redirect('submit-property');
+        redirect('post-ad');
 
 
 }else{

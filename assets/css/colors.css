@@ -5,7 +5,10 @@
     --primary-color: #af7c2d;
     --secondary-color: #1f4957; 
 }
+a:hover {
+    text-decoration: none !important;
 
+}
 .theme-bg.call-to-act-wrap {
     background: #193845;
 }

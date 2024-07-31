@@ -1,19 +1,22 @@
 <?php 
 include __DIR__ . '/../init.php';
 
-function dd($array){
+function dd($array, $die=true){
 
     echo "<pre style='background: #000; color: #fff'>";
     print_r($array);
     echo "</pre>";
-    die;
+    if($die){
+        die;
+    }
+    
 }
 
 
-function redirect($route){
+function redirect($route, $ext=".php"){
     $pageName = basename($_SERVER['PHP_SELF']);
-    if($pageName != "$route.php"){
-        header("Location: $route.php");
+    if($pageName != "$route".$ext){
+        header("Location: $route".$ext);
 
     }
 }
