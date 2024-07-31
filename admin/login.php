@@ -19,6 +19,9 @@ if (isset($_POST['login'])) {
         if ($user) {
 
             $_SESSION['admin_id'] = $user['id'];
+            $_SESSION['profile_img'] = $user['admin_image'];
+            $_SESSION['user_name'] = $user['name'];
+            $_SESSION['user_email'] = $user['email'];
 
             header("Location: index.php");
         }

@@ -3,71 +3,15 @@ require "config/global.php";
 $error = false;
 $errorMessage = '';
 $success = false;
-try {
-    // CRUD operations
-    if (isset($_POST['action'])) {
-        $action = $_POST['action'];
-
-        // Create
-        if ($action == 'create') {
-            
-            $name = $_POST['name'] ?? '';
-            $description = $_POST['description'] ?? '';
-            $slug = createSlug($name) ?? '';
-           
-         
-            // Insert into database
-            $query = $db->query("SELECT * FROM amenties_groups WHERE slug = '$slug'");
-            $date = date("Y-m-d");
-            if(mysqli_num_rows($query)==0){
-                $query = "INSERT INTO amenties_groups (name, description, slug, created_at) VALUES ('$name', '$description', '$slug', '$date')";
-                if (!mysqli_query($db, $query)) {
-                    throw new Exception('Error inserting into database: ' . mysqli_error($db));
-                } else {
-                    $success = true;
-                    $message = "Added Successfully";
-                }
-
-            } else {
-                throw new Exception('Already Exists: '.$name);
-            }
-                
-           
-        }
-
-        // Update
-        elseif ($action == 'update') {
-            $id = $_POST['id'];
-            $name = $_POST['name'];
-            $values = $_POST['values'];
-            $query = "UPDATE amenties SET name = '$name', values = '$values' WHERE id = '$id'";
-            if (!mysqli_query($db, $query)) {
-                throw new Exception('Error updating database: ' . mysqli_error($db));
-            }
-        }
-
-        // Delete
-        elseif ($action == 'delete') {
-            $id = $_POST['id'];
-            $query = "DELETE FROM amenties WHERE id = '$id'";
-            if (!mysqli_query($db, $query)) {
-                throw new Exception('Error deleting from database: ' . mysqli_error($db));
-            }
-        }
-    }
-
-} catch(Exception $e){
-    $errorMessage = $e->getMessage();
-}
 
 
 // Read
-$query = "SELECT * FROM amenties_groups";
+$query = "SELECT * FROM admins";
 $result = mysqli_query($db, $query);
 
-$amenties_groups = array();
+$admins = array();
 while ($row = mysqli_fetch_assoc($result)) {
-    $amenties_groups[] = $row;
+    $admins[] = $row;
 }
 
 ?>
@@ -79,7 +23,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 
 <head>
-    <title>Amenties Groups | </title>
+    <title>Admins | </title>
 
     <?php
     include("includes/head.php");
@@ -152,7 +96,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                             <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
                                 <!--begin::Title-->
                                 <h1 class="text-dark fw-bold my-1 fs-2">
-                                Amenties Groups</h1>
+                                Admins</h1>
                                 <!--end::Title-->
 
                                 <!--begin::Breadcrumb-->
@@ -169,7 +113,10 @@ while ($row = mysqli_fetch_assoc($result)) {
                                     </li>
 
                                     <li class="breadcrumb-item text-dark">
-                                        Amenties Groups</li>
+                                        <a href="" class="text-dark text-hover-primary">
+                                        Admins
+                                        </a>
+                                    </li>
 
                                 </ul>
                                 <!--end::Breadcrumb-->
@@ -190,23 +137,26 @@ while ($row = mysqli_fetch_assoc($result)) {
                     </div>
                     <!--end::Toolbar-->
                     <?php 
-                    
-                    // Check for any errors that occurred
-                    $error = error_get_last();
-                    if ($error) {
-                        $errorMessage = $error['message'];
-                    }  ?>
-                    
-                    <?php if($errorMessage) {?>
-                        <div class="alert alert-danger">
-                            <?=$errorMessage; ?>
-                        </div>
-                    <?php } ?>
-                    <?php if($success) {?>
-                        <div class="alert alert-success">
-                            <?=$message; ?>
-                        </div>
-                    <?php } ?>
+//
+//                    // Check for any errors that occurred
+//                    $error = error_get_last();
+//                    if ($error) {
+//                        $errorMessage = $error['message'];
+//                    }  ?>
+<!---->
+<!--                    --><?php //if($errorMessage) {?>
+<!--                        <div class="alert alert-danger">-->
+<!--                            --><?php //=$errorMessage; ?>
+<!--                        </div>-->
+<!--                    --><?php //} ?>
+                        <?php if( $success || !empty($_SESSION['success_msg'])) {?>
+                            <div class="alert alert-success">
+                                <!-- <?php //=$message; ?> -->
+                                <?=$_SESSION['success_msg']; ?>
+                                <?php unset($_SESSION['success_msg']); ?>
+
+                            </div>
+                        <?php } ?>
                                 <!--begin::Post-->
                     <div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
                         <!--begin::Container-->
@@ -218,9 +168,9 @@ while ($row = mysqli_fetch_assoc($result)) {
                                     <!--begin::Card title-->
                                     <div class="card-title">
                                         <!--begin::Search-->
-                                        <div class="d-flex align-items-center position-relative my-1">
+                                        <!-- <div class="d-flex align-items-center position-relative my-1">
                                             <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span class="path1"></span><span class="path2"></span></i> <input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search user" />
-                                        </div>
+                                        </div> -->
                                         <!--end::Search-->
                                     </div>
                                     <!--begin::Card title-->
@@ -230,9 +180,9 @@ while ($row = mysqli_fetch_assoc($result)) {
                                         <!--begin::Toolbar-->
                                         <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                                             <!--begin::Filter-->
-                                            <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                            <!-- <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                                 <i class="ki-duotone ki-filter fs-2"><span class="path1"></span><span class="path2"></span></i> Filter
-                                            </button>
+                                            </button> -->
                                             <!--begin::Menu 1-->
                                             <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true">
                                                 <!--begin::Header-->
@@ -252,7 +202,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                         <label class="form-label fs-6 fw-semibold">Role:</label>
                                                         <select class="form-select form-select-solid fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-user-table-filter="role" data-hide-search="true">
                                                             <option></option>
-                                                            <?php foreach($amenties_groups as $item){ ?>
+                                                            <?php foreach($admins as $item){ ?>
                                                                 <option value="<?=$item['name']?>"><?=$item['name']?></option>
 
                                                             <?php } ?>
@@ -284,9 +234,9 @@ while ($row = mysqli_fetch_assoc($result)) {
                                             <!--end::Menu 1--> <!--end::Filter-->
 
                                             <!--begin::Export-->
-                                            <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal" data-bs-target="#kt_modal_export_users">
+                                            <!-- <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal" data-bs-target="#kt_modal_export_users">
                                                 <i class="ki-duotone ki-exit-up fs-2"><span class="path1"></span><span class="path2"></span></i> Export
-                                            </button>
+                                            </button> -->
                                             <!--end::Export-->
 
                                             <!--begin::Add user-->
@@ -406,7 +356,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                     <!--begin::Modal header-->
                                                     <div class="modal-header" id="kt_modal_add_user_header">
                                                         <!--begin::Modal title-->
-                                                        <h2 class="fw-bold">Add</h2>
+                                                        <h2 class="fw-bold">Add User</h2>
                                                         <!--end::Modal title-->
 
                                                         <!--begin::Close-->
@@ -420,39 +370,52 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                     <!--begin::Modal body-->
                                                     <div class="modal-body px-5 my-7">
                                                         <!--begin::Form-->
-                                                        <form  class="form" action="" method="POST" enctype="multipart/form-data">
+                                                        <form  class="form" action="controller/adminController.php" method="POST" enctype="multipart/form-data">
                                                             <input type="hidden" name="action" value="create" />
                                                             <!--begin::Scroll-->
                                                             <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_add_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_user_header" data-kt-scroll-wrappers="#kt_modal_add_user_scroll" data-kt-scroll-offset="300px">
                                                                  <!--begin::Input group-->
                                                                  
                                                                 <!--end::Input group-->
+                                                                <!--end::Input group-->
+                                                        <div class="fv-row mb-7">
+                                                                <!--begin::Label-->
+                                                                <label class="required fw-semibold fs-6 mb-2">Name</label>
+                                                                <!--end::Label-->
+
+                                                                <!--begin::Input-->
+                                                                <input type="text" name="name"  required class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Full name" value="" />
+                                                                <!--end::Input-->
+                                                        </div>
+                                                                <!--end::Input group-->
+
                                                                 <!--begin::Input group-->
                                                                 <div class="fv-row mb-7">
                                                                     <!--begin::Label-->
-                                                                    <label class="required fw-semibold fs-6 mb-2">Name</label>
+                                                                    <label class="required fw-semibold fs-6 mb-2">Email</label>
                                                                     <!--end::Label-->
-
-                                                                    <!--begin::Input-->
-                                                                    <input type="text" name="name" class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Full name" value="" />
-                                                                    <p class="small">Slug: &nbsp;<span class="text-success" id="slug">name-123</span></p>
-                                                                    <!--end::Input-->
+                                                                    <input type="email" name="email"  required class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Enter Email" value="" />
                                                                 </div>
                                                                 <!--end::Input group-->
-                                                                
 
                                                                 <!--begin::Input group-->
                                                                 <div class="fv-row mb-7">
                                                                     <!--begin::Label-->
-                                                                    <label class="required fw-semibold fs-6 mb-2">Description</label>
+                                                                    <label class="required fw-semibold fs-6 mb-2">Password</label>
                                                                     <!--end::Label-->
-
-                                                                    <textarea class="form-control" aria-label="With textarea" name="description"> </textarea>
+                                                                    <input type="password" name="pass"  required class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Enter Password" value="" />
                                                                 </div>
-                                                                <!--end::Input group-->
-                                                                
+                                                                <!--end::Input group-->         
                                                             </div>
                                                             <!--end::Scroll-->
+
+                                                            <div class="fv-row mb-7">
+                                                                <!--begin::Label-->
+                                                                <label class="required fw-semibold fs-6 mb-2">Image</label>
+                                                                <!--end::Label-->
+                                                                <input type="file" name="admin_image"  required class="form-control  "  />
+                                                            </div>
+                                                            <!--end::Input group-->
 
                                                             <!--begin::Actions-->
                                                             <div class="text-center pt-10">
@@ -460,7 +423,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                                     Discard
                                                                 </button>
                                                                 
-                                                                <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
+                                                                <button type="submit" name="submitAdmin" class="btn btn-primary" data-kt-users-modal-action="submit">
                                                                     <span class="indicator-label">
                                                                         Submit
                                                                     </span>
@@ -485,32 +448,130 @@ while ($row = mysqli_fetch_assoc($result)) {
                                 </div>
                                 <!--end::Card header-->
 
+                                <!--begin::Modal - Add task-->
+                                <div class="modal fade" id="kt_modal_update_user" tabindex="-1" aria-hidden="true">
+                                    <!--begin::Modal dialog-->
+                                    <div class="modal-dialog modal-dialog-centered mw-650px">
+                                        <!--begin::Modal content-->
+                                        <div class="modal-content">
+                                            <!--begin::Modal header-->
+                                            <div class="modal-header" id="kt_modal_update_user_header">
+                                                <!--begin::Modal title-->
+                                                <h2 class="fw-bold">Update</h2>
+                                                <!--end::Modal title-->
+
+                                                <!--begin::Close-->
+                                                <div class="btn btn-icon btn-sm close btn-active-icon-primary" data-kt-users-modal-action="close">
+                                                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                                </div>
+                                                <!--end::Close-->
+                                            </div>
+                                            <!--end::Modal header-->
+
+                                            <!--begin::Modal body-->
+                                            <div class="modal-body px-5 my-7">
+                                                <!--begin::Form-->
+                                                <form  class="form" action="controller/adminController.php" method="POST" id="updateAmenityGroup" enctype="multipart/form-data">
+                                                    <input type="hidden" name="action" value="update" />
+                                                    <input type="hidden" id="id_field_update" name="id"  />
+
+                                                    <!--begin::Scroll-->
+                                                    <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_update_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_update_user_header" data-kt-scroll-wrappers="#kt_modal_update_user_scroll" data-kt-scroll-offset="300px">
+                                                        <!--begin::Input group-->
+
+                                                        <!--end::Input group-->
+                                                        <div class="fv-row mb-7">
+                                                                <!--begin::Label-->
+                                                                <label class="required fw-semibold fs-6 mb-2">Name</label>
+                                                                <!--end::Label-->
+
+                                                                <!--begin::Input-->
+                                                                <input type="text" name="name" id="name_field_update"  required class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Full name" value="" />
+                                                                <!--end::Input-->
+                                                        </div>
+                                                                <!--end::Input group-->
+
+                                                                <!--begin::Input group-->
+                                                                <div class="fv-row mb-7">
+                                                                    <!--begin::Label-->
+                                                                    <label class="required fw-semibold fs-6 mb-2">Email</label>
+                                                                    <!--end::Label-->
+                                                                    <input type="email" name="email" id="email_field_update"  required class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Enter Email" value="" />
+                                                                </div>
+                                                                <!--end::Input group-->
+
+                                                                <!--begin::Input group-->
+                                                                <div class="fv-row mb-7">
+                                                                    <!--begin::Label-->
+                                                                    <label class="required fw-semibold fs-6 mb-2">Password</label>
+                                                                    <!--end::Label-->
+                                                                    <input type="password" name="pass" id="pass_field_update"  required class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Enter Password" value="" />
+                                                                </div>
+                                                                <!--end::Input group-->           
+
+                                                                <div class="fv-row mb-7 updateProfileView">
+                                                                    <!--begin::Label-->
+                                                                    <label class="required fw-semibold fs-6 mb-2">Image</label>
+                                                                    <!--end::Label-->
+                                                                    <img class="rounded-2" src=".././uploads/profile/default.png" width="80" height="80">
+                                                                    <input type="file" name="admin_image"  required class="form-control  "  />
+                                                                </div>
+                                                                <!--end::Input group-->
+                                                    </div>
+                                                    <!--end::Scroll-->
+
+                                                    <!--begin::Actions-->
+                                                    <div class="text-center pt-10">
+                                                        <button type="reset" class="btn btn-light me-3" data-kt-users-modal-action="cancel">
+                                                            Discard
+                                                        </button>
+
+                                                        <button type="submit" name="updateadmin"  class="btn btn-primary" data-kt-users-modal-action="submit">
+                                                                    <span class="indicator-label">
+                                                                        Update
+                                                                    </span>
+                                                            <span class="indicator-progress">
+                                                                        Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                                            </span>
+                                                        </button>
+                                                    </div>
+                                                    <!--end::Actions-->
+                                                </form>
+                                                <!--end::Form-->
+                                            </div>
+                                            <!--end::Modal body-->
+                                        </div>
+                                        <!--end::Modal content-->
+                                    </div>
+                                    <!--end::Modal dialog-->
+                                </div>
+                                <!--end::Modal - Add task-->
                                 <!--begin::Card body-->
                                 <div class="card-body py-4">
 
                                     <!--begin::Table-->
-                                    <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
+                                    <table class="table align-middle table-row-dashed fs-6 gy-5" id="">
                                         <thead>
                                             <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
                                                 <th class="w-10px pe-2">
-                                                    <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
+                                                    <!-- <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
                                                         <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_table_users .form-check-input" value="1" />
-                                                    </div>
+                                                    </div> -->
                                                 </th>
                                                 <th class="min-w-125px">Name</th>
-                                               
-                                               
-                                                <th class="min-w-125px">Joined Date</th>
+                                                <th class="min-w-125px">Email</th>
+                                                <th class="min-w-125px">Password</th>
+                                                <th class="min-w-125px">Image</th>
                                                 <th class="text-end min-w-100px">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody class="text-gray-600 fw-semibold">
-                                            <?php  foreach($amenties_groups as $item) { ?>
+                                            <?php  foreach($admins as $item) { ?>
                                                 <tr>
                                                     <td>
-                                                        <div class="form-check form-check-sm form-check-custom form-check-solid">
+                                                        <!-- <div class="form-check form-check-sm form-check-custom form-check-solid">
                                                             <input class="form-check-input" type="checkbox" value="1" />
-                                                        </div>
+                                                        </div> -->
                                                     </td>
                                                     <td class="d-flex align-items-center">
                                                         <!--begin:: Avatar -->
@@ -519,16 +580,25 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                         <!--begin::User details-->
                                                         <div class="d-flex flex-column">
                                                             <a href="view.html" class="text-gray-800 text-hover-primary mb-1"><?=$item['name']?></a>
-                                                            <span><?=$item['description']?></span>
+                                                            <span><?=$item['name']?></span>
                                                         </div>
                                                         <!--begin::User details-->
                                                     </td>
-                                                   
-                                                    
-                                                   
                                                     <td>
-                                                        19 Aug 2024, 11:05 am 
+                                                        <?=$item['email']?> 
                                                     </td>
+                                                    <td>
+                                                        <?=$item['pass']?> 
+                                                    </td>
+                                                    <td>
+                                                        <?php 
+                                                            if (!empty($item['admin_image'])) {
+                                                                echo '<img class="rounded-2" src=".././uploads/' . $item['admin_image'] . '" width="40" height="40">';
+                                                            }else{
+                                                                echo '<img class="rounded-2" src=".././uploads/profile/default.png" width="40" height="40">';
+                                                            }
+                                                        ?>
+                                                    </td>    
                                                     <td class="text-end">
                                                         <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                                             Actions
@@ -538,7 +608,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                         <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                                             <!--begin::Menu item-->
                                                             <div class="menu-item px-3">
-                                                                <a href="view.html" class="menu-link px-3">
+                                                                <a href="#" data-bs-toggle="modal" data-edit-id="<?=$item['id']?>" data-bs-target="#kt_modal_update_user" class="menu-link adminEdit px-3">
                                                                     Edit
                                                                 </a>
                                                             </div>
@@ -546,7 +616,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 
                                                             <!--begin::Menu item-->
                                                             <div class="menu-item px-3">
-                                                                <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">
+                                                                <a href="controller/adminController.php?id=<?php echo $item['id']?>&del_admin=admin" class="menu-link px-3" data-kt-users-table-filter="delete_row">
                                                                     Delete
                                                                 </a>
                                                             </div>
@@ -585,33 +655,49 @@ while ($row = mysqli_fetch_assoc($result)) {
     <!--begin::Javascript-->
     <?php 
     include("includes/footer_scripts.php");
-    ?>                           
+    ?>                                   
+    <!--end::Custom Javascript-->
+
     <script>
         $(document).ready(function(){
 
             $("#name_field").keyup(function(){
                 var name = $("#name_field").val();
-                var slug = convertToSlug(name);
-                $("#slug").html(slug);
             });
 
-            function convertToSlug(str) {
-                str = str.replace(/^\s+|\s+$/g, ''); // trim
-                str = str.toLowerCase();
-                var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
-                var to   = "aaaaeeeeiiiioooouuuunc------";
-                for (var i=0, l=from.length ; i<l ; i++) {
-                    str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-                }
-                str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-                    .replace(/\s+/g, '-') // collapse whitespace and replace by -
-                    .replace(/-+/g, '-'); // collapse dashes
-                return str;
-            }
+            $(".adminEdit").on("click",function(){
+                let editId = $(this).attr("data-edit-id");
+
+                $.ajax({
+                    url: 'controller/adminController.php',
+                    type: 'POST',
+                    data: {
+                        id:editId,
+                        getEditField:7,
+            }, // Serialize the form data
+                    success: function(response) {
+                        let res = JSON.parse(response);
+                        var currentUrl = window.location.href;
+                        var startIndex = currentUrl.indexOf("pj-group/") + "pj-group/".length;
+                        var newUrl = currentUrl.substr(0, startIndex);
+                        console.log(newUrl)
+                        var icon_filename = res[0].admin_image;
+                        var imageUrl = newUrl + '/uploads/' + icon_filename;
+
+                        $("#id_field_update").val(editId);
+                        $("#name_field_update").val(res[0].name)
+                        $("#email_field_update").val(res[0].email)
+                        $("#pass_field_update").val(res[0].pass)
+                        $(".updateProfileView").children('img').attr('src',imageUrl)
+                    }
+                });
+            })
+
+            
 
         });
-    </script>                                     
-    <!--end::Custom Javascript-->
+    </script>
+
     <!--end::Javascript-->
 
 </body>

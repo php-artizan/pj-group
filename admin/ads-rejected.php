@@ -3,85 +3,14 @@ require "config/global.php";
 $error = false;
 $errorMessage = '';
 $success = false;
-try {
-    // CRUD operations
-    if (isset($_POST['action'])) {
-        $action = $_POST['action'];
 
-        // Create
-        if ($action == 'create') {
-            $fileInput = $_FILES['icon'];
-            $uploadResult = uploadFile($fileInput, 'icons/');
-            $name = $_POST['name'] ?? '';
-            $description = $_POST['description'] ?? '';
-            $slug = createSlug($name) ?? '';
-            $group_slug = $_POST['amenties_group'];
-            $date = date("Y-m-d");
-            if ($uploadResult['success']) {
-                $icon = $uploadResult['filename'];
-                // Insert into database
-                $query = $db->query("SELECT * FROM amenties WHERE slug = '$slug'");
-
-                if(mysqli_num_rows($query)==0){
-                    $query = "INSERT INTO amenties (name, description, icon, group_slug, slug) VALUES ('$name', '$description', '$icon', '$group_slug', '$slug', '$date' )";
-                    if (!mysqli_query($db, $query)) {
-                        throw new Exception('Error inserting into database: ' . mysqli_error($db));
-                    } else {
-                        $success = true;
-                        $message = "Added Successfully";
-                    }
-                    
-
-                } else {
-                    throw new Exception('Already Exists: '.$name);
-                }
-                
-              
-            } else {
-                throw new Exception($uploadResult['message']);
-            }
-        }
-
-        // Update
-        elseif ($action == 'update') {
-            $id = $_POST['id'];
-            $name = $_POST['name'];
-            $values = $_POST['values'];
-            $query = "UPDATE amenties SET name = '$name', values = '$values' WHERE id = '$id'";
-            if (!mysqli_query($db, $query)) {
-                throw new Exception('Error updating database: ' . mysqli_error($db));
-            }
-        }
-
-        // Delete
-        elseif ($action == 'delete') {
-            $id = $_POST['id'];
-            $query = "DELETE FROM amenties WHERE id = '$id'";
-            if (!mysqli_query($db, $query)) {
-                throw new Exception('Error deleting from database: ' . mysqli_error($db));
-            }
-        }
-    }
-
-} catch(Exception $e){
-    $errorMessage = $e->getMessage();
-}
-// Read
-$query = "SELECT * FROM amenties";
+// Read Ads
+$query = "SELECT * FROM ads where status=0";
 $result = mysqli_query($db, $query);
 
-$amenties = array();
+$ads = array();
 while ($row = mysqli_fetch_assoc($result)) {
-    $amenties[] = $row;
-}
-
-// Read
-$query = "SELECT * FROM amenties_groups";
-$result = mysqli_query($db, $query);
-
-$amenties_groups = array();
-while ($row = mysqli_fetch_assoc($result)) {
-    $amenties_groups[] = $row;
+    $ads[] = $row;
 }
 
 ?>
@@ -93,7 +22,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 
 <head>
-    <title>Amenties | </title>
+    <title>Ads Rejected | </title>
 
     <?php
     include("includes/head.php");
@@ -167,7 +96,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                             <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
                                 <!--begin::Title-->
                                 <h1 class="text-dark fw-bold my-1 fs-2">
-                                Amenties </h1>
+                                Ads Rejected </h1>
                                 <!--end::Title-->
 
                                 <!--begin::Breadcrumb-->
@@ -180,17 +109,19 @@ while ($row = mysqli_fetch_assoc($result)) {
                                     <li class="breadcrumb-item text-muted">
                                         
                                         <a href="javascript::void(0)" class="text-muted text-hover-primary">
-                                        Miscellaneous </a>
-                                    </li>
-
-                                    <li class="breadcrumb-item text-muted">
-                                    
-                                        <a href="amenties_groups.php" class="text-muted text-hover-primary">
-                                        Amenties Groups  </a>
+                                        Ads Management 
+                                        </a>
                                     </li>
 
                                     <li class="breadcrumb-item text-dark">
-                                        Amenties</li>
+                                    
+                                        <a href="" class="text-dark text-hover-primary">
+                                        Rejected  </a>
+                                    </li>
+                                    <!-- 
+                                    <li class="breadcrumb-item text-dark">
+                                        Amenties
+                                    </li> -->
 
                                 </ul>
                                 <!--end::Breadcrumb-->
@@ -314,9 +245,9 @@ while ($row = mysqli_fetch_assoc($result)) {
                                             <!--end::Export-->
 
                                             <!--begin::Add user-->
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user">
+                                            <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user">
                                                 <i class="ki-duotone ki-plus fs-2"></i> New 
-                                            </button>
+                                            </button> -->
                                             <!--end::Add user-->
                                         </div>
                                         <!--end::Toolbar-->
@@ -324,7 +255,8 @@ while ($row = mysqli_fetch_assoc($result)) {
                                         <!--begin::Group actions-->
                                         <div class="d-flex justify-content-end align-items-center d-none" data-kt-user-table-toolbar="selected">
                                             <div class="fw-bold me-5">
-                                                <span class="me-2" data-kt-user-table-select="selected_count"></span> Selected
+                                                <span class="me-2" data-kt-user-table-select="selected_count"></span> 
+                                                Selected
                                             </div>
 
                                             <button type="button" class="btn btn-danger" data-kt-user-table-select="delete_selected">
@@ -771,7 +703,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                 <div class="card-body py-4">
 
                                     <!--begin::Table-->
-                                    <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
+                                    <table class="table align-middle table-row-dashed fs-6 gy-5">
                                         <thead>
                                             <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
                                                 <th class="w-10px pe-2">
@@ -779,16 +711,15 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                         <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_table_users .form-check-input" value="1" />
                                                     </div> -->
                                                 </th>
-                                                <th class="min-w-125px">Name</th>
-                                                <th class="min-w-125px">Group</th>
-                                           
-                                               
-                                                <th class="min-w-125px">Joined Date</th>
+                                                <th class="min-w-125px">Title</th>
+                                                <th class="min-w-125px">Description</th>
+                                                <th class="min-w-125px">Image</th>
+                                                <th class="min-w-125px">Public Status</th>
                                                 <th class="text-end min-w-100px">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody class="text-gray-600 fw-semibold">
-                                            <?php  foreach($amenties as $item) { ?>
+                                            <?php  foreach($ads as $item) { ?>
                                                 <tr>
                                                     <td>
                                                         <!-- <div class="form-check form-check-sm form-check-custom form-check-solid">
@@ -797,35 +728,31 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                     </td>
                                                     <td class="d-flex align-items-center">
                                                         <!--begin:: Avatar -->
-                                                        <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                                            <a href="view.html">
-                                                                <div class="symbol-label">
-                                                                    <img src="<?=UPLOADS_DIR.$item['icon']?>" alt="Emma Smith" class="w-100 p-3" />
-                                                                </div>
-                                                            </a>
-                                                        </div>
+                                                       
                                                         <!--end::Avatar-->
                                                         <!--begin::User details-->
                                                         <div class="d-flex flex-column">
-                                                            <a href="view.html" class="text-gray-800 text-hover-primary mb-1"><?=$item['name']?></a>
-                                                            <span><?=$item['description']?></span>
+                                                            <a href="view.html" class="text-gray-800 text-hover-primary mb-1"><?=$item['title']?></a>
+                                                            <span><?=$item['title']?></span>
                                                         </div>
                                                         <!--begin::User details-->
                                                     </td>
+                                                    
                                                     <td>
-                                                        <?php 
-                                                        foreach ( $amenties_groups as $group_item){
-                                                            if( $group_item['slug'] == $item['group_slug']){
-                                                                echo $group_item['name'];
+                                                        <?=$item['description']?>
+                                                    </td>
+                                                    <td>
+                                                        <?php
+                                                            $ads_images = selectAllData('ads_images',['ad_id' => $item['id']]);
+                                                            if (!empty($ads_images[0]['path'])) {
+                                                                echo '<img src=".././' . $ads_images[0]['path'] . '" class="rounded-2" width="40" height="40">';
+                                                            }else{
+                                                                echo '<img src=".././assets/propertyImages/default.png" class="rounded-2"  width="40" height="40">';
                                                             }
-                                                        }
-                                                        
                                                         ?>
                                                     </td>
-                                                    
-                                                   
                                                     <td>
-                                                        19 Aug 2024, 11:05 am 
+                                                        <?=$item['public_status']?>
                                                     </td>
                                                     <td class="text-end">
                                                         <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
@@ -836,21 +763,22 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                         <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                                             <!--begin::Menu item-->
                                                             <div class="menu-item px-3">
-                                                                <a href="#" data-bs-toggle="modal" data-edit-id="<?=$item['id']?>" data-bs-target="#kt_modal_update_user" class="menu-link amntEditBtn px-3">
-                                                                    Edit
+                                                                <a href="ad_detail.php?id=<?php echo $item['id']?>"
+                                                                class="menu-link px-3">
+                                                                    View Detail
                                                                 </a>
                                                             </div>
                                                             <!--end::Menu item-->
-
                                                             <!--begin::Menu item-->
-                                                            <div class="menu-item px-3">
-                                                                <a href="controller/adminController.php?del_id=<?php echo $item['id']?>&del_type=single_amnt" class="menu-link px-3" data-kt-users-table-filter="delete_row">
-                                                                    Delete
-                                                                </a>
-                                                            </div>
-                                                            <!--end::Menu item-->
+                                                        <div class="menu-item px-3">
+                                                            <a href="ad_edit.php?id=<?php echo $item['id']?>" class="menu-link px-3">
+                                                                Edit
+                                                            </a>
+                                                        </div>
+                                                        <!--end::Menu item-->
                                                         </div>
                                                         <!--end::Menu-->
+                                                        
                                                     </td>
                                                 </tr>
                                             <?php } ?>
@@ -883,61 +811,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     <!--begin::Javascript-->
     <?php 
     include("includes/footer_scripts.php");
-    ?>                           
-    <script>
-        $(document).ready(function(){
-
-            $("#name_field").keyup(function(){
-                var name = $("#name_field").val();
-                var slug = convertToSlug(name);
-                $("#slug").html(slug);
-            });
-
-            function convertToSlug(str) {
-                str = str.replace(/^\s+|\s+$/g, ''); // trim
-                str = str.toLowerCase();
-                var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
-                var to   = "aaaaeeeeiiiioooouuuunc------";
-                for (var i=0, l=from.length ; i<l ; i++) {
-                    str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-                }
-                str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-                    .replace(/\s+/g, '-') // collapse whitespace and replace by -
-                    .replace(/-+/g, '-'); // collapse dashes
-                return str;
-            }
-
-            $(".amntEditBtn").on("click",function(){
-                let editId = $(this).attr("data-edit-id");
-
-                $.ajax({
-                    url: 'controller/adminController.php',
-                    type: 'POST',
-                    data: {
-                        id:editId,
-                        getEditField:2,
-                    }, // Serialize the form data
-                    success: function(response) {
-                        let res = JSON.parse(response);
-                        var currentUrl = window.location.href;
-                        var startIndex = currentUrl.indexOf("pj-group/") + "pj-group/".length;
-                        var newUrl = currentUrl.substr(0, startIndex);
-                        console.log(newUrl)
-                        var icon_filename = res[0].icon;
-                        var imageUrl = newUrl + '/uploads/' + icon_filename;
-
-                        console.log(imageUrl)
-                        $("#id_field_update").val(editId);
-                        $("#image-input-wrapper-update").css("background-image", `url('` + imageUrl + `')`);
-                        $("#name_field_update").val(res[0].name)
-                        $("#slug_field_update").val(res[0].slug)
-                        $("#description_field_update").val(res[0].description)
-                        $(".kt_modal_update_role_option_"+res[0].group_slug_id).prop("checked",true)
-                    }
-                });
-            })
-        });
-    </script>                                     
+    ?>                                                           
     <!--end::Custom Javascript-->
     <!--end::Javascript-->
 

@@ -1,5 +1,17 @@
 <?php 
 require "config/global.php";
+
+// For All Ads 
+$query = "SELECT * FROM ads";
+$result = mysqli_query($db, $query);
+$count_ads=mysqli_num_rows($result);
+
+
+// For All Users
+$query2 = "SELECT * FROM users";
+$result2 = mysqli_query($db, $query2);
+$count_users=mysqli_num_rows($result2);
+
 ?>
 
 
@@ -23,33 +35,35 @@ require "config/global.php";
 
 <!--begin::Body-->
 
-<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
+<body id="kt_body"
+    class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
     <!--begin::Theme mode setup on page load-->
     <script>
-        var defaultThemeMode = "light";
-        var themeMode;
+    var defaultThemeMode = "light";
+    var themeMode;
 
-        if (document.documentElement) {
-            if (document.documentElement.hasAttribute("data-bs-theme-mode")) {
-                themeMode = document.documentElement.getAttribute("data-bs-theme-mode");
+    if (document.documentElement) {
+        if (document.documentElement.hasAttribute("data-bs-theme-mode")) {
+            themeMode = document.documentElement.getAttribute("data-bs-theme-mode");
+        } else {
+            if (localStorage.getItem("data-bs-theme") !== null) {
+                themeMode = localStorage.getItem("data-bs-theme");
             } else {
-                if (localStorage.getItem("data-bs-theme") !== null) {
-                    themeMode = localStorage.getItem("data-bs-theme");
-                } else {
-                    themeMode = defaultThemeMode;
-                }
+                themeMode = defaultThemeMode;
             }
-
-            if (themeMode === "system") {
-                themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-            }
-
-            document.documentElement.setAttribute("data-bs-theme", themeMode);
         }
+
+        if (themeMode === "system") {
+            themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+
+        document.documentElement.setAttribute("data-bs-theme", themeMode);
+    }
     </script>
     <!--end::Theme mode setup on page load-->
     <!--Begin::Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5FS8GGP" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5FS8GGP" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
     <!--End::Google Tag Manager (noscript) -->
 
     <!--begin::Main-->
@@ -73,8 +87,8 @@ require "config/global.php";
 
                 <!--end::Header-->
 
-                    <!--begin::Content-->
-                    <div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content">
+                <!--begin::Content-->
+                <div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content">
                     <!--begin::Toolbar-->
                     <div class="toolbar" id="kt_toolbar">
                         <div class=" container-fluid  d-flex flex-stack flex-wrap flex-sm-nowrap">
@@ -106,14 +120,14 @@ require "config/global.php";
 
                             <!--begin::Actions-->
                             <div class="d-flex align-items-center flex-nowrap text-nowrap py-1">
-                                <a href="#" class="btn bg-body btn-color-gray-700 btn-active-primary me-4"
+                                <!-- <a href="#" class="btn bg-body btn-color-gray-700 btn-active-primary me-4"
                                     data-bs-toggle="modal" data-bs-target="#kt_modal_invite_friends">
                                     Invite Friends
-                                </a>
+                                </a> -->
 
-                                <a href="#" class="btn btn-primary" data-bs-toggle="modal"
+                                <!-- <a href="#" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#kt_modal_create_project" id="kt_toolbar_primary_button">
-                                    New Project </a>
+                                    New Project </a> -->
                             </div>
                             <!--end::Actions-->
                         </div>
@@ -132,8 +146,8 @@ require "config/global.php";
                                         <!--begin::Card body-->
                                         <div class="card-body p-9">
                                             <!--begin::Heading-->
-                                            <div class="fs-2hx fw-bold">237</div>
-                                            <div class="fs-4 fw-semibold text-gray-400 mb-7">Current Projects</div>
+                                            <div class="fs-2hx fw-bold"><?php echo $count_ads; ?></div>
+                                            <div class="fs-4 fw-semibold text-gray-400 mb-7">All Ads</div>
                                             <!--end::Heading-->
 
                                             <!--begin::Wrapper-->
@@ -149,25 +163,40 @@ require "config/global.php";
                                                     class="d-flex flex-column justify-content-center flex-row-fluid pe-11 mb-5">
                                                     <!--begin::Label-->
                                                     <div class="d-flex fs-6 fw-semibold align-items-center mb-3">
-                                                        <div class="bullet bg-primary me-3"></div>
+                                                        <div class="bullet bg-success me-3"></div>
                                                         <div class="text-gray-400">Active</div>
-                                                        <div class="ms-auto fw-bold text-gray-700">30</div>
+                                                        <?php 
+                                                            $query = "SELECT * FROM ads where status=2";
+                                                            $result = mysqli_query($db, $query);
+                                                            $ads_active=mysqli_num_rows($result);
+                                                        ?>
+                                                        <div class="ms-auto fw-bold text-gray-700"><?php echo $ads_active; ?></div>
                                                     </div>
                                                     <!--end::Label-->
 
                                                     <!--begin::Label-->
                                                     <div class="d-flex fs-6 fw-semibold align-items-center mb-3">
-                                                        <div class="bullet bg-success me-3"></div>
-                                                        <div class="text-gray-400">Completed</div>
-                                                        <div class="ms-auto fw-bold text-gray-700">45</div>
+                                                        <div class="bullet bg-primary me-3"></div>
+                                                        <div class="text-gray-400">Pending</div>
+                                                        <?php 
+                                                            $query = "SELECT * FROM ads where status=1";
+                                                            $result = mysqli_query($db, $query);
+                                                            $ads_pending=mysqli_num_rows($result);
+                                                        ?>
+                                                        <div class="ms-auto fw-bold text-gray-700"><?php echo $ads_pending ?></div>
                                                     </div>
                                                     <!--end::Label-->
 
                                                     <!--begin::Label-->
                                                     <div class="d-flex fs-6 fw-semibold align-items-center">
-                                                        <div class="bullet bg-gray-300 me-3"></div>
-                                                        <div class="text-gray-400">Yet to start</div>
-                                                        <div class="ms-auto fw-bold text-gray-700">25</div>
+                                                        <div class="bullet bg-danger me-3"></div>
+                                                        <div class="text-gray-400">Rejected</div>
+                                                        <?php 
+                                                            $query = "SELECT * FROM ads where status=0";
+                                                            $result = mysqli_query($db, $query);
+                                                            $ads_rejected=mysqli_num_rows($result);
+                                                        ?>
+                                                        <div class="ms-auto fw-bold text-gray-700"><?php echo $ads_rejected ?></div>
                                                     </div>
                                                     <!--end::Label-->
                                                 </div>
@@ -183,36 +212,45 @@ require "config/global.php";
                                     <!--begin::Budget-->
                                     <div class="card  h-100">
                                         <div class="card-body p-9">
-                                            <div class="fs-2hx fw-bold">$3,290.00</div>
-                                            <div class="fs-4 fw-semibold text-gray-400 mb-7">Project Finance</div>
+                                            <div class="fs-2hx fw-bold"><?php echo $count_users; ?></div>
+                                            <div class="fs-4 fw-semibold text-gray-400 mb-7">All Users</div>
 
                                             <div class="fs-6 d-flex justify-content-between mb-4">
-                                                <div class="fw-semibold">Avg. Project Budget</div>
+                                                
+                                                <div class="fw-semibold text-gray-300 badge bg-success">Active</div>
                                                 <div class="d-flex fw-bold">
-                                                    <i class="ki-duotone ki-arrow-up-right fs-3 me-1 text-success"><span
-                                                            class="path1"></span><span class="path2"></span></i> $6,570
+                                                    <?php
+                                                        $qu1 = "SELECT * FROM users WHERE status=1";
+                                                        $result1 = mysqli_query($db, $qu1);
+                                                        $active_users=mysqli_num_rows($result1);
+                                                    ?>
+                                                    <i class="ki-duotone ki-arrow-up-right fs-3 me-1 text-success">
+                                                        <!-- <span
+                                                            class="path1"></span>
+                                                        <span class="path2"></span> -->
+                                                    </i> 
+                                                    <?php echo $active_users; ?>
                                                 </div>
                                             </div>
 
                                             <div class="separator separator-dashed"></div>
 
                                             <div class="fs-6 d-flex justify-content-between my-4">
-                                                <div class="fw-semibold">Lowest Project Check</div>
+                                                <div class="fw-semibold text-gray-300 badge bg-danger">InActive</div>
 
                                                 <div class="d-flex fw-bold">
-                                                    <i class="ki-duotone ki-arrow-down-left fs-3 me-1 text-danger"><span
-                                                            class="path1"></span><span class="path2"></span></i> $408
-                                                </div>
-                                            </div>
-
-                                            <div class="separator separator-dashed"></div>
-
-                                            <div class="fs-6 d-flex justify-content-between mt-4">
-                                                <div class="fw-semibold">Ambassador Page</div>
-
-                                                <div class="d-flex fw-bold">
-                                                    <i class="ki-duotone ki-arrow-up-right fs-3 me-1 text-success"><span
-                                                            class="path1"></span><span class="path2"></span></i> $920
+                                                    <i class="ki-duotone ki-arrow-down-left fs-3 me-1 text-danger">
+                                                    <?php
+                                                        $qu2 = "SELECT * FROM users WHERE status=0";
+                                                        $result2 = mysqli_query($db, $qu2);
+                                                        $Inactive_users=mysqli_num_rows($result2);
+                                                    ?>
+                                                        <!-- <span
+                                                            class="path1">
+                                                        </span>
+                                                        <span class="path2"></span> -->
+                                                    </i> 
+                                                    <?php echo $Inactive_users; ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -222,1003 +260,22 @@ require "config/global.php";
                                 <div class="col-lg-6 col-xxl-4">
 
                                     <!--begin::Clients-->
-                                    <div class="card  h-100">
-                                        <div class="card-body p-9">
-                                            <!--begin::Heading-->
-                                            <div class="fs-2hx fw-bold">49</div>
-                                            <div class="fs-4 fw-semibold text-gray-400 mb-7">Our Clients</div>
-                                            <!--end::Heading-->
-
-                                            <!--begin::Users group-->
-                                            <div class="symbol-group symbol-hover mb-9">
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Alan Warden">
-                                                    <span
-                                                        class="symbol-label bg-warning text-inverse-warning fw-bold">A</span>
-                                                </div>
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Michael Eberon">
-                                                    <img alt="Pic" src="../assets/media/avatars/300-11.jpg" />
-                                                </div>
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Michelle Swanston">
-                                                    <img alt="Pic" src="../assets/media/avatars/300-7.jpg" />
-                                                </div>
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Francis Mitcham">
-                                                    <img alt="Pic" src="../assets/media/avatars/300-20.jpg" />
-                                                </div>
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Susan Redwood">
-                                                    <span
-                                                        class="symbol-label bg-primary text-inverse-primary fw-bold">S</span>
-                                                </div>
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Melody Macy">
-                                                    <img alt="Pic" src="../assets/media/avatars/300-2.jpg" />
-                                                </div>
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Perry Matthew">
-                                                    <span
-                                                        class="symbol-label bg-info text-inverse-info fw-bold">P</span>
-                                                </div>
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Barry Walter">
-                                                    <img alt="Pic" src="../assets/media/avatars/300-12.jpg" />
-                                                </div>
-                                                <a href="#" class="symbol symbol-35px symbol-circle"
-                                                    data-bs-toggle="modal" data-bs-target="#kt_modal_view_users">
-                                                    <span
-                                                        class="symbol-label bg-dark text-gray-300 fs-8 fw-bold">+42</span>
-                                                </a>
-                                            </div>
-                                            <!--end::Users group-->
-
-                                            <!--begin::Actions-->
-                                            <div class="d-flex">
-                                                <a href="#" class="btn btn-primary btn-sm me-3" data-bs-toggle="modal"
-                                                    data-bs-target="#kt_modal_view_users">All Clients</a>
-                                                <a href="#" class="btn btn-light btn-sm" data-bs-toggle="modal"
-                                                    data-bs-target="#kt_modal_users_search">Invite New</a>
-                                            </div>
-                                            <!--end::Actions-->
-                                        </div>
-                                    </div>
+                                    
                                     <!--end::Clients-->
                                 </div>
                             </div>
                             <!--end::Stats-->
 
                             <!--begin::Toolbar-->
-                            <div class="d-flex flex-wrap flex-stack my-5">
-                                <!--begin::Heading-->
-                                <h2 class="fs-2 fw-semibold my-2">
-                                    Projects
-                                    <span class="fs-6 text-gray-400 ms-1">by Status</span>
-                                </h2>
-                                <!--end::Heading-->
-
-                                <!--begin::Controls-->
-                                <div class="d-flex flex-wrap my-1">
-                                    <!--begin::Select wrapper-->
-                                    <div class="m-0">
-                                        <!--begin::Select-->
-                                        <select name="status" data-control="select2" data-hide-search="true"
-                                            class="form-select form-select-sm bg-body border-body fw-bold w-125px">
-                                            <option value="Active" selected>Active</option>
-                                            <option value="Approved">In Progress</option>
-                                            <option value="Declined">To Do</option>
-                                            <option value="In Progress">Completed</option>
-                                        </select>
-                                        <!--end::Select-->
-                                    </div>
-                                    <!--end::Select wrapper-->
-                                </div>
-                                <!--end::Controls-->
-                            </div>
+                            
                             <!--end::Toolbar-->
 
                             <!--begin::Row-->
-                            <div class="row g-6 g-xl-9">
-                                <!--begin::Col-->
-                                <div class="col-md-6 col-xl-4">
-
-                                    <!--begin::Card-->
-                                    <a href="../apps/projects/project.html" class="card border-hover-primary ">
-                                        <!--begin::Card header-->
-                                        <div class="card-header border-0 pt-9">
-                                            <!--begin::Card Title-->
-                                            <div class="card-title m-0">
-                                                <!--begin::Avatar-->
-                                                <div class="symbol symbol-50px w-50px bg-light">
-                                                    <img src="../assets/media/svg/brand-logos/plurk.svg" alt="image"
-                                                        class="p-3" />
-                                                </div>
-                                                <!--end::Avatar-->
-                                            </div>
-                                            <!--end::Car Title-->
-
-                                            <!--begin::Card toolbar-->
-                                            <div class="card-toolbar">
-                                                <span class="badge badge-light-primary fw-bold me-auto px-4 py-3">In
-                                                    Progress</span>
-                                            </div>
-                                            <!--end::Card toolbar-->
-                                        </div>
-                                        <!--end:: Card header-->
-
-                                        <!--begin:: Card body-->
-                                        <div class="card-body p-9">
-                                            <!--begin::Name-->
-                                            <div class="fs-3 fw-bold text-dark">
-                                                Fitnes App </div>
-                                            <!--end::Name-->
-
-                                            <!--begin::Description-->
-                                            <p class="text-gray-400 fw-semibold fs-5 mt-1 mb-7">
-                                                CRM App application to HR efficiency </p>
-                                            <!--end::Description-->
-
-                                            <!--begin::Info-->
-                                            <div class="d-flex flex-wrap mb-5">
-                                                <!--begin::Due-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-7 mb-3">
-                                                    <div class="fs-6 text-gray-800 fw-bold">Jun 24, 2024</div>
-                                                    <div class="fw-semibold text-gray-400">Due Date</div>
-                                                </div>
-                                                <!--end::Due-->
-
-                                                <!--begin::Budget-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 mb-3">
-                                                    <div class="fs-6 text-gray-800 fw-bold">$284,900.00</div>
-                                                    <div class="fw-semibold text-gray-400">Budget</div>
-                                                </div>
-                                                <!--end::Budget-->
-                                            </div>
-                                            <!--end::Info-->
-
-                                            <!--begin::Progress-->
-                                            <div class="h-4px w-100 bg-light mb-5" data-bs-toggle="tooltip"
-                                                title="This project 50% completed">
-                                                <div class="bg-primary rounded h-4px" role="progressbar"
-                                                    style="width: 50%" aria-valuenow=" 50" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                            <!--end::Progress-->
-
-                                            <!--begin::Users-->
-                                            <div class="symbol-group symbol-hover">
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Emma Smith">
-                                                    <img alt="Pic" src="../assets/media/avatars/300-6.jpg" />
-                                                </div>
-                                                <!--begin::User-->
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Rudy Stone">
-                                                    <img alt="Pic" src="../assets/media/avatars/300-1.jpg" />
-                                                </div>
-                                                <!--begin::User-->
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Susan Redwood">
-                                                    <span
-                                                        class="symbol-label bg-primary text-inverse-primary fw-bold">S</span>
-                                                </div>
-                                                <!--begin::User-->
-                                            </div>
-                                            <!--end::Users-->
-                                        </div>
-                                        <!--end:: Card body-->
-                                    </a>
-                                    <!--end::Card-->
-                                </div>
-                                <!--end::Col-->
-
-                                <!--begin::Col-->
-                                <div class="col-md-6 col-xl-4">
-
-                                    <!--begin::Card-->
-                                    <a href="../apps/projects/project.html" class="card border-hover-primary ">
-                                        <!--begin::Card header-->
-                                        <div class="card-header border-0 pt-9">
-                                            <!--begin::Card Title-->
-                                            <div class="card-title m-0">
-                                                <!--begin::Avatar-->
-                                                <div class="symbol symbol-50px w-50px bg-light">
-                                                    <img src="../assets/media/svg/brand-logos/disqus.svg" alt="image"
-                                                        class="p-3" />
-                                                </div>
-                                                <!--end::Avatar-->
-                                            </div>
-                                            <!--end::Car Title-->
-
-                                            <!--begin::Card toolbar-->
-                                            <div class="card-toolbar">
-                                                <span class="badge badge-light fw-bold me-auto px-4 py-3">Pending</span>
-                                            </div>
-                                            <!--end::Card toolbar-->
-                                        </div>
-                                        <!--end:: Card header-->
-
-                                        <!--begin:: Card body-->
-                                        <div class="card-body p-9">
-                                            <!--begin::Name-->
-                                            <div class="fs-3 fw-bold text-dark">
-                                                Leaf CRM </div>
-                                            <!--end::Name-->
-
-                                            <!--begin::Description-->
-                                            <p class="text-gray-400 fw-semibold fs-5 mt-1 mb-7">
-                                                CRM App application to HR efficiency </p>
-                                            <!--end::Description-->
-
-                                            <!--begin::Info-->
-                                            <div class="d-flex flex-wrap mb-5">
-                                                <!--begin::Due-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-7 mb-3">
-                                                    <div class="fs-6 text-gray-800 fw-bold">May 10, 2021 </div>
-                                                    <div class="fw-semibold text-gray-400">Due Date</div>
-                                                </div>
-                                                <!--end::Due-->
-
-                                                <!--begin::Budget-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 mb-3">
-                                                    <div class="fs-6 text-gray-800 fw-bold">$36,400.00</div>
-                                                    <div class="fw-semibold text-gray-400">Budget</div>
-                                                </div>
-                                                <!--end::Budget-->
-                                            </div>
-                                            <!--end::Info-->
-
-                                            <!--begin::Progress-->
-                                            <div class="h-4px w-100 bg-light mb-5" data-bs-toggle="tooltip"
-                                                title="This project 30% completed">
-                                                <div class="bg-info rounded h-4px" role="progressbar" style="width: 30%"
-                                                    aria-valuenow=" 30" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                            <!--end::Progress-->
-
-                                            <!--begin::Users-->
-                                            <div class="symbol-group symbol-hover">
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Alan Warden">
-                                                    <span
-                                                        class="symbol-label bg-warning text-inverse-warning fw-bold">A</span>
-                                                </div>
-                                                <!--begin::User-->
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Brian Cox">
-                                                    <img alt="Pic" src="../assets/media/avatars/300-5.jpg" />
-                                                </div>
-                                                <!--begin::User-->
-                                            </div>
-                                            <!--end::Users-->
-                                        </div>
-                                        <!--end:: Card body-->
-                                    </a>
-                                    <!--end::Card-->
-                                </div>
-                                <!--end::Col-->
-
-                                <!--begin::Col-->
-                                <div class="col-md-6 col-xl-4">
-
-                                    <!--begin::Card-->
-                                    <a href="../apps/projects/project.html" class="card border-hover-primary ">
-                                        <!--begin::Card header-->
-                                        <div class="card-header border-0 pt-9">
-                                            <!--begin::Card Title-->
-                                            <div class="card-title m-0">
-                                                <!--begin::Avatar-->
-                                                <div class="symbol symbol-50px w-50px bg-light">
-                                                    <img src="../assets/media/svg/brand-logos/figma-1.svg" alt="image"
-                                                        class="p-3" />
-                                                </div>
-                                                <!--end::Avatar-->
-                                            </div>
-                                            <!--end::Car Title-->
-
-                                            <!--begin::Card toolbar-->
-                                            <div class="card-toolbar">
-                                                <span
-                                                    class="badge badge-light-success fw-bold me-auto px-4 py-3">Completed</span>
-                                            </div>
-                                            <!--end::Card toolbar-->
-                                        </div>
-                                        <!--end:: Card header-->
-
-                                        <!--begin:: Card body-->
-                                        <div class="card-body p-9">
-                                            <!--begin::Name-->
-                                            <div class="fs-3 fw-bold text-dark">
-                                                Atica Banking </div>
-                                            <!--end::Name-->
-
-                                            <!--begin::Description-->
-                                            <p class="text-gray-400 fw-semibold fs-5 mt-1 mb-7">
-                                                CRM App application to HR efficiency </p>
-                                            <!--end::Description-->
-
-                                            <!--begin::Info-->
-                                            <div class="d-flex flex-wrap mb-5">
-                                                <!--begin::Due-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-7 mb-3">
-                                                    <div class="fs-6 text-gray-800 fw-bold">Mar 14, 2021 </div>
-                                                    <div class="fw-semibold text-gray-400">Due Date</div>
-                                                </div>
-                                                <!--end::Due-->
-
-                                                <!--begin::Budget-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 mb-3">
-                                                    <div class="fs-6 text-gray-800 fw-bold">$605,100.00</div>
-                                                    <div class="fw-semibold text-gray-400">Budget</div>
-                                                </div>
-                                                <!--end::Budget-->
-                                            </div>
-                                            <!--end::Info-->
-
-                                            <!--begin::Progress-->
-                                            <div class="h-4px w-100 bg-light mb-5" data-bs-toggle="tooltip"
-                                                title="This project 100% completed">
-                                                <div class="bg-success rounded h-4px" role="progressbar"
-                                                    style="width: 100%" aria-valuenow=" 100" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                            <!--end::Progress-->
-
-                                            <!--begin::Users-->
-                                            <div class="symbol-group symbol-hover">
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Mad Macy">
-                                                    <img alt="Pic" src="../assets/media/avatars/300-2.jpg" />
-                                                </div>
-                                                <!--begin::User-->
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Cris Willson">
-                                                    <img alt="Pic" src="../assets/media/avatars/300-9.jpg" />
-                                                </div>
-                                                <!--begin::User-->
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Mike Garcie">
-                                                    <span
-                                                        class="symbol-label bg-info text-inverse-info fw-bold">M</span>
-                                                </div>
-                                                <!--begin::User-->
-                                            </div>
-                                            <!--end::Users-->
-                                        </div>
-                                        <!--end:: Card body-->
-                                    </a>
-                                    <!--end::Card-->
-                                </div>
-                                <!--end::Col-->
-
-                                <!--begin::Col-->
-                                <div class="col-md-6 col-xl-4">
-
-                                    <!--begin::Card-->
-                                    <a href="../apps/projects/project.html" class="card border-hover-primary ">
-                                        <!--begin::Card header-->
-                                        <div class="card-header border-0 pt-9">
-                                            <!--begin::Card Title-->
-                                            <div class="card-title m-0">
-                                                <!--begin::Avatar-->
-                                                <div class="symbol symbol-50px w-50px bg-light">
-                                                    <img src="../assets/media/svg/brand-logos/sentry-3.svg" alt="image"
-                                                        class="p-3" />
-                                                </div>
-                                                <!--end::Avatar-->
-                                            </div>
-                                            <!--end::Car Title-->
-
-                                            <!--begin::Card toolbar-->
-                                            <div class="card-toolbar">
-                                                <span class="badge badge-light fw-bold me-auto px-4 py-3">Pending</span>
-                                            </div>
-                                            <!--end::Card toolbar-->
-                                        </div>
-                                        <!--end:: Card header-->
-
-                                        <!--begin:: Card body-->
-                                        <div class="card-body p-9">
-                                            <!--begin::Name-->
-                                            <div class="fs-3 fw-bold text-dark">
-                                                Finance Dispatch </div>
-                                            <!--end::Name-->
-
-                                            <!--begin::Description-->
-                                            <p class="text-gray-400 fw-semibold fs-5 mt-1 mb-7">
-                                                CRM App application to HR efficiency </p>
-                                            <!--end::Description-->
-
-                                            <!--begin::Info-->
-                                            <div class="d-flex flex-wrap mb-5">
-                                                <!--begin::Due-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-7 mb-3">
-                                                    <div class="fs-6 text-gray-800 fw-bold">Jun 24, 2024</div>
-                                                    <div class="fw-semibold text-gray-400">Due Date</div>
-                                                </div>
-                                                <!--end::Due-->
-
-                                                <!--begin::Budget-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 mb-3">
-                                                    <div class="fs-6 text-gray-800 fw-bold">$284,900.00</div>
-                                                    <div class="fw-semibold text-gray-400">Budget</div>
-                                                </div>
-                                                <!--end::Budget-->
-                                            </div>
-                                            <!--end::Info-->
-
-                                            <!--begin::Progress-->
-                                            <div class="h-4px w-100 bg-light mb-5" data-bs-toggle="tooltip"
-                                                title="This project 60% completed">
-                                                <div class="bg-info rounded h-4px" role="progressbar" style="width: 60%"
-                                                    aria-valuenow=" 60" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                            <!--end::Progress-->
-
-                                            <!--begin::Users-->
-                                            <div class="symbol-group symbol-hover">
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Nich Warden">
-                                                    <span
-                                                        class="symbol-label bg-warning text-inverse-warning fw-bold">N</span>
-                                                </div>
-                                                <!--begin::User-->
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Rob Otto">
-                                                    <span
-                                                        class="symbol-label bg-success text-inverse-success fw-bold">R</span>
-                                                </div>
-                                                <!--begin::User-->
-                                            </div>
-                                            <!--end::Users-->
-                                        </div>
-                                        <!--end:: Card body-->
-                                    </a>
-                                    <!--end::Card-->
-                                </div>
-                                <!--end::Col-->
-
-                                <!--begin::Col-->
-                                <div class="col-md-6 col-xl-4">
-
-                                    <!--begin::Card-->
-                                    <a href="../apps/projects/project.html" class="card border-hover-primary ">
-                                        <!--begin::Card header-->
-                                        <div class="card-header border-0 pt-9">
-                                            <!--begin::Card Title-->
-                                            <div class="card-title m-0">
-                                                <!--begin::Avatar-->
-                                                <div class="symbol symbol-50px w-50px bg-light">
-                                                    <img src="../assets/media/svg/brand-logos/xing-icon.svg" alt="image"
-                                                        class="p-3" />
-                                                </div>
-                                                <!--end::Avatar-->
-                                            </div>
-                                            <!--end::Car Title-->
-
-                                            <!--begin::Card toolbar-->
-                                            <div class="card-toolbar">
-                                                <span class="badge badge-light-primary fw-bold me-auto px-4 py-3">In
-                                                    Progress</span>
-                                            </div>
-                                            <!--end::Card toolbar-->
-                                        </div>
-                                        <!--end:: Card header-->
-
-                                        <!--begin:: Card body-->
-                                        <div class="card-body p-9">
-                                            <!--begin::Name-->
-                                            <div class="fs-3 fw-bold text-dark">
-                                                9 Degree </div>
-                                            <!--end::Name-->
-
-                                            <!--begin::Description-->
-                                            <p class="text-gray-400 fw-semibold fs-5 mt-1 mb-7">
-                                                CRM App application to HR efficiency </p>
-                                            <!--end::Description-->
-
-                                            <!--begin::Info-->
-                                            <div class="d-flex flex-wrap mb-5">
-                                                <!--begin::Due-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-7 mb-3">
-                                                    <div class="fs-6 text-gray-800 fw-bold">Nov 10, 2024</div>
-                                                    <div class="fw-semibold text-gray-400">Due Date</div>
-                                                </div>
-                                                <!--end::Due-->
-
-                                                <!--begin::Budget-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 mb-3">
-                                                    <div class="fs-6 text-gray-800 fw-bold">$284,900.00</div>
-                                                    <div class="fw-semibold text-gray-400">Budget</div>
-                                                </div>
-                                                <!--end::Budget-->
-                                            </div>
-                                            <!--end::Info-->
-
-                                            <!--begin::Progress-->
-                                            <div class="h-4px w-100 bg-light mb-5" data-bs-toggle="tooltip"
-                                                title="This project 40% completed">
-                                                <div class="bg-primary rounded h-4px" role="progressbar"
-                                                    style="width: 40%" aria-valuenow=" 40" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                            <!--end::Progress-->
-
-                                            <!--begin::Users-->
-                                            <div class="symbol-group symbol-hover">
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Francis Mitcham">
-                                                    <img alt="Pic" src="../assets/media/avatars/300-20.jpg" />
-                                                </div>
-                                                <!--begin::User-->
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Michelle Swanston">
-                                                    <img alt="Pic" src="../assets/media/avatars/300-7.jpg" />
-                                                </div>
-                                                <!--begin::User-->
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Susan Redwood">
-                                                    <span
-                                                        class="symbol-label bg-primary text-inverse-primary fw-bold">S</span>
-                                                </div>
-                                                <!--begin::User-->
-                                            </div>
-                                            <!--end::Users-->
-                                        </div>
-                                        <!--end:: Card body-->
-                                    </a>
-                                    <!--end::Card-->
-                                </div>
-                                <!--end::Col-->
-
-                                <!--begin::Col-->
-                                <div class="col-md-6 col-xl-4">
-
-                                    <!--begin::Card-->
-                                    <a href="../apps/projects/project.html" class="card border-hover-primary ">
-                                        <!--begin::Card header-->
-                                        <div class="card-header border-0 pt-9">
-                                            <!--begin::Card Title-->
-                                            <div class="card-title m-0">
-                                                <!--begin::Avatar-->
-                                                <div class="symbol symbol-50px w-50px bg-light">
-                                                    <img src="../assets/media/svg/brand-logos/tvit.svg" alt="image"
-                                                        class="p-3" />
-                                                </div>
-                                                <!--end::Avatar-->
-                                            </div>
-                                            <!--end::Car Title-->
-
-                                            <!--begin::Card toolbar-->
-                                            <div class="card-toolbar">
-                                                <span class="badge badge-light-primary fw-bold me-auto px-4 py-3">In
-                                                    Progress</span>
-                                            </div>
-                                            <!--end::Card toolbar-->
-                                        </div>
-                                        <!--end:: Card header-->
-
-                                        <!--begin:: Card body-->
-                                        <div class="card-body p-9">
-                                            <!--begin::Name-->
-                                            <div class="fs-3 fw-bold text-dark">
-                                                GoPro App </div>
-                                            <!--end::Name-->
-
-                                            <!--begin::Description-->
-                                            <p class="text-gray-400 fw-semibold fs-5 mt-1 mb-7">
-                                                CRM App application to HR efficiency </p>
-                                            <!--end::Description-->
-
-                                            <!--begin::Info-->
-                                            <div class="d-flex flex-wrap mb-5">
-                                                <!--begin::Due-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-7 mb-3">
-                                                    <div class="fs-6 text-gray-800 fw-bold">Oct 25, 2024</div>
-                                                    <div class="fw-semibold text-gray-400">Due Date</div>
-                                                </div>
-                                                <!--end::Due-->
-
-                                                <!--begin::Budget-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 mb-3">
-                                                    <div class="fs-6 text-gray-800 fw-bold">$284,900.00</div>
-                                                    <div class="fw-semibold text-gray-400">Budget</div>
-                                                </div>
-                                                <!--end::Budget-->
-                                            </div>
-                                            <!--end::Info-->
-
-                                            <!--begin::Progress-->
-                                            <div class="h-4px w-100 bg-light mb-5" data-bs-toggle="tooltip"
-                                                title="This project 70% completed">
-                                                <div class="bg-primary rounded h-4px" role="progressbar"
-                                                    style="width: 70%" aria-valuenow=" 70" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                            <!--end::Progress-->
-
-                                            <!--begin::Users-->
-                                            <div class="symbol-group symbol-hover">
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Melody Macy">
-                                                    <img alt="Pic" src="../assets/media/avatars/300-2.jpg" />
-                                                </div>
-                                                <!--begin::User-->
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Robin Watterman">
-                                                    <span
-                                                        class="symbol-label bg-success text-inverse-success fw-bold">R</span>
-                                                </div>
-                                                <!--begin::User-->
-                                            </div>
-                                            <!--end::Users-->
-                                        </div>
-                                        <!--end:: Card body-->
-                                    </a>
-                                    <!--end::Card-->
-                                </div>
-                                <!--end::Col-->
-
-                                <!--begin::Col-->
-                                <div class="col-md-6 col-xl-4">
-
-                                    <!--begin::Card-->
-                                    <a href="../apps/projects/project.html" class="card border-hover-primary ">
-                                        <!--begin::Card header-->
-                                        <div class="card-header border-0 pt-9">
-                                            <!--begin::Card Title-->
-                                            <div class="card-title m-0">
-                                                <!--begin::Avatar-->
-                                                <div class="symbol symbol-50px w-50px bg-light">
-                                                    <img src="../assets/media/svg/brand-logos/aven.svg" alt="image"
-                                                        class="p-3" />
-                                                </div>
-                                                <!--end::Avatar-->
-                                            </div>
-                                            <!--end::Car Title-->
-
-                                            <!--begin::Card toolbar-->
-                                            <div class="card-toolbar">
-                                                <span class="badge badge-light-primary fw-bold me-auto px-4 py-3">In
-                                                    Progress</span>
-                                            </div>
-                                            <!--end::Card toolbar-->
-                                        </div>
-                                        <!--end:: Card header-->
-
-                                        <!--begin:: Card body-->
-                                        <div class="card-body p-9">
-                                            <!--begin::Name-->
-                                            <div class="fs-3 fw-bold text-dark">
-                                                Buldozer CRM </div>
-                                            <!--end::Name-->
-
-                                            <!--begin::Description-->
-                                            <p class="text-gray-400 fw-semibold fs-5 mt-1 mb-7">
-                                                CRM App application to HR efficiency </p>
-                                            <!--end::Description-->
-
-                                            <!--begin::Info-->
-                                            <div class="d-flex flex-wrap mb-5">
-                                                <!--begin::Due-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-7 mb-3">
-                                                    <div class="fs-6 text-gray-800 fw-bold">Nov 10, 2024</div>
-                                                    <div class="fw-semibold text-gray-400">Due Date</div>
-                                                </div>
-                                                <!--end::Due-->
-
-                                                <!--begin::Budget-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 mb-3">
-                                                    <div class="fs-6 text-gray-800 fw-bold">$284,900.00</div>
-                                                    <div class="fw-semibold text-gray-400">Budget</div>
-                                                </div>
-                                                <!--end::Budget-->
-                                            </div>
-                                            <!--end::Info-->
-
-                                            <!--begin::Progress-->
-                                            <div class="h-4px w-100 bg-light mb-5" data-bs-toggle="tooltip"
-                                                title="This project 70% completed">
-                                                <div class="bg-primary rounded h-4px" role="progressbar"
-                                                    style="width: 70%" aria-valuenow=" 70" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                            <!--end::Progress-->
-
-                                            <!--begin::Users-->
-                                            <div class="symbol-group symbol-hover">
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Melody Macy">
-                                                    <img alt="Pic" src="../assets/media/avatars/300-2.jpg" />
-                                                </div>
-                                                <!--begin::User-->
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="John Mixin">
-                                                    <img alt="Pic" src="../assets/media/avatars/300-14.jpg" />
-                                                </div>
-                                                <!--begin::User-->
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Emma Smith">
-                                                    <span
-                                                        class="symbol-label bg-primary text-inverse-primary fw-bold">S</span>
-                                                </div>
-                                                <!--begin::User-->
-                                            </div>
-                                            <!--end::Users-->
-                                        </div>
-                                        <!--end:: Card body-->
-                                    </a>
-                                    <!--end::Card-->
-                                </div>
-                                <!--end::Col-->
-
-                                <!--begin::Col-->
-                                <div class="col-md-6 col-xl-4">
-
-                                    <!--begin::Card-->
-                                    <a href="../apps/projects/project.html" class="card border-hover-primary ">
-                                        <!--begin::Card header-->
-                                        <div class="card-header border-0 pt-9">
-                                            <!--begin::Card Title-->
-                                            <div class="card-title m-0">
-                                                <!--begin::Avatar-->
-                                                <div class="symbol symbol-50px w-50px bg-light">
-                                                    <img src="../assets/media/svg/brand-logos/treva.svg" alt="image"
-                                                        class="p-3" />
-                                                </div>
-                                                <!--end::Avatar-->
-                                            </div>
-                                            <!--end::Car Title-->
-
-                                            <!--begin::Card toolbar-->
-                                            <div class="card-toolbar">
-                                                <span
-                                                    class="badge badge-light-danger fw-bold me-auto px-4 py-3">Overdue</span>
-                                            </div>
-                                            <!--end::Card toolbar-->
-                                        </div>
-                                        <!--end:: Card header-->
-
-                                        <!--begin:: Card body-->
-                                        <div class="card-body p-9">
-                                            <!--begin::Name-->
-                                            <div class="fs-3 fw-bold text-dark">
-                                                Aviasales App </div>
-                                            <!--end::Name-->
-
-                                            <!--begin::Description-->
-                                            <p class="text-gray-400 fw-semibold fs-5 mt-1 mb-7">
-                                                CRM App application to HR efficiency </p>
-                                            <!--end::Description-->
-
-                                            <!--begin::Info-->
-                                            <div class="d-flex flex-wrap mb-5">
-                                                <!--begin::Due-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-7 mb-3">
-                                                    <div class="fs-6 text-gray-800 fw-bold">Mar 10, 2024</div>
-                                                    <div class="fw-semibold text-gray-400">Due Date</div>
-                                                </div>
-                                                <!--end::Due-->
-
-                                                <!--begin::Budget-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 mb-3">
-                                                    <div class="fs-6 text-gray-800 fw-bold">$284,900.00</div>
-                                                    <div class="fw-semibold text-gray-400">Budget</div>
-                                                </div>
-                                                <!--end::Budget-->
-                                            </div>
-                                            <!--end::Info-->
-
-                                            <!--begin::Progress-->
-                                            <div class="h-4px w-100 bg-light mb-5" data-bs-toggle="tooltip"
-                                                title="This project 10% completed">
-                                                <div class="bg-danger rounded h-4px" role="progressbar"
-                                                    style="width: 10%" aria-valuenow=" 10" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                            <!--end::Progress-->
-
-                                            <!--begin::Users-->
-                                            <div class="symbol-group symbol-hover">
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Alan Warden">
-                                                    <span
-                                                        class="symbol-label bg-warning text-inverse-warning fw-bold">A</span>
-                                                </div>
-                                                <!--begin::User-->
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Brian Cox">
-                                                    <img alt="Pic" src="../assets/media/avatars/300-5.jpg" />
-                                                </div>
-                                                <!--begin::User-->
-                                            </div>
-                                            <!--end::Users-->
-                                        </div>
-                                        <!--end:: Card body-->
-                                    </a>
-                                    <!--end::Card-->
-                                </div>
-                                <!--end::Col-->
-
-                                <!--begin::Col-->
-                                <div class="col-md-6 col-xl-4">
-
-                                    <!--begin::Card-->
-                                    <a href="../apps/projects/project.html" class="card border-hover-primary ">
-                                        <!--begin::Card header-->
-                                        <div class="card-header border-0 pt-9">
-                                            <!--begin::Card Title-->
-                                            <div class="card-title m-0">
-                                                <!--begin::Avatar-->
-                                                <div class="symbol symbol-50px w-50px bg-light">
-                                                    <img src="../assets/media/svg/brand-logos/kanba.svg" alt="image"
-                                                        class="p-3" />
-                                                </div>
-                                                <!--end::Avatar-->
-                                            </div>
-                                            <!--end::Car Title-->
-
-                                            <!--begin::Card toolbar-->
-                                            <div class="card-toolbar">
-                                                <span
-                                                    class="badge badge-light-success fw-bold me-auto px-4 py-3">Completed</span>
-                                            </div>
-                                            <!--end::Card toolbar-->
-                                        </div>
-                                        <!--end:: Card header-->
-
-                                        <!--begin:: Card body-->
-                                        <div class="card-body p-9">
-                                            <!--begin::Name-->
-                                            <div class="fs-3 fw-bold text-dark">
-                                                Oppo CRM </div>
-                                            <!--end::Name-->
-
-                                            <!--begin::Description-->
-                                            <p class="text-gray-400 fw-semibold fs-5 mt-1 mb-7">
-                                                CRM App application to HR efficiency </p>
-                                            <!--end::Description-->
-
-                                            <!--begin::Info-->
-                                            <div class="d-flex flex-wrap mb-5">
-                                                <!--begin::Due-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-7 mb-3">
-                                                    <div class="fs-6 text-gray-800 fw-bold">Sep 22, 2024</div>
-                                                    <div class="fw-semibold text-gray-400">Due Date</div>
-                                                </div>
-                                                <!--end::Due-->
-
-                                                <!--begin::Budget-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 mb-3">
-                                                    <div class="fs-6 text-gray-800 fw-bold">$284,900.00</div>
-                                                    <div class="fw-semibold text-gray-400">Budget</div>
-                                                </div>
-                                                <!--end::Budget-->
-                                            </div>
-                                            <!--end::Info-->
-
-                                            <!--begin::Progress-->
-                                            <div class="h-4px w-100 bg-light mb-5" data-bs-toggle="tooltip"
-                                                title="This project 100% completed">
-                                                <div class="bg-success rounded h-4px" role="progressbar"
-                                                    style="width: 100%" aria-valuenow=" 100" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                            <!--end::Progress-->
-
-                                            <!--begin::Users-->
-                                            <div class="symbol-group symbol-hover">
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Nick Macy">
-                                                    <img alt="Pic" src="../assets/media/avatars/300-2.jpg" />
-                                                </div>
-                                                <!--begin::User-->
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Sean Paul">
-                                                    <img alt="Pic" src="../assets/media/avatars/300-9.jpg" />
-                                                </div>
-                                                <!--begin::User-->
-                                                <!--begin::User-->
-                                                <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip"
-                                                    title="Mike Collin">
-                                                    <span
-                                                        class="symbol-label bg-info text-inverse-info fw-bold">M</span>
-                                                </div>
-                                                <!--begin::User-->
-                                            </div>
-                                            <!--end::Users-->
-                                        </div>
-                                        <!--end:: Card body-->
-                                    </a>
-                                    <!--end::Card-->
-                                </div>
-                                <!--end::Col-->
-                            </div>
+                            
                             <!--end::Row-->
 
                             <!--begin::Pagination-->
-                            <div class="d-flex flex-stack flex-wrap pt-10">
-                                <div class="fs-6 fw-semibold text-gray-700">
-                                    Showing 1 to 10 of 50 entries
-                                </div>
-
-                                <!--begin::Pages-->
-                                <ul class="pagination">
-                                    <li class="page-item previous">
-                                        <a href="#" class="page-link"><i class="previous"></i></a>
-                                    </li>
-
-                                    <li class="page-item active">
-                                        <a href="#" class="page-link">1</a>
-                                    </li>
-
-                                    <li class="page-item">
-                                        <a href="#" class="page-link">2</a>
-                                    </li>
-
-                                    <li class="page-item">
-                                        <a href="#" class="page-link">3</a>
-                                    </li>
-
-                                    <li class="page-item">
-                                        <a href="#" class="page-link">4</a>
-                                    </li>
-
-                                    <li class="page-item">
-                                        <a href="#" class="page-link">5</a>
-                                    </li>
-
-                                    <li class="page-item">
-                                        <a href="#" class="page-link">6</a>
-                                    </li>
-
-                                    <li class="page-item next">
-                                        <a href="#" class="page-link"><i class="next"></i></a>
-                                    </li>
-                                </ul>
-                                <!--end::Pages-->
-                            </div>
+                            
                             <!--end::Pagination-->
                             <!--begin::Modals-->
 
@@ -1909,7 +966,8 @@ require "config/global.php";
                                 </div>
                                 <!--end::Modal dialog-->
                             </div>
-                            <!--end::Modal - View Users--><!--begin::Modal - Users Search-->
+                            <!--end::Modal - View Users-->
+                            <!--begin::Modal - Users Search-->
                             <div class="modal fade" id="kt_modal_users_search" tabindex="-1" aria-hidden="true">
                                 <!--begin::Modal dialog-->
                                 <div class="modal-dialog modal-dialog-centered mw-650px">
@@ -3089,7 +2147,8 @@ require "config/global.php";
                                 </div>
                                 <!--end::Modal dialog-->
                             </div>
-                            <!--end::Modal - Users Search--><!--end::Modals-->
+                            <!--end::Modal - Users Search-->
+                            <!--end::Modals-->
                         </div>
                         <!--end::Container-->
                     </div>
@@ -3111,7 +2170,10 @@ require "config/global.php";
 
     <!--begin::Drawers-->
     <!--begin::Activities drawer-->
-    <div id="kt_activities" class="bg-body" data-kt-drawer="true" data-kt-drawer-name="activities" data-kt-drawer-activate="true" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'300px', 'lg': '900px'}" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_activities_toggle" data-kt-drawer-close="#kt_activities_close">
+    <div id="kt_activities" class="bg-body" data-kt-drawer="true" data-kt-drawer-name="activities"
+        data-kt-drawer-activate="true" data-kt-drawer-overlay="true"
+        data-kt-drawer-width="{default:'300px', 'lg': '900px'}" data-kt-drawer-direction="end"
+        data-kt-drawer-toggle="#kt_activities_toggle" data-kt-drawer-close="#kt_activities_close">
 
         <div class="card shadow-none border-0 rounded-0">
             <!--begin::Header-->
@@ -3119,8 +2181,10 @@ require "config/global.php";
                 <h3 class="card-title fw-bold text-dark">Activity Logs</h3>
 
                 <div class="card-toolbar">
-                    <button type="button" class="btn btn-sm btn-icon btn-active-light-primary me-n5" id="kt_activities_close">
-                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i> </button>
+                    <button type="button" class="btn btn-sm btn-icon btn-active-light-primary me-n5"
+                        id="kt_activities_close">
+                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                    </button>
                 </div>
             </div>
             <!--end::Header-->
@@ -3128,7 +2192,10 @@ require "config/global.php";
             <!--begin::Body-->
             <div class="card-body position-relative" id="kt_activities_body">
                 <!--begin::Content-->
-                <div id="kt_activities_scroll" class="position-relative scroll-y me-n5 pe-5" data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-wrappers="#kt_activities_body" data-kt-scroll-dependencies="#kt_activities_header, #kt_activities_footer" data-kt-scroll-offset="5px">
+                <div id="kt_activities_scroll" class="position-relative scroll-y me-n5 pe-5" data-kt-scroll="true"
+                    data-kt-scroll-height="auto" data-kt-scroll-wrappers="#kt_activities_body"
+                    data-kt-scroll-dependencies="#kt_activities_header, #kt_activities_footer"
+                    data-kt-scroll-offset="5px">
 
                     <!--begin::Timeline items-->
                     <div class="timeline">
@@ -3141,7 +2208,9 @@ require "config/global.php";
                             <!--begin::Timeline icon-->
                             <div class="timeline-icon symbol symbol-circle symbol-40px me-4">
                                 <div class="symbol-label bg-light">
-                                    <i class="ki-duotone ki-message-text-2 fs-2 text-gray-500"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                                    <i class="ki-duotone ki-message-text-2 fs-2 text-gray-500"><span
+                                            class="path1"></span><span class="path2"></span><span
+                                            class="path3"></span></i>
                                 </div>
                             </div>
                             <!--end::Timeline icon-->
@@ -3151,7 +2220,8 @@ require "config/global.php";
                                 <!--begin::Timeline heading-->
                                 <div class="pe-3 mb-5">
                                     <!--begin::Title-->
-                                    <div class="fs-5 fw-semibold mb-2">There are 2 new tasks for you in “AirPlus Mobile App” project:</div>
+                                    <div class="fs-5 fw-semibold mb-2">There are 2 new tasks for you in “AirPlus Mobile
+                                        App” project:</div>
                                     <!--end::Title-->
 
                                     <!--begin::Description-->
@@ -3161,7 +2231,8 @@ require "config/global.php";
                                         <!--end::Info-->
 
                                         <!--begin::User-->
-                                        <div class="symbol symbol-circle symbol-25px" data-bs-toggle="tooltip" data-bs-boundary="window" data-bs-placement="top" title="Nina Nilson">
+                                        <div class="symbol symbol-circle symbol-25px" data-bs-toggle="tooltip"
+                                            data-bs-boundary="window" data-bs-placement="top" title="Nina Nilson">
                                             <img src="../../../assets/media/avatars/300-14.jpg" alt="img" />
                                         </div>
                                         <!--end::User-->
@@ -3173,9 +2244,12 @@ require "config/global.php";
                                 <!--begin::Timeline details-->
                                 <div class="overflow-auto pb-5">
                                     <!--begin::Record-->
-                                    <div class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-750px px-7 py-3 mb-5">
+                                    <div
+                                        class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-750px px-7 py-3 mb-5">
                                         <!--begin::Title-->
-                                        <a href="../../projects/project.html" class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">Meeting with customer</a>
+                                        <a href="../../projects/project.html"
+                                            class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">Meeting
+                                            with customer</a>
                                         <!--end::Title-->
 
                                         <!--begin::Label-->
@@ -3200,7 +2274,9 @@ require "config/global.php";
 
                                             <!--begin::User-->
                                             <div class="symbol symbol-circle symbol-25px">
-                                                <div class="symbol-label fs-8 fw-semibold bg-primary text-inverse-primary">A</div>
+                                                <div
+                                                    class="symbol-label fs-8 fw-semibold bg-primary text-inverse-primary">
+                                                    A</div>
                                             </div>
                                             <!--end::User-->
                                         </div>
@@ -3213,15 +2289,19 @@ require "config/global.php";
                                         <!--end::Progress-->
 
                                         <!--begin::Action-->
-                                        <a href="../../projects/project.html" class="btn btn-sm btn-light btn-active-light-primary">View</a>
+                                        <a href="../../projects/project.html"
+                                            class="btn btn-sm btn-light btn-active-light-primary">View</a>
                                         <!--end::Action-->
                                     </div>
                                     <!--end::Record-->
 
                                     <!--begin::Record-->
-                                    <div class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-750px px-7 py-3 mb-0">
+                                    <div
+                                        class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-750px px-7 py-3 mb-0">
                                         <!--begin::Title-->
-                                        <a href="../../projects/project.html" class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">Project Delivery Preparation</a>
+                                        <a href="../../projects/project.html"
+                                            class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">Project
+                                            Delivery Preparation</a>
                                         <!--end::Title-->
 
                                         <!--begin::Label-->
@@ -3240,7 +2320,9 @@ require "config/global.php";
 
                                             <!--begin::User-->
                                             <div class="symbol symbol-circle symbol-25px">
-                                                <div class="symbol-label fs-8 fw-semibold bg-success text-inverse-primary">B</div>
+                                                <div
+                                                    class="symbol-label fs-8 fw-semibold bg-success text-inverse-primary">
+                                                    B</div>
                                             </div>
                                             <!--end::User-->
                                         </div>
@@ -3253,7 +2335,8 @@ require "config/global.php";
                                         <!--end::Progress-->
 
                                         <!--begin::Action-->
-                                        <a href="../../projects/project.html" class="btn btn-sm btn-light btn-active-light-primary">View</a>
+                                        <a href="../../projects/project.html"
+                                            class="btn btn-sm btn-light btn-active-light-primary">View</a>
                                         <!--end::Action-->
                                     </div>
                                     <!--end::Record-->
@@ -3272,7 +2355,8 @@ require "config/global.php";
                             <!--begin::Timeline icon-->
                             <div class="timeline-icon symbol symbol-circle symbol-40px">
                                 <div class="symbol-label bg-light">
-                                    <i class="ki-duotone ki-flag fs-2 text-gray-500"><span class="path1"></span><span class="path2"></span></i>
+                                    <i class="ki-duotone ki-flag fs-2 text-gray-500"><span class="path1"></span><span
+                                            class="path2"></span></i>
                                 </div>
                             </div>
                             <!--end::Timeline icon-->
@@ -3282,7 +2366,8 @@ require "config/global.php";
                                 <!--begin::Timeline heading-->
                                 <div class="overflow-auto pe-3">
                                     <!--begin::Title-->
-                                    <div class="fs-5 fw-semibold mb-2">Invitation for crafting engaging designs that speak human workshop</div>
+                                    <div class="fs-5 fw-semibold mb-2">Invitation for crafting engaging designs that
+                                        speak human workshop</div>
                                     <!--end::Title-->
 
                                     <!--begin::Description-->
@@ -3292,7 +2377,8 @@ require "config/global.php";
                                         <!--end::Info-->
 
                                         <!--begin::User-->
-                                        <div class="symbol symbol-circle symbol-25px" data-bs-toggle="tooltip" data-bs-boundary="window" data-bs-placement="top" title="Alan Nilson">
+                                        <div class="symbol symbol-circle symbol-25px" data-bs-toggle="tooltip"
+                                            data-bs-boundary="window" data-bs-placement="top" title="Alan Nilson">
                                             <img src="../../../assets/media/avatars/300-1.jpg" alt="img" />
                                         </div>
                                         <!--end::User-->
@@ -3313,7 +2399,10 @@ require "config/global.php";
                             <!--begin::Timeline icon-->
                             <div class="timeline-icon symbol symbol-circle symbol-40px">
                                 <div class="symbol-label bg-light">
-                                    <i class="ki-duotone ki-disconnect fs-2 text-gray-500"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></i>
+                                    <i class="ki-duotone ki-disconnect fs-2 text-gray-500"><span
+                                            class="path1"></span><span class="path2"></span><span
+                                            class="path3"></span><span class="path4"></span><span
+                                            class="path5"></span></i>
                                 </div>
                             </div>
                             <!--end::Timeline icon-->
@@ -3323,7 +2412,8 @@ require "config/global.php";
                                 <!--begin::Timeline heading-->
                                 <div class="mb-5 pe-3">
                                     <!--begin::Title-->
-                                    <a href="#" class="fs-5 fw-semibold text-gray-800 text-hover-primary mb-2">3 New Incoming Project Files:</a>
+                                    <a href="#" class="fs-5 fw-semibold text-gray-800 text-hover-primary mb-2">3 New
+                                        Incoming Project Files:</a>
                                     <!--end::Title-->
 
                                     <!--begin::Description-->
@@ -3333,7 +2423,8 @@ require "config/global.php";
                                         <!--end::Info-->
 
                                         <!--begin::User-->
-                                        <div class="symbol symbol-circle symbol-25px" data-bs-toggle="tooltip" data-bs-boundary="window" data-bs-placement="top" title="Jan Hummer">
+                                        <div class="symbol symbol-circle symbol-25px" data-bs-toggle="tooltip"
+                                            data-bs-boundary="window" data-bs-placement="top" title="Jan Hummer">
                                             <img src="../../../assets/media/avatars/300-23.jpg" alt="img" />
                                         </div>
                                         <!--end::User-->
@@ -3344,17 +2435,21 @@ require "config/global.php";
 
                                 <!--begin::Timeline details-->
                                 <div class="overflow-auto pb-5">
-                                    <div class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-700px p-5">
+                                    <div
+                                        class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-700px p-5">
                                         <!--begin::Item-->
                                         <div class="d-flex flex-aligns-center pe-10 pe-lg-20">
                                             <!--begin::Icon-->
-                                            <img alt="" class="w-30px me-3" src="../../../assets/media/svg/files/pdf.svg" />
+                                            <img alt="" class="w-30px me-3"
+                                                src="../../../assets/media/svg/files/pdf.svg" />
                                             <!--end::Icon-->
 
                                             <!--begin::Info-->
                                             <div class="ms-1 fw-semibold">
                                                 <!--begin::Desc-->
-                                                <a href="../../projects/project.html" class="fs-6 text-hover-primary fw-bold">Finance KPI App Guidelines</a>
+                                                <a href="../../projects/project.html"
+                                                    class="fs-6 text-hover-primary fw-bold">Finance KPI App
+                                                    Guidelines</a>
                                                 <!--end::Desc-->
 
                                                 <!--begin::Number-->
@@ -3368,13 +2463,15 @@ require "config/global.php";
                                         <!--begin::Item-->
                                         <div class="d-flex flex-aligns-center pe-10 pe-lg-20">
                                             <!--begin::Icon-->
-                                            <img alt="/craft/apps/projects/project.html" class="w-30px me-3" src="../../../assets/media/svg/files/doc.svg" />
+                                            <img alt="/craft/apps/projects/project.html" class="w-30px me-3"
+                                                src="../../../assets/media/svg/files/doc.svg" />
                                             <!--end::Icon-->
 
                                             <!--begin::Info-->
                                             <div class="ms-1 fw-semibold">
                                                 <!--begin::Desc-->
-                                                <a href="#" class="fs-6 text-hover-primary fw-bold">Client UAT Testing Results</a>
+                                                <a href="#" class="fs-6 text-hover-primary fw-bold">Client UAT Testing
+                                                    Results</a>
                                                 <!--end::Desc-->
 
                                                 <!--begin::Number-->
@@ -3388,7 +2485,8 @@ require "config/global.php";
                                         <!--begin::Item-->
                                         <div class="d-flex flex-aligns-center">
                                             <!--begin::Icon-->
-                                            <img alt="/craft/apps/projects/project.html" class="w-30px me-3" src="../../../assets/media/svg/files/css.svg" />
+                                            <img alt="/craft/apps/projects/project.html" class="w-30px me-3"
+                                                src="../../../assets/media/svg/files/css.svg" />
                                             <!--end::Icon-->
 
                                             <!--begin::Info-->
@@ -3420,7 +2518,8 @@ require "config/global.php";
                             <!--begin::Timeline icon-->
                             <div class="timeline-icon symbol symbol-circle symbol-40px">
                                 <div class="symbol-label bg-light">
-                                    <i class="ki-duotone ki-abstract-26 fs-2 text-gray-500"><span class="path1"></span><span class="path2"></span></i>
+                                    <i class="ki-duotone ki-abstract-26 fs-2 text-gray-500"><span
+                                            class="path1"></span><span class="path2"></span></i>
                                 </div>
                             </div>
                             <!--end::Timeline icon-->
@@ -3432,7 +2531,8 @@ require "config/global.php";
                                     <!--begin::Title-->
                                     <div class="fs-5 fw-semibold mb-2">
                                         Task <a href="#" class="text-primary fw-bold me-1">#45890</a>
-                                        merged with <a href="#" class="text-primary fw-bold me-1">#45890</a> in “Ads Pro Admin Dashboard project:
+                                        merged with <a href="#" class="text-primary fw-bold me-1">#45890</a> in “Ads Pro
+                                        Admin Dashboard project:
                                     </div>
                                     <!--end::Title-->
 
@@ -3443,7 +2543,8 @@ require "config/global.php";
                                         <!--end::Info-->
 
                                         <!--begin::User-->
-                                        <div class="symbol symbol-circle symbol-25px" data-bs-toggle="tooltip" data-bs-boundary="window" data-bs-placement="top" title="Nina Nilson">
+                                        <div class="symbol symbol-circle symbol-25px" data-bs-toggle="tooltip"
+                                            data-bs-boundary="window" data-bs-placement="top" title="Nina Nilson">
                                             <img src="../../../assets/media/avatars/300-14.jpg" alt="img" />
                                         </div>
                                         <!--end::User-->
@@ -3464,7 +2565,8 @@ require "config/global.php";
                             <!--begin::Timeline icon-->
                             <div class="timeline-icon symbol symbol-circle symbol-40px">
                                 <div class="symbol-label bg-light">
-                                    <i class="ki-duotone ki-pencil fs-2 text-gray-500"><span class="path1"></span><span class="path2"></span></i>
+                                    <i class="ki-duotone ki-pencil fs-2 text-gray-500"><span class="path1"></span><span
+                                            class="path2"></span></i>
                                 </div>
                             </div>
                             <!--end::Timeline icon-->
@@ -3484,7 +2586,8 @@ require "config/global.php";
                                         <!--end::Info-->
 
                                         <!--begin::User-->
-                                        <div class="symbol symbol-circle symbol-25px" data-bs-toggle="tooltip" data-bs-boundary="window" data-bs-placement="top" title="Marcus Dotson">
+                                        <div class="symbol symbol-circle symbol-25px" data-bs-toggle="tooltip"
+                                            data-bs-boundary="window" data-bs-placement="top" title="Marcus Dotson">
                                             <img src="../../../assets/media/avatars/300-2.jpg" alt="img" />
                                         </div>
                                         <!--end::User-->
@@ -3495,12 +2598,14 @@ require "config/global.php";
 
                                 <!--begin::Timeline details-->
                                 <div class="overflow-auto pb-5">
-                                    <div class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-700px p-7">
+                                    <div
+                                        class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-700px p-7">
                                         <!--begin::Item-->
                                         <div class="overlay me-10">
                                             <!--begin::Image-->
                                             <div class="overlay-wrapper">
-                                                <img alt="img" class="rounded w-150px" src="../../../assets/media/stock/600x400/img-29.jpg" />
+                                                <img alt="img" class="rounded w-150px"
+                                                    src="../../../assets/media/stock/600x400/img-29.jpg" />
                                             </div>
                                             <!--end::Image-->
 
@@ -3516,7 +2621,8 @@ require "config/global.php";
                                         <div class="overlay me-10">
                                             <!--begin::Image-->
                                             <div class="overlay-wrapper">
-                                                <img alt="img" class="rounded w-150px" src="../../../assets/media/stock/600x400/img-31.jpg" />
+                                                <img alt="img" class="rounded w-150px"
+                                                    src="../../../assets/media/stock/600x400/img-31.jpg" />
                                             </div>
                                             <!--end::Image-->
 
@@ -3532,7 +2638,8 @@ require "config/global.php";
                                         <div class="overlay">
                                             <!--begin::Image-->
                                             <div class="overlay-wrapper">
-                                                <img alt="img" class="rounded w-150px" src="../../../assets/media/stock/600x400/img-40.jpg" />
+                                                <img alt="img" class="rounded w-150px"
+                                                    src="../../../assets/media/stock/600x400/img-40.jpg" />
                                             </div>
                                             <!--end::Image-->
 
@@ -3559,7 +2666,8 @@ require "config/global.php";
                             <!--begin::Timeline icon-->
                             <div class="timeline-icon symbol symbol-circle symbol-40px">
                                 <div class="symbol-label bg-light">
-                                    <i class="ki-duotone ki-sms fs-2 text-gray-500"><span class="path1"></span><span class="path2"></span></i>
+                                    <i class="ki-duotone ki-sms fs-2 text-gray-500"><span class="path1"></span><span
+                                            class="path2"></span></i>
                                 </div>
                             </div>
                             <!--end::Timeline icon-->
@@ -3605,7 +2713,8 @@ require "config/global.php";
                             <!--begin::Timeline icon-->
                             <div class="timeline-icon symbol symbol-circle symbol-40px">
                                 <div class="symbol-label bg-light">
-                                    <i class="ki-duotone ki-pencil fs-2 text-gray-500"><span class="path1"></span><span class="path2"></span></i>
+                                    <i class="ki-duotone ki-pencil fs-2 text-gray-500"><span class="path1"></span><span
+                                            class="path2"></span></i>
                                 </div>
                             </div>
                             <!--end::Timeline icon-->
@@ -3625,7 +2734,8 @@ require "config/global.php";
                                         <!--end::Info-->
 
                                         <!--begin::User-->
-                                        <div class="symbol symbol-circle symbol-25px" data-bs-toggle="tooltip" data-bs-boundary="window" data-bs-placement="top" title="Robert Rich">
+                                        <div class="symbol symbol-circle symbol-25px" data-bs-toggle="tooltip"
+                                            data-bs-boundary="window" data-bs-placement="top" title="Robert Rich">
                                             <img src="../../../assets/media/avatars/300-4.jpg" alt="img" />
                                         </div>
                                         <!--end::User-->
@@ -3638,17 +2748,23 @@ require "config/global.php";
                                 <div class="overflow-auto pb-5">
 
                                     <!--begin::Notice-->
-                                    <div class="notice d-flex bg-light-primary rounded border-primary border border-dashed min-w-lg-600px flex-shrink-0 p-6">
+                                    <div
+                                        class="notice d-flex bg-light-primary rounded border-primary border border-dashed min-w-lg-600px flex-shrink-0 p-6">
                                         <!--begin::Icon-->
-                                        <i class="ki-duotone ki-devices-2 fs-2tx text-primary me-4"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i> <!--end::Icon-->
+                                        <i class="ki-duotone ki-devices-2 fs-2tx text-primary me-4"><span
+                                                class="path1"></span><span class="path2"></span><span
+                                                class="path3"></span></i>
+                                        <!--end::Icon-->
 
                                         <!--begin::Wrapper-->
                                         <div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
                                             <!--begin::Content-->
                                             <div class="mb-3 mb-md-0 fw-semibold">
-                                                <h4 class="text-gray-900 fw-bold">Database Backup Process Completed!</h4>
+                                                <h4 class="text-gray-900 fw-bold">Database Backup Process Completed!
+                                                </h4>
 
-                                                <div class="fs-6 text-gray-700 pe-7">Login into Admin Dashboard to make sure the data integrity is OK</div>
+                                                <div class="fs-6 text-gray-700 pe-7">Login into Admin Dashboard to make
+                                                    sure the data integrity is OK</div>
                                             </div>
                                             <!--end::Content-->
 
@@ -3676,7 +2792,9 @@ require "config/global.php";
                             <!--begin::Timeline icon-->
                             <div class="timeline-icon symbol symbol-circle symbol-40px">
                                 <div class="symbol-label bg-light">
-                                    <i class="ki-duotone ki-basket fs-2 text-gray-500"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+                                    <i class="ki-duotone ki-basket fs-2 text-gray-500"><span class="path1"></span><span
+                                            class="path2"></span><span class="path3"></span><span
+                                            class="path4"></span></i>
                                 </div>
                             </div>
                             <!--end::Timeline icon-->
@@ -3719,7 +2837,8 @@ require "config/global.php";
             <!--begin::Footer-->
             <div class="card-footer py-5 text-center" id="kt_activities_footer">
                 <a href="../../../pages/user-profile/activity.html" class="btn btn-bg-body text-primary">
-                    View All Activities <i class="ki-duotone ki-arrow-right fs-3 text-primary"><span class="path1"></span><span class="path2"></span></i> </a>
+                    View All Activities <i class="ki-duotone ki-arrow-right fs-3 text-primary"><span
+                            class="path1"></span><span class="path2"></span></i> </a>
             </div>
             <!--end::Footer-->
         </div>
@@ -3727,7 +2846,10 @@ require "config/global.php";
     <!--end::Activities drawer-->
 
     <!--begin::Chat drawer-->
-    <div id="kt_drawer_chat" class="bg-body" data-kt-drawer="true" data-kt-drawer-name="chat" data-kt-drawer-activate="true" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'300px', 'md': '500px'}" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_drawer_chat_toggle" data-kt-drawer-close="#kt_drawer_chat_close">
+    <div id="kt_drawer_chat" class="bg-body" data-kt-drawer="true" data-kt-drawer-name="chat"
+        data-kt-drawer-activate="true" data-kt-drawer-overlay="true"
+        data-kt-drawer-width="{default:'300px', 'md': '500px'}" data-kt-drawer-direction="end"
+        data-kt-drawer-toggle="#kt_drawer_chat_toggle" data-kt-drawer-close="#kt_drawer_chat_close">
 
         <!--begin::Messenger-->
         <div class="card w-100 border-0 rounded-0" id="kt_drawer_chat_messenger">
@@ -3754,11 +2876,15 @@ require "config/global.php";
                 <div class="card-toolbar">
                     <!--begin::Menu-->
                     <div class="me-0">
-                        <button class="btn btn-sm btn-icon btn-active-color-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                            <i class="ki-duotone ki-dots-square fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i> </button>
+                        <button class="btn btn-sm btn-icon btn-active-color-primary" data-kt-menu-trigger="click"
+                            data-kt-menu-placement="bottom-end">
+                            <i class="ki-duotone ki-dots-square fs-2"><span class="path1"></span><span
+                                    class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+                        </button>
 
                         <!--begin::Menu 3-->
-                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3" data-kt-menu="true">
+                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3"
+                            data-kt-menu="true">
                             <!--begin::Heading-->
                             <div class="menu-item px-3">
                                 <div class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">
@@ -3769,7 +2895,8 @@ require "config/global.php";
 
                             <!--begin::Menu item-->
                             <div class="menu-item px-3">
-                                <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_users_search">
+                                <a href="#" class="menu-link px-3" data-bs-toggle="modal"
+                                    data-bs-target="#kt_modal_users_search">
                                     Add Contact
                                 </a>
                             </div>
@@ -3777,17 +2904,21 @@ require "config/global.php";
 
                             <!--begin::Menu item-->
                             <div class="menu-item px-3">
-                                <a href="#" class="menu-link flex-stack px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_invite_friends">
+                                <a href="#" class="menu-link flex-stack px-3" data-bs-toggle="modal"
+                                    data-bs-target="#kt_modal_invite_friends">
                                     Invite Contacts
 
-                                    <span class="ms-2" data-bs-toggle="tooltip" title="Specify a contact email to send an invitation">
-                                        <i class="ki-duotone ki-information fs-7"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i> </span>
+                                    <span class="ms-2" data-bs-toggle="tooltip"
+                                        title="Specify a contact email to send an invitation">
+                                        <i class="ki-duotone ki-information fs-7"><span class="path1"></span><span
+                                                class="path2"></span><span class="path3"></span></i> </span>
                                 </a>
                             </div>
                             <!--end::Menu item-->
 
                             <!--begin::Menu item-->
-                            <div class="menu-item px-3" data-kt-menu-trigger="hover" data-kt-menu-placement="right-start">
+                            <div class="menu-item px-3" data-kt-menu-trigger="hover"
+                                data-kt-menu-placement="right-start">
                                 <a href="#" class="menu-link px-3">
                                     <span class="menu-title">Groups</span>
                                     <span class="menu-arrow"></span>
@@ -3837,7 +2968,8 @@ require "config/global.php";
 
                     <!--begin::Close-->
                     <div class="btn btn-sm btn-icon btn-active-color-primary" id="kt_drawer_chat_close">
-                        <i class="ki-duotone ki-cross-square fs-2"><span class="path1"></span><span class="path2"></span></i>
+                        <i class="ki-duotone ki-cross-square fs-2"><span class="path1"></span><span
+                                class="path2"></span></i>
                     </div>
                     <!--end::Close-->
                 </div>
@@ -3848,7 +2980,10 @@ require "config/global.php";
             <!--begin::Card body-->
             <div class="card-body" id="kt_drawer_chat_messenger_body">
                 <!--begin::Messages-->
-                <div class="scroll-y me-n5 pe-5" data-kt-element="messages" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_drawer_chat_messenger_header, #kt_drawer_chat_messenger_footer" data-kt-scroll-wrappers="#kt_drawer_chat_messenger_body" data-kt-scroll-offset="0px">
+                <div class="scroll-y me-n5 pe-5" data-kt-element="messages" data-kt-scroll="true"
+                    data-kt-scroll-activate="true" data-kt-scroll-height="auto"
+                    data-kt-scroll-dependencies="#kt_drawer_chat_messenger_header, #kt_drawer_chat_messenger_footer"
+                    data-kt-scroll-wrappers="#kt_drawer_chat_messenger_body" data-kt-scroll-offset="0px">
 
 
 
@@ -3859,7 +2994,9 @@ require "config/global.php";
                             <!--begin::User-->
                             <div class="d-flex align-items-center mb-2">
                                 <!--begin::Avatar-->
-                                <div class="symbol  symbol-35px symbol-circle "><img alt="Pic" src="../../../assets/media/avatars/300-25.jpg" /></div><!--end::Avatar-->
+                                <div class="symbol  symbol-35px symbol-circle "><img alt="Pic"
+                                        src="../../../assets/media/avatars/300-25.jpg" /></div>
+                                <!--end::Avatar-->
                                 <!--begin::Details-->
                                 <div class="ms-3">
                                     <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary me-1">Brian Cox</a>
@@ -3871,7 +3008,8 @@ require "config/global.php";
                             <!--end::User-->
 
                             <!--begin::Text-->
-                            <div class="p-5 rounded bg-light-info text-dark fw-semibold mw-lg-400px text-start" data-kt-element="message-text">
+                            <div class="p-5 rounded bg-light-info text-dark fw-semibold mw-lg-400px text-start"
+                                data-kt-element="message-text">
                                 How likely are you to recommend our company to your friends and family ? </div>
                             <!--end::Text-->
                         </div>
@@ -3893,13 +3031,17 @@ require "config/global.php";
                                 <!--end::Details-->
 
                                 <!--begin::Avatar-->
-                                <div class="symbol  symbol-35px symbol-circle "><img alt="Pic" src="../../../assets/media/avatars/300-1.jpg" /></div><!--end::Avatar-->
+                                <div class="symbol  symbol-35px symbol-circle "><img alt="Pic"
+                                        src="../../../assets/media/avatars/300-1.jpg" /></div>
+                                <!--end::Avatar-->
                             </div>
                             <!--end::User-->
 
                             <!--begin::Text-->
-                            <div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-end" data-kt-element="message-text">
-                                Hey there, we’re just writing to let you know that you’ve been subscribed to a repository on GitHub. </div>
+                            <div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-end"
+                                data-kt-element="message-text">
+                                Hey there, we’re just writing to let you know that you’ve been subscribed to a
+                                repository on GitHub. </div>
                             <!--end::Text-->
                         </div>
                         <!--end::Wrapper-->
@@ -3913,7 +3055,9 @@ require "config/global.php";
                             <!--begin::User-->
                             <div class="d-flex align-items-center mb-2">
                                 <!--begin::Avatar-->
-                                <div class="symbol  symbol-35px symbol-circle "><img alt="Pic" src="../../../assets/media/avatars/300-25.jpg" /></div><!--end::Avatar-->
+                                <div class="symbol  symbol-35px symbol-circle "><img alt="Pic"
+                                        src="../../../assets/media/avatars/300-25.jpg" /></div>
+                                <!--end::Avatar-->
                                 <!--begin::Details-->
                                 <div class="ms-3">
                                     <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary me-1">Brian Cox</a>
@@ -3925,7 +3069,8 @@ require "config/global.php";
                             <!--end::User-->
 
                             <!--begin::Text-->
-                            <div class="p-5 rounded bg-light-info text-dark fw-semibold mw-lg-400px text-start" data-kt-element="message-text">
+                            <div class="p-5 rounded bg-light-info text-dark fw-semibold mw-lg-400px text-start"
+                                data-kt-element="message-text">
                                 Ok, Understood! </div>
                             <!--end::Text-->
                         </div>
@@ -3947,12 +3092,15 @@ require "config/global.php";
                                 <!--end::Details-->
 
                                 <!--begin::Avatar-->
-                                <div class="symbol  symbol-35px symbol-circle "><img alt="Pic" src="../../../assets/media/avatars/300-1.jpg" /></div><!--end::Avatar-->
+                                <div class="symbol  symbol-35px symbol-circle "><img alt="Pic"
+                                        src="../../../assets/media/avatars/300-1.jpg" /></div>
+                                <!--end::Avatar-->
                             </div>
                             <!--end::User-->
 
                             <!--begin::Text-->
-                            <div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-end" data-kt-element="message-text">
+                            <div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-end"
+                                data-kt-element="message-text">
                                 You’ll receive notifications for all issues, pull requests! </div>
                             <!--end::Text-->
                         </div>
@@ -3967,7 +3115,9 @@ require "config/global.php";
                             <!--begin::User-->
                             <div class="d-flex align-items-center mb-2">
                                 <!--begin::Avatar-->
-                                <div class="symbol  symbol-35px symbol-circle "><img alt="Pic" src="../../../assets/media/avatars/300-25.jpg" /></div><!--end::Avatar-->
+                                <div class="symbol  symbol-35px symbol-circle "><img alt="Pic"
+                                        src="../../../assets/media/avatars/300-25.jpg" /></div>
+                                <!--end::Avatar-->
                                 <!--begin::Details-->
                                 <div class="ms-3">
                                     <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary me-1">Brian Cox</a>
@@ -3979,8 +3129,10 @@ require "config/global.php";
                             <!--end::User-->
 
                             <!--begin::Text-->
-                            <div class="p-5 rounded bg-light-info text-dark fw-semibold mw-lg-400px text-start" data-kt-element="message-text">
-                                You can unwatch this repository immediately by clicking here: <a href="https://keenthemes.com/">Keenthemes.com</a> </div>
+                            <div class="p-5 rounded bg-light-info text-dark fw-semibold mw-lg-400px text-start"
+                                data-kt-element="message-text">
+                                You can unwatch this repository immediately by clicking here: <a
+                                    href="https://keenthemes.com/">Keenthemes.com</a> </div>
                             <!--end::Text-->
                         </div>
                         <!--end::Wrapper-->
@@ -4001,12 +3153,15 @@ require "config/global.php";
                                 <!--end::Details-->
 
                                 <!--begin::Avatar-->
-                                <div class="symbol  symbol-35px symbol-circle "><img alt="Pic" src="../../../assets/media/avatars/300-1.jpg" /></div><!--end::Avatar-->
+                                <div class="symbol  symbol-35px symbol-circle "><img alt="Pic"
+                                        src="../../../assets/media/avatars/300-1.jpg" /></div>
+                                <!--end::Avatar-->
                             </div>
                             <!--end::User-->
 
                             <!--begin::Text-->
-                            <div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-end" data-kt-element="message-text">
+                            <div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-end"
+                                data-kt-element="message-text">
                                 Most purchased Business courses during this sale! </div>
                             <!--end::Text-->
                         </div>
@@ -4021,7 +3176,9 @@ require "config/global.php";
                             <!--begin::User-->
                             <div class="d-flex align-items-center mb-2">
                                 <!--begin::Avatar-->
-                                <div class="symbol  symbol-35px symbol-circle "><img alt="Pic" src="../../../assets/media/avatars/300-25.jpg" /></div><!--end::Avatar-->
+                                <div class="symbol  symbol-35px symbol-circle "><img alt="Pic"
+                                        src="../../../assets/media/avatars/300-25.jpg" /></div>
+                                <!--end::Avatar-->
                                 <!--begin::Details-->
                                 <div class="ms-3">
                                     <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary me-1">Brian Cox</a>
@@ -4033,8 +3190,10 @@ require "config/global.php";
                             <!--end::User-->
 
                             <!--begin::Text-->
-                            <div class="p-5 rounded bg-light-info text-dark fw-semibold mw-lg-400px text-start" data-kt-element="message-text">
-                                Company BBQ to celebrate the last quater achievements and goals. Food and drinks provided </div>
+                            <div class="p-5 rounded bg-light-info text-dark fw-semibold mw-lg-400px text-start"
+                                data-kt-element="message-text">
+                                Company BBQ to celebrate the last quater achievements and goals. Food and drinks
+                                provided </div>
                             <!--end::Text-->
                         </div>
                         <!--end::Wrapper-->
@@ -4055,12 +3214,15 @@ require "config/global.php";
                                 <!--end::Details-->
 
                                 <!--begin::Avatar-->
-                                <div class="symbol  symbol-35px symbol-circle "><img alt="Pic" src="../../../assets/media/avatars/300-1.jpg" /></div><!--end::Avatar-->
+                                <div class="symbol  symbol-35px symbol-circle "><img alt="Pic"
+                                        src="../../../assets/media/avatars/300-1.jpg" /></div>
+                                <!--end::Avatar-->
                             </div>
                             <!--end::User-->
 
                             <!--begin::Text-->
-                            <div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-end" data-kt-element="message-text">
+                            <div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-end"
+                                data-kt-element="message-text">
                             </div>
                             <!--end::Text-->
                         </div>
@@ -4075,7 +3237,9 @@ require "config/global.php";
                             <!--begin::User-->
                             <div class="d-flex align-items-center mb-2">
                                 <!--begin::Avatar-->
-                                <div class="symbol  symbol-35px symbol-circle "><img alt="Pic" src="../../../assets/media/avatars/300-25.jpg" /></div><!--end::Avatar-->
+                                <div class="symbol  symbol-35px symbol-circle "><img alt="Pic"
+                                        src="../../../assets/media/avatars/300-25.jpg" /></div>
+                                <!--end::Avatar-->
                                 <!--begin::Details-->
                                 <div class="ms-3">
                                     <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary me-1">Brian Cox</a>
@@ -4087,7 +3251,8 @@ require "config/global.php";
                             <!--end::User-->
 
                             <!--begin::Text-->
-                            <div class="p-5 rounded bg-light-info text-dark fw-semibold mw-lg-400px text-start" data-kt-element="message-text">
+                            <div class="p-5 rounded bg-light-info text-dark fw-semibold mw-lg-400px text-start"
+                                data-kt-element="message-text">
                                 Right before vacation season we have the next Big Deal for you. </div>
                             <!--end::Text-->
                         </div>
@@ -4102,7 +3267,8 @@ require "config/global.php";
             <!--begin::Card footer-->
             <div class="card-footer pt-4" id="kt_drawer_chat_messenger_footer">
                 <!--begin::Input-->
-                <textarea class="form-control form-control-flush mb-3" rows="1" data-kt-element="input" placeholder="Type a message">
+                <textarea class="form-control form-control-flush mb-3" rows="1" data-kt-element="input"
+                    placeholder="Type a message">
 
             </textarea>
                 <!--end::Input-->
@@ -4111,10 +3277,13 @@ require "config/global.php";
                 <div class="d-flex flex-stack">
                     <!--begin::Actions-->
                     <div class="d-flex align-items-center me-2">
-                        <button class="btn btn-sm btn-icon btn-active-light-primary me-1" type="button" data-bs-toggle="tooltip" title="Coming soon">
+                        <button class="btn btn-sm btn-icon btn-active-light-primary me-1" type="button"
+                            data-bs-toggle="tooltip" title="Coming soon">
                             <i class="ki-duotone ki-paper-clip fs-3"></i> </button>
-                        <button class="btn btn-sm btn-icon btn-active-light-primary me-1" type="button" data-bs-toggle="tooltip" title="Coming soon">
-                            <i class="ki-duotone ki-cloud-add fs-3"><span class="path1"></span><span class="path2"></span></i> </button>
+                        <button class="btn btn-sm btn-icon btn-active-light-primary me-1" type="button"
+                            data-bs-toggle="tooltip" title="Coming soon">
+                            <i class="ki-duotone ki-cloud-add fs-3"><span class="path1"></span><span
+                                    class="path2"></span></i> </button>
                     </div>
                     <!--end::Actions-->
 
@@ -4131,7 +3300,10 @@ require "config/global.php";
     <!--end::Chat drawer-->
 
     <!--begin::Chat drawer-->
-    <div id="kt_shopping_cart" class="bg-body" data-kt-drawer="true" data-kt-drawer-name="cart" data-kt-drawer-activate="true" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'300px', 'md': '500px'}" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_drawer_shopping_cart_toggle" data-kt-drawer-close="#kt_drawer_shopping_cart_close">
+    <div id="kt_shopping_cart" class="bg-body" data-kt-drawer="true" data-kt-drawer-name="cart"
+        data-kt-drawer-activate="true" data-kt-drawer-overlay="true"
+        data-kt-drawer-width="{default:'300px', 'md': '500px'}" data-kt-drawer-direction="end"
+        data-kt-drawer-toggle="#kt_drawer_shopping_cart_toggle" data-kt-drawer-close="#kt_drawer_shopping_cart_close">
 
         <!--begin::Messenger-->
         <div class="card card-flush w-100 rounded-0">
@@ -4162,7 +3334,8 @@ require "config/global.php";
                     <div class="d-flex flex-column me-3">
                         <!--begin::Section-->
                         <div class="mb-3">
-                            <a href="../../ecommerce/sales/details.html" class="text-gray-800 text-hover-primary fs-4 fw-bold">Iblender</a>
+                            <a href="../../ecommerce/sales/details.html"
+                                class="text-gray-800 text-hover-primary fs-4 fw-bold">Iblender</a>
 
                             <span class="text-gray-400 fw-semibold d-block">The best kitchen gadget in 2022</span>
                         </div>
@@ -4174,7 +3347,8 @@ require "config/global.php";
                             <span class="text-muted mx-2">for</span>
                             <span class="fw-bold text-gray-800 fs-5 me-3">5</span>
 
-                            <a href="#" class="btn btn-sm btn-light-success btn-icon-success btn-icon w-25px h-25px me-2">
+                            <a href="#"
+                                class="btn btn-sm btn-light-success btn-icon-success btn-icon w-25px h-25px me-2">
                                 <i class="ki-duotone ki-minus fs-4"></i> </a>
 
                             <a href="#" class="btn btn-sm btn-light-success btn-icon w-25px h-25px">
@@ -4203,7 +3377,8 @@ require "config/global.php";
                     <div class="d-flex flex-column me-3">
                         <!--begin::Section-->
                         <div class="mb-3">
-                            <a href="../../ecommerce/sales/details.html" class="text-gray-800 text-hover-primary fs-4 fw-bold">SmartCleaner</a>
+                            <a href="../../ecommerce/sales/details.html"
+                                class="text-gray-800 text-hover-primary fs-4 fw-bold">SmartCleaner</a>
 
                             <span class="text-gray-400 fw-semibold d-block">Smart tool for cooking</span>
                         </div>
@@ -4215,7 +3390,8 @@ require "config/global.php";
                             <span class="text-muted mx-2">for</span>
                             <span class="fw-bold text-gray-800 fs-5 me-3">4</span>
 
-                            <a href="#" class="btn btn-sm btn-light-success btn-icon-success btn-icon w-25px h-25px me-2">
+                            <a href="#"
+                                class="btn btn-sm btn-light-success btn-icon-success btn-icon w-25px h-25px me-2">
                                 <i class="ki-duotone ki-minus fs-4"></i> </a>
 
                             <a href="#" class="btn btn-sm btn-light-success btn-icon w-25px h-25px">
@@ -4244,7 +3420,8 @@ require "config/global.php";
                     <div class="d-flex flex-column me-3">
                         <!--begin::Section-->
                         <div class="mb-3">
-                            <a href="../../ecommerce/sales/details.html" class="text-gray-800 text-hover-primary fs-4 fw-bold">CameraMaxr</a>
+                            <a href="../../ecommerce/sales/details.html"
+                                class="text-gray-800 text-hover-primary fs-4 fw-bold">CameraMaxr</a>
 
                             <span class="text-gray-400 fw-semibold d-block">Professional camera for edge</span>
                         </div>
@@ -4256,7 +3433,8 @@ require "config/global.php";
                             <span class="text-muted mx-2">for</span>
                             <span class="fw-bold text-gray-800 fs-5 me-3">3</span>
 
-                            <a href="#" class="btn btn-sm btn-light-success btn-icon-success btn-icon w-25px h-25px me-2">
+                            <a href="#"
+                                class="btn btn-sm btn-light-success btn-icon-success btn-icon w-25px h-25px me-2">
                                 <i class="ki-duotone ki-minus fs-4"></i> </a>
 
                             <a href="#" class="btn btn-sm btn-light-success btn-icon w-25px h-25px">
@@ -4285,7 +3463,8 @@ require "config/global.php";
                     <div class="d-flex flex-column me-3">
                         <!--begin::Section-->
                         <div class="mb-3">
-                            <a href="../../ecommerce/sales/details.html" class="text-gray-800 text-hover-primary fs-4 fw-bold">$D Printer</a>
+                            <a href="../../ecommerce/sales/details.html"
+                                class="text-gray-800 text-hover-primary fs-4 fw-bold">$D Printer</a>
 
                             <span class="text-gray-400 fw-semibold d-block">Manfactoring unique objekts</span>
                         </div>
@@ -4297,7 +3476,8 @@ require "config/global.php";
                             <span class="text-muted mx-2">for</span>
                             <span class="fw-bold text-gray-800 fs-5 me-3">7</span>
 
-                            <a href="#" class="btn btn-sm btn-light-success btn-icon-success btn-icon w-25px h-25px me-2">
+                            <a href="#"
+                                class="btn btn-sm btn-light-success btn-icon-success btn-icon w-25px h-25px me-2">
                                 <i class="ki-duotone ki-minus fs-4"></i> </a>
 
                             <a href="#" class="btn btn-sm btn-light-success btn-icon w-25px h-25px">
@@ -4326,7 +3506,8 @@ require "config/global.php";
                     <div class="d-flex flex-column me-3">
                         <!--begin::Section-->
                         <div class="mb-3">
-                            <a href="../../ecommerce/sales/details.html" class="text-gray-800 text-hover-primary fs-4 fw-bold">MotionWire</a>
+                            <a href="../../ecommerce/sales/details.html"
+                                class="text-gray-800 text-hover-primary fs-4 fw-bold">MotionWire</a>
 
                             <span class="text-gray-400 fw-semibold d-block">Perfect animation tool</span>
                         </div>
@@ -4338,7 +3519,8 @@ require "config/global.php";
                             <span class="text-muted mx-2">for</span>
                             <span class="fw-bold text-gray-800 fs-5 me-3">7</span>
 
-                            <a href="#" class="btn btn-sm btn-light-success btn-icon-success btn-icon w-25px h-25px me-2">
+                            <a href="#"
+                                class="btn btn-sm btn-light-success btn-icon-success btn-icon w-25px h-25px me-2">
                                 <i class="ki-duotone ki-minus fs-4"></i> </a>
 
                             <a href="#" class="btn btn-sm btn-light-success btn-icon w-25px h-25px">
@@ -4367,7 +3549,8 @@ require "config/global.php";
                     <div class="d-flex flex-column me-3">
                         <!--begin::Section-->
                         <div class="mb-3">
-                            <a href="../../ecommerce/sales/details.html" class="text-gray-800 text-hover-primary fs-4 fw-bold">Samsung</a>
+                            <a href="../../ecommerce/sales/details.html"
+                                class="text-gray-800 text-hover-primary fs-4 fw-bold">Samsung</a>
 
                             <span class="text-gray-400 fw-semibold d-block">Profile info,Timeline etc</span>
                         </div>
@@ -4379,7 +3562,8 @@ require "config/global.php";
                             <span class="text-muted mx-2">for</span>
                             <span class="fw-bold text-gray-800 fs-5 me-3">6</span>
 
-                            <a href="#" class="btn btn-sm btn-light-success btn-icon-success btn-icon w-25px h-25px me-2">
+                            <a href="#"
+                                class="btn btn-sm btn-light-success btn-icon-success btn-icon w-25px h-25px me-2">
                                 <i class="ki-duotone ki-minus fs-4"></i> </a>
 
                             <a href="#" class="btn btn-sm btn-light-success btn-icon w-25px h-25px">
@@ -4408,7 +3592,8 @@ require "config/global.php";
                     <div class="d-flex flex-column me-3">
                         <!--begin::Section-->
                         <div class="mb-3">
-                            <a href="../../ecommerce/sales/details.html" class="text-gray-800 text-hover-primary fs-4 fw-bold">$D Printer</a>
+                            <a href="../../ecommerce/sales/details.html"
+                                class="text-gray-800 text-hover-primary fs-4 fw-bold">$D Printer</a>
 
                             <span class="text-gray-400 fw-semibold d-block">Manfactoring unique objekts</span>
                         </div>
@@ -4420,7 +3605,8 @@ require "config/global.php";
                             <span class="text-muted mx-2">for</span>
                             <span class="fw-bold text-gray-800 fs-5 me-3">8</span>
 
-                            <a href="#" class="btn btn-sm btn-light-success btn-icon-success btn-icon w-25px h-25px me-2">
+                            <a href="#"
+                                class="btn btn-sm btn-light-success btn-icon-success btn-icon w-25px h-25px me-2">
                                 <i class="ki-duotone ki-minus fs-4"></i> </a>
 
                             <a href="#" class="btn btn-sm btn-light-success btn-icon w-25px h-25px">
@@ -4470,12 +3656,15 @@ require "config/global.php";
         <!--end::Messenger-->
     </div>
     <!--end::Chat drawer-->
-    <!--end::Drawers--><!--end::Main-->
+    <!--end::Drawers-->
+    <!--end::Main-->
     <!--begin::Engage drawers-->
 
 
     <!--begin::Help drawer-->
-    <div id="kt_help" class="bg-body" data-kt-drawer="true" data-kt-drawer-name="help" data-kt-drawer-activate="true" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'350px', 'md': '525px'}" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_help_toggle" data-kt-drawer-close="#kt_help_close">
+    <div id="kt_help" class="bg-body" data-kt-drawer="true" data-kt-drawer-name="help" data-kt-drawer-activate="true"
+        data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'350px', 'md': '525px'}"
+        data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_help_toggle" data-kt-drawer-close="#kt_help_close">
 
         <!--begin::Card-->
         <div class="card shadow-none rounded-0 w-100">
@@ -4487,7 +3676,8 @@ require "config/global.php";
 
                 <div class="card-toolbar">
                     <button type="button" class="btn btn-sm btn-icon explore-btn-dismiss me-n5" id="kt_help_close">
-                        <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span class="path2"></span></i> </button>
+                        <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span class="path2"></span></i>
+                    </button>
                 </div>
             </div>
             <!--end::Header-->
@@ -4495,32 +3685,40 @@ require "config/global.php";
             <!--begin::Body-->
             <div class="card-body" id="kt_help_body">
                 <!--begin::Content-->
-                <div id="kt_help_scroll" class="hover-scroll-overlay-y" data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-wrappers="#kt_help_body" data-kt-scroll-dependencies="#kt_help_header" data-kt-scroll-offset="5px">
+                <div id="kt_help_scroll" class="hover-scroll-overlay-y" data-kt-scroll="true"
+                    data-kt-scroll-height="auto" data-kt-scroll-wrappers="#kt_help_body"
+                    data-kt-scroll-dependencies="#kt_help_header" data-kt-scroll-offset="5px">
 
                     <!--begin::Support-->
                     <div class="rounded border border-dashed border-gray-300 p-6 p-lg-8 mb-10">
                         <!--begin::Heading-->
-                        <h2 class="fw-bold mb-5">Support at <a href="https://devs.keenthemes.com/" class="">devs.keenthemes.com</a></h2>
+                        <h2 class="fw-bold mb-5">Support at <a href="https://devs.keenthemes.com/"
+                                class="">devs.keenthemes.com</a></h2>
                         <!--end::Heading-->
 
                         <!--begin::Description-->
                         <div class="fs-5 fw-semibold mb-5">
-                            <span class="text-gray-500">Join our developers community to find answer to your question and help others.</span>
+                            <span class="text-gray-500">Join our developers community to find answer to your question
+                                and help others.</span>
                             <a class="explore-link d-none" href="https://keenthemes.com/licensing">FAQs</a>
                         </div>
                         <!--end::Description-->
 
                         <!--begin::Link-->
-                        <a href="https://devs.keenthemes.com/" class="btn btn-lg explore-btn-primary w-100">Get Support</a>
+                        <a href="https://devs.keenthemes.com/" class="btn btn-lg explore-btn-primary w-100">Get
+                            Support</a>
                         <!--end::Link-->
                     </div>
                     <!--end::Support-->
 
                     <!--begin::Link-->
-                    <a href="https://preview.keenthemes.com/html/craft/docs" class="parent-hover d-flex align-items-center mb-7">
+                    <a href="https://preview.keenthemes.com/html/craft/docs"
+                        class="parent-hover d-flex align-items-center mb-7">
                         <!--begin::Icon-->
-                        <div class="d-flex flex-center w-50px h-50px w-lg-75px h-lg-75px flex-shrink-0 rounded bg-light-warning">
-                            <i class="ki-duotone ki-abstract-26 text-warning fs-2x fs-lg-3x"><span class="path1"></span><span class="path2"></span></i>
+                        <div
+                            class="d-flex flex-center w-50px h-50px w-lg-75px h-lg-75px flex-shrink-0 rounded bg-light-warning">
+                            <i class="ki-duotone ki-abstract-26 text-warning fs-2x fs-lg-3x"><span
+                                    class="path1"></span><span class="path2"></span></i>
                         </div>
                         <!--end::Icon-->
 
@@ -4535,21 +3733,26 @@ require "config/global.php";
 
                                 <!--begin::Description-->
                                 <div class="text-muted fw-semibold fs-7 fs-lg-6">
-                                    From guides and how-tos, to live demos and code examples to get started right away. </div>
+                                    From guides and how-tos, to live demos and code examples to get started right away.
+                                </div>
                                 <!--end::Description-->
                             </div>
                             <!--end::Wrapper-->
 
-                            <i class="ki-duotone ki-arrow-right text-gray-400 fs-2"><span class="path1"></span><span class="path2"></span></i>
+                            <i class="ki-duotone ki-arrow-right text-gray-400 fs-2"><span class="path1"></span><span
+                                    class="path2"></span></i>
                         </div>
                         <!--end::Info-->
                     </a>
                     <!--end::Link-->
                     <!--begin::Link-->
-                    <a href="https://preview.keenthemes.com/html/craft/docs/base/utilities" class="parent-hover d-flex align-items-center mb-7">
+                    <a href="https://preview.keenthemes.com/html/craft/docs/base/utilities"
+                        class="parent-hover d-flex align-items-center mb-7">
                         <!--begin::Icon-->
-                        <div class="d-flex flex-center w-50px h-50px w-lg-75px h-lg-75px flex-shrink-0 rounded bg-light-primary">
-                            <i class="ki-duotone ki-wallet text-primary fs-2x fs-lg-3x"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+                        <div
+                            class="d-flex flex-center w-50px h-50px w-lg-75px h-lg-75px flex-shrink-0 rounded bg-light-primary">
+                            <i class="ki-duotone ki-wallet text-primary fs-2x fs-lg-3x"><span class="path1"></span><span
+                                    class="path2"></span><span class="path3"></span><span class="path4"></span></i>
                         </div>
                         <!--end::Icon-->
 
@@ -4569,7 +3772,8 @@ require "config/global.php";
                             </div>
                             <!--end::Wrapper-->
 
-                            <i class="ki-duotone ki-arrow-right text-gray-400 fs-2"><span class="path1"></span><span class="path2"></span></i>
+                            <i class="ki-duotone ki-arrow-right text-gray-400 fs-2"><span class="path1"></span><span
+                                    class="path2"></span></i>
                         </div>
                         <!--end::Info-->
                     </a>
@@ -4577,8 +3781,10 @@ require "config/global.php";
                     <!--begin::Link-->
                     <a href="../../../layout-builder.html" class="parent-hover d-flex align-items-center mb-7">
                         <!--begin::Icon-->
-                        <div class="d-flex flex-center w-50px h-50px w-lg-75px h-lg-75px flex-shrink-0 rounded bg-light-info">
-                            <i class="ki-duotone ki-design text-info fs-2x fs-lg-3x"><span class="path1"></span><span class="path2"></span></i>
+                        <div
+                            class="d-flex flex-center w-50px h-50px w-lg-75px h-lg-75px flex-shrink-0 rounded bg-light-info">
+                            <i class="ki-duotone ki-design text-info fs-2x fs-lg-3x"><span class="path1"></span><span
+                                    class="path2"></span></i>
                         </div>
                         <!--end::Icon-->
 
@@ -4593,21 +3799,26 @@ require "config/global.php";
 
                                 <!--begin::Description-->
                                 <div class="text-muted fw-semibold fs-7 fs-lg-6">
-                                    Build your layout, preview it and export the HTML for server side integration. </div>
+                                    Build your layout, preview it and export the HTML for server side integration.
+                                </div>
                                 <!--end::Description-->
                             </div>
                             <!--end::Wrapper-->
 
-                            <i class="ki-duotone ki-arrow-right text-gray-400 fs-2"><span class="path1"></span><span class="path2"></span></i>
+                            <i class="ki-duotone ki-arrow-right text-gray-400 fs-2"><span class="path1"></span><span
+                                    class="path2"></span></i>
                         </div>
                         <!--end::Info-->
                     </a>
                     <!--end::Link-->
                     <!--begin::Link-->
-                    <a href="https://preview.keenthemes.com/html/craft/docs/getting-started/changelog" class="parent-hover d-flex align-items-center mb-7">
+                    <a href="https://preview.keenthemes.com/html/craft/docs/getting-started/changelog"
+                        class="parent-hover d-flex align-items-center mb-7">
                         <!--begin::Icon-->
-                        <div class="d-flex flex-center w-50px h-50px w-lg-75px h-lg-75px flex-shrink-0 rounded bg-light-danger">
-                            <i class="ki-duotone ki-keyboard text-danger fs-2x fs-lg-3x"><span class="path1"></span><span class="path2"></span></i>
+                        <div
+                            class="d-flex flex-center w-50px h-50px w-lg-75px h-lg-75px flex-shrink-0 rounded bg-light-danger">
+                            <i class="ki-duotone ki-keyboard text-danger fs-2x fs-lg-3x"><span
+                                    class="path1"></span><span class="path2"></span></i>
                         </div>
                         <!--end::Icon-->
 
@@ -4627,7 +3838,8 @@ require "config/global.php";
                             </div>
                             <!--end::Wrapper-->
 
-                            <i class="ki-duotone ki-arrow-right text-gray-400 fs-2"><span class="path1"></span><span class="path2"></span></i>
+                            <i class="ki-duotone ki-arrow-right text-gray-400 fs-2"><span class="path1"></span><span
+                                    class="path2"></span></i>
                         </div>
                         <!--end::Info-->
                     </a>
@@ -4639,29 +3851,35 @@ require "config/global.php";
         </div>
         <!--end::Card-->
     </div>
-    <!--end::Help drawer--><!--end::Engage drawers-->
+    <!--end::Help drawer-->
+    <!--end::Engage drawers-->
 
     <!--begin::Engage toolbar-->
-    <div class="engage-toolbar d-flex position-fixed px-5 fw-bold zindex-2 top-50 end-0 transform-90 mt-5 mt-lg-20 gap-2">
+    <div
+        class="engage-toolbar d-flex position-fixed px-5 fw-bold zindex-2 top-50 end-0 transform-90 mt-5 mt-lg-20 gap-2">
 
 
 
 
         <!--begin::Help drawer toggle-->
-        <button id="kt_help_toggle" class="engage-help-toggle btn engage-btn shadow-sm px-5 rounded-top-0" title="Learn & Get Inspired" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover">
+        <button id="kt_help_toggle" class="engage-help-toggle btn engage-btn shadow-sm px-5 rounded-top-0"
+            title="Learn & Get Inspired" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+            data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover">
             Help
         </button>
         <!--end::Help drawer toggle-->
 
         <!--begin::Purchase link-->
-        <a href="https://themes.getbootstrap.com/product/craft-bootstrap-5-admin-dashboard-theme" target="_blank" class="engage-purchase-link btn engage-btn px-5 shadow-sm rounded-top-0">
+        <a href="https://themes.getbootstrap.com/product/craft-bootstrap-5-admin-dashboard-theme" target="_blank"
+            class="engage-purchase-link btn engage-btn px-5 shadow-sm rounded-top-0">
             Buy now
         </a>
         <!--end::Purchase link-->
 
 
     </div>
-    <!--end::Engage toolbar--><!--begin::Scrolltop-->
+    <!--end::Engage toolbar-->
+    <!--begin::Scrolltop-->
     <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
         <i class="ki-duotone ki-arrow-up"><span class="path1"></span><span class="path2"></span></i>
     </div>
@@ -4692,7 +3910,8 @@ require "config/global.php";
                         <h1 class="mb-3">Upgrade a Plan</h1>
 
                         <div class="text-muted fw-semibold fs-5">
-                            If you need more info, please check <a href="#" class="link-primary fw-bold">Pricing Guidelines</a>.
+                            If you need more info, please check <a href="#" class="link-primary fw-bold">Pricing
+                                Guidelines</a>.
                         </div>
                     </div>
                     <!--end::Heading-->
@@ -4701,10 +3920,12 @@ require "config/global.php";
                     <div class="d-flex flex-column">
                         <!--begin::Nav group-->
                         <div class="nav-group nav-group-outline mx-auto" data-kt-buttons="true">
-                            <button class="btn btn-color-gray-400 btn-active btn-active-secondary px-6 py-3 me-2 active" data-kt-plan="month">
+                            <button class="btn btn-color-gray-400 btn-active btn-active-secondary px-6 py-3 me-2 active"
+                                data-kt-plan="month">
                                 Monthly
                             </button>
-                            <button class="btn btn-color-gray-400 btn-active btn-active-secondary px-6 py-3" data-kt-plan="annual">
+                            <button class="btn btn-color-gray-400 btn-active btn-active-secondary px-6 py-3"
+                                data-kt-plan="annual">
                                 Annual
                             </button>
                         </div>
@@ -4717,13 +3938,17 @@ require "config/global.php";
                                 <!--begin::Tabs-->
                                 <div class="nav flex-column">
                                     <!--begin::Tab link-->
-                                    <label class="nav-link btn btn-outline btn-outline-dashed btn-color-dark btn-active btn-active-primary d-flex flex-stack text-start p-6 active mb-6" data-bs-toggle="tab" data-bs-target="#kt_upgrade_plan_startup">
+                                    <label
+                                        class="nav-link btn btn-outline btn-outline-dashed btn-color-dark btn-active btn-active-primary d-flex flex-stack text-start p-6 active mb-6"
+                                        data-bs-toggle="tab" data-bs-target="#kt_upgrade_plan_startup">
 
                                         <!--end::Description-->
                                         <div class="d-flex align-items-center me-2">
                                             <!--begin::Radio-->
-                                            <div class="form-check form-check-custom form-check-solid form-check-success flex-shrink-0 me-6">
-                                                <input class="form-check-input" type="radio" name="plan" checked="checked" value="startup" />
+                                            <div
+                                                class="form-check form-check-custom form-check-solid form-check-success flex-shrink-0 me-6">
+                                                <input class="form-check-input" type="radio" name="plan"
+                                                    checked="checked" value="startup" />
                                             </div>
                                             <!--end::Radio-->
 
@@ -4743,7 +3968,8 @@ require "config/global.php";
                                         <div class="ms-5">
                                             <span class="mb-2">$</span>
 
-                                            <span class="fs-3x fw-bold" data-kt-plan-price-month="39" data-kt-plan-price-annual="399">
+                                            <span class="fs-3x fw-bold" data-kt-plan-price-month="39"
+                                                data-kt-plan-price-annual="399">
                                                 39 </span>
 
                                             <span class="fs-7 opacity-50">/
@@ -4754,13 +3980,17 @@ require "config/global.php";
                                     </label>
                                     <!--end::Tab link-->
                                     <!--begin::Tab link-->
-                                    <label class="nav-link btn btn-outline btn-outline-dashed btn-color-dark btn-active btn-active-primary d-flex flex-stack text-start p-6  mb-6" data-bs-toggle="tab" data-bs-target="#kt_upgrade_plan_advanced">
+                                    <label
+                                        class="nav-link btn btn-outline btn-outline-dashed btn-color-dark btn-active btn-active-primary d-flex flex-stack text-start p-6  mb-6"
+                                        data-bs-toggle="tab" data-bs-target="#kt_upgrade_plan_advanced">
 
                                         <!--end::Description-->
                                         <div class="d-flex align-items-center me-2">
                                             <!--begin::Radio-->
-                                            <div class="form-check form-check-custom form-check-solid form-check-success flex-shrink-0 me-6">
-                                                <input class="form-check-input" type="radio" name="plan" value="advanced" />
+                                            <div
+                                                class="form-check form-check-custom form-check-solid form-check-success flex-shrink-0 me-6">
+                                                <input class="form-check-input" type="radio" name="plan"
+                                                    value="advanced" />
                                             </div>
                                             <!--end::Radio-->
 
@@ -4780,7 +4010,8 @@ require "config/global.php";
                                         <div class="ms-5">
                                             <span class="mb-2">$</span>
 
-                                            <span class="fs-3x fw-bold" data-kt-plan-price-month="339" data-kt-plan-price-annual="3399">
+                                            <span class="fs-3x fw-bold" data-kt-plan-price-month="339"
+                                                data-kt-plan-price-annual="3399">
                                                 339 </span>
 
                                             <span class="fs-7 opacity-50">/
@@ -4791,13 +4022,17 @@ require "config/global.php";
                                     </label>
                                     <!--end::Tab link-->
                                     <!--begin::Tab link-->
-                                    <label class="nav-link btn btn-outline btn-outline-dashed btn-color-dark btn-active btn-active-primary d-flex flex-stack text-start p-6  mb-6" data-bs-toggle="tab" data-bs-target="#kt_upgrade_plan_enterprise">
+                                    <label
+                                        class="nav-link btn btn-outline btn-outline-dashed btn-color-dark btn-active btn-active-primary d-flex flex-stack text-start p-6  mb-6"
+                                        data-bs-toggle="tab" data-bs-target="#kt_upgrade_plan_enterprise">
 
                                         <!--end::Description-->
                                         <div class="d-flex align-items-center me-2">
                                             <!--begin::Radio-->
-                                            <div class="form-check form-check-custom form-check-solid form-check-success flex-shrink-0 me-6">
-                                                <input class="form-check-input" type="radio" name="plan" value="enterprise" />
+                                            <div
+                                                class="form-check form-check-custom form-check-solid form-check-success flex-shrink-0 me-6">
+                                                <input class="form-check-input" type="radio" name="plan"
+                                                    value="enterprise" />
                                             </div>
                                             <!--end::Radio-->
 
@@ -4805,7 +4040,8 @@ require "config/global.php";
                                             <div class="flex-grow-1">
                                                 <div class="d-flex align-items-center fs-2 fw-bold flex-wrap">
                                                     Enterprise
-                                                    <span class="badge badge-light-success ms-2 py-2 px-3 fs-7">Popular</span>
+                                                    <span
+                                                        class="badge badge-light-success ms-2 py-2 px-3 fs-7">Popular</span>
                                                 </div>
                                                 <div class="fw-semibold opacity-75">
                                                     Best value for 1000+ team </div>
@@ -4818,7 +4054,8 @@ require "config/global.php";
                                         <div class="ms-5">
                                             <span class="mb-2">$</span>
 
-                                            <span class="fs-3x fw-bold" data-kt-plan-price-month="999" data-kt-plan-price-annual="9999">
+                                            <span class="fs-3x fw-bold" data-kt-plan-price-month="999"
+                                                data-kt-plan-price-annual="9999">
                                                 999 </span>
 
                                             <span class="fs-7 opacity-50">/
@@ -4829,13 +4066,17 @@ require "config/global.php";
                                     </label>
                                     <!--end::Tab link-->
                                     <!--begin::Tab link-->
-                                    <label class="nav-link btn btn-outline btn-outline-dashed btn-color-dark btn-active btn-active-primary d-flex flex-stack text-start p-6 mb-6" data-bs-toggle="tab" data-bs-target="#kt_upgrade_plan_custom">
+                                    <label
+                                        class="nav-link btn btn-outline btn-outline-dashed btn-color-dark btn-active btn-active-primary d-flex flex-stack text-start p-6 mb-6"
+                                        data-bs-toggle="tab" data-bs-target="#kt_upgrade_plan_custom">
 
                                         <!--end::Description-->
                                         <div class="d-flex align-items-center me-2">
                                             <!--begin::Radio-->
-                                            <div class="form-check form-check-custom form-check-solid form-check-success flex-shrink-0 me-6">
-                                                <input class="form-check-input" type="radio" name="plan" value="custom" />
+                                            <div
+                                                class="form-check form-check-custom form-check-solid form-check-success flex-shrink-0 me-6">
+                                                <input class="form-check-input" type="radio" name="plan"
+                                                    value="custom" />
                                             </div>
                                             <!--end::Radio-->
 
@@ -4885,49 +4126,56 @@ require "config/global.php";
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Up to 10 Active Users </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Up to 30 Project Integrations </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Analytics Module </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-muted flex-grow-1">
                                                     Finance Module </span>
-                                                <i class="ki-duotone ki-cross-circle fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-cross-circle fs-1"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-muted flex-grow-1">
                                                     Accounting Module </span>
-                                                <i class="ki-duotone ki-cross-circle fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-cross-circle fs-1"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-muted flex-grow-1">
                                                     Network Platform </span>
-                                                <i class="ki-duotone ki-cross-circle fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-cross-circle fs-1"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center ">
                                                 <span class="fw-semibold fs-5 text-muted flex-grow-1">
                                                     Unlimited Cloud Space </span>
-                                                <i class="ki-duotone ki-cross-circle fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-cross-circle fs-1"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                         </div>
@@ -4952,49 +4200,56 @@ require "config/global.php";
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Up to 10 Active Users </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Up to 30 Project Integrations </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Analytics Module </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Finance Module </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Accounting Module </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-muted flex-grow-1">
                                                     Network Platform </span>
-                                                <i class="ki-duotone ki-cross-circle fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-cross-circle fs-1"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center ">
                                                 <span class="fw-semibold fs-5 text-muted flex-grow-1">
                                                     Unlimited Cloud Space </span>
-                                                <i class="ki-duotone ki-cross-circle fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-cross-circle fs-1"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                         </div>
@@ -5019,49 +4274,56 @@ require "config/global.php";
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Up to 10 Active Users </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Up to 30 Project Integrations </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Analytics Module </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Finance Module </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Accounting Module </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Network Platform </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center ">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Unlimited Cloud Space </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                         </div>
@@ -5086,49 +4348,56 @@ require "config/global.php";
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Unlimited Users </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Unlimited Project Integrations </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Analytics Module </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Finance Module </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Accounting Module </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center mb-7">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Network Platform </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                             <!--begin::Item-->
                                             <div class="d-flex align-items-center ">
                                                 <span class="fw-semibold fs-5 text-gray-700 flex-grow-1">
                                                     Unlimited Cloud Space </span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>
+                                                <i class="ki-duotone ki-check-circle fs-1 text-success"><span
+                                                        class="path1"></span><span class="path2"></span></i>
                                             </div>
                                             <!--end::Item-->
                                         </div>
@@ -5208,7 +4477,8 @@ require "config/global.php";
 
                     <!--begin::Google Contacts Invite-->
                     <div class="btn btn-light-primary fw-bold w-100 mb-8">
-                        <img alt="Logo" src="../../../assets/media/svg/brand-logos/google-icon.svg" class="h-20px me-3" />
+                        <img alt="Logo" src="../../../assets/media/svg/brand-logos/google-icon.svg"
+                            class="h-20px me-3" />
                         Invite Gmail Contacts
                     </div>
                     <!--end::Google Contacts Invite-->
@@ -5220,7 +4490,8 @@ require "config/global.php";
                     <!--end::Separator-->
 
                     <!--begin::Textarea-->
-                    <textarea class="form-control form-control-solid mb-8" rows="3" placeholder="Type or paste emails here">
+                    <textarea class="form-control form-control-solid mb-8" rows="3"
+                        placeholder="Type or paste emails here">
                 </textarea>
                     <!--end::Textarea-->
 
@@ -5244,7 +4515,8 @@ require "config/global.php";
 
                                     <!--begin::Details-->
                                     <div class="ms-5">
-                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Emma Smith</a>
+                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Emma
+                                            Smith</a>
 
                                         <div class="fw-semibold text-muted">smith@kpmg.com</div>
                                     </div>
@@ -5254,7 +4526,8 @@ require "config/global.php";
 
                                 <!--begin::Access menu-->
                                 <div class="ms-2 w-100px">
-                                    <select class="form-select form-select-solid form-select-sm" data-control="select2" data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
+                                    <select class="form-select form-select-solid form-select-sm" data-control="select2"
+                                        data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
                                         <option value="1">Guest</option>
                                         <option value="2" selected>Owner</option>
                                         <option value="3">Can Edit</option>
@@ -5276,7 +4549,8 @@ require "config/global.php";
 
                                     <!--begin::Details-->
                                     <div class="ms-5">
-                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Melody Macy</a>
+                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Melody
+                                            Macy</a>
 
                                         <div class="fw-semibold text-muted">melody@altbox.com</div>
                                     </div>
@@ -5286,7 +4560,8 @@ require "config/global.php";
 
                                 <!--begin::Access menu-->
                                 <div class="ms-2 w-100px">
-                                    <select class="form-select form-select-solid form-select-sm" data-control="select2" data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
+                                    <select class="form-select form-select-solid form-select-sm" data-control="select2"
+                                        data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
                                         <option value="1" selected>Guest</option>
                                         <option value="2">Owner</option>
                                         <option value="3">Can Edit</option>
@@ -5307,7 +4582,8 @@ require "config/global.php";
 
                                     <!--begin::Details-->
                                     <div class="ms-5">
-                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Max Smith</a>
+                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Max
+                                            Smith</a>
 
                                         <div class="fw-semibold text-muted">max@kt.com</div>
                                     </div>
@@ -5317,7 +4593,8 @@ require "config/global.php";
 
                                 <!--begin::Access menu-->
                                 <div class="ms-2 w-100px">
-                                    <select class="form-select form-select-solid form-select-sm" data-control="select2" data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
+                                    <select class="form-select form-select-solid form-select-sm" data-control="select2"
+                                        data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
                                         <option value="1">Guest</option>
                                         <option value="2">Owner</option>
                                         <option value="3" selected>Can Edit</option>
@@ -5338,7 +4615,8 @@ require "config/global.php";
 
                                     <!--begin::Details-->
                                     <div class="ms-5">
-                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Sean Bean</a>
+                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Sean
+                                            Bean</a>
 
                                         <div class="fw-semibold text-muted">sean@dellito.com</div>
                                     </div>
@@ -5348,7 +4626,8 @@ require "config/global.php";
 
                                 <!--begin::Access menu-->
                                 <div class="ms-2 w-100px">
-                                    <select class="form-select form-select-solid form-select-sm" data-control="select2" data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
+                                    <select class="form-select form-select-solid form-select-sm" data-control="select2"
+                                        data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
                                         <option value="1">Guest</option>
                                         <option value="2" selected>Owner</option>
                                         <option value="3">Can Edit</option>
@@ -5369,7 +4648,8 @@ require "config/global.php";
 
                                     <!--begin::Details-->
                                     <div class="ms-5">
-                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Brian Cox</a>
+                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Brian
+                                            Cox</a>
 
                                         <div class="fw-semibold text-muted">brian@exchange.com</div>
                                     </div>
@@ -5379,7 +4659,8 @@ require "config/global.php";
 
                                 <!--begin::Access menu-->
                                 <div class="ms-2 w-100px">
-                                    <select class="form-select form-select-solid form-select-sm" data-control="select2" data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
+                                    <select class="form-select form-select-solid form-select-sm" data-control="select2"
+                                        data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
                                         <option value="1">Guest</option>
                                         <option value="2">Owner</option>
                                         <option value="3" selected>Can Edit</option>
@@ -5401,7 +4682,8 @@ require "config/global.php";
 
                                     <!--begin::Details-->
                                     <div class="ms-5">
-                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Mikaela Collins</a>
+                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Mikaela
+                                            Collins</a>
 
                                         <div class="fw-semibold text-muted">mik@pex.com</div>
                                     </div>
@@ -5411,7 +4693,8 @@ require "config/global.php";
 
                                 <!--begin::Access menu-->
                                 <div class="ms-2 w-100px">
-                                    <select class="form-select form-select-solid form-select-sm" data-control="select2" data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
+                                    <select class="form-select form-select-solid form-select-sm" data-control="select2"
+                                        data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
                                         <option value="1">Guest</option>
                                         <option value="2" selected>Owner</option>
                                         <option value="3">Can Edit</option>
@@ -5432,7 +4715,8 @@ require "config/global.php";
 
                                     <!--begin::Details-->
                                     <div class="ms-5">
-                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Francis Mitcham</a>
+                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Francis
+                                            Mitcham</a>
 
                                         <div class="fw-semibold text-muted">f.mit@kpmg.com</div>
                                     </div>
@@ -5442,7 +4726,8 @@ require "config/global.php";
 
                                 <!--begin::Access menu-->
                                 <div class="ms-2 w-100px">
-                                    <select class="form-select form-select-solid form-select-sm" data-control="select2" data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
+                                    <select class="form-select form-select-solid form-select-sm" data-control="select2"
+                                        data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
                                         <option value="1">Guest</option>
                                         <option value="2">Owner</option>
                                         <option value="3" selected>Can Edit</option>
@@ -5464,7 +4749,8 @@ require "config/global.php";
 
                                     <!--begin::Details-->
                                     <div class="ms-5">
-                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Olivia Wild</a>
+                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Olivia
+                                            Wild</a>
 
                                         <div class="fw-semibold text-muted">olivia@corpmail.com</div>
                                     </div>
@@ -5474,7 +4760,8 @@ require "config/global.php";
 
                                 <!--begin::Access menu-->
                                 <div class="ms-2 w-100px">
-                                    <select class="form-select form-select-solid form-select-sm" data-control="select2" data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
+                                    <select class="form-select form-select-solid form-select-sm" data-control="select2"
+                                        data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
                                         <option value="1">Guest</option>
                                         <option value="2" selected>Owner</option>
                                         <option value="3">Can Edit</option>
@@ -5496,7 +4783,8 @@ require "config/global.php";
 
                                     <!--begin::Details-->
                                     <div class="ms-5">
-                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Neil Owen</a>
+                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Neil
+                                            Owen</a>
 
                                         <div class="fw-semibold text-muted">owen.neil@gmail.com</div>
                                     </div>
@@ -5506,7 +4794,8 @@ require "config/global.php";
 
                                 <!--begin::Access menu-->
                                 <div class="ms-2 w-100px">
-                                    <select class="form-select form-select-solid form-select-sm" data-control="select2" data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
+                                    <select class="form-select form-select-solid form-select-sm" data-control="select2"
+                                        data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
                                         <option value="1" selected>Guest</option>
                                         <option value="2">Owner</option>
                                         <option value="3">Can Edit</option>
@@ -5527,7 +4816,8 @@ require "config/global.php";
 
                                     <!--begin::Details-->
                                     <div class="ms-5">
-                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Dan Wilson</a>
+                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Dan
+                                            Wilson</a>
 
                                         <div class="fw-semibold text-muted">dam@consilting.com</div>
                                     </div>
@@ -5537,7 +4827,8 @@ require "config/global.php";
 
                                 <!--begin::Access menu-->
                                 <div class="ms-2 w-100px">
-                                    <select class="form-select form-select-solid form-select-sm" data-control="select2" data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
+                                    <select class="form-select form-select-solid form-select-sm" data-control="select2"
+                                        data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
                                         <option value="1">Guest</option>
                                         <option value="2">Owner</option>
                                         <option value="3" selected>Can Edit</option>
@@ -5559,7 +4850,8 @@ require "config/global.php";
 
                                     <!--begin::Details-->
                                     <div class="ms-5">
-                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Emma Bold</a>
+                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Emma
+                                            Bold</a>
 
                                         <div class="fw-semibold text-muted">emma@intenso.com</div>
                                     </div>
@@ -5569,7 +4861,8 @@ require "config/global.php";
 
                                 <!--begin::Access menu-->
                                 <div class="ms-2 w-100px">
-                                    <select class="form-select form-select-solid form-select-sm" data-control="select2" data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
+                                    <select class="form-select form-select-solid form-select-sm" data-control="select2"
+                                        data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
                                         <option value="1">Guest</option>
                                         <option value="2" selected>Owner</option>
                                         <option value="3">Can Edit</option>
@@ -5590,7 +4883,8 @@ require "config/global.php";
 
                                     <!--begin::Details-->
                                     <div class="ms-5">
-                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Ana Crown</a>
+                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Ana
+                                            Crown</a>
 
                                         <div class="fw-semibold text-muted">ana.cf@limtel.com</div>
                                     </div>
@@ -5600,7 +4894,8 @@ require "config/global.php";
 
                                 <!--begin::Access menu-->
                                 <div class="ms-2 w-100px">
-                                    <select class="form-select form-select-solid form-select-sm" data-control="select2" data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
+                                    <select class="form-select form-select-solid form-select-sm" data-control="select2"
+                                        data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
                                         <option value="1" selected>Guest</option>
                                         <option value="2">Owner</option>
                                         <option value="3">Can Edit</option>
@@ -5622,7 +4917,8 @@ require "config/global.php";
 
                                     <!--begin::Details-->
                                     <div class="ms-5">
-                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Robert Doe</a>
+                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Robert
+                                            Doe</a>
 
                                         <div class="fw-semibold text-muted">robert@benko.com</div>
                                     </div>
@@ -5632,7 +4928,8 @@ require "config/global.php";
 
                                 <!--begin::Access menu-->
                                 <div class="ms-2 w-100px">
-                                    <select class="form-select form-select-solid form-select-sm" data-control="select2" data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
+                                    <select class="form-select form-select-solid form-select-sm" data-control="select2"
+                                        data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
                                         <option value="1">Guest</option>
                                         <option value="2">Owner</option>
                                         <option value="3" selected>Can Edit</option>
@@ -5653,7 +4950,8 @@ require "config/global.php";
 
                                     <!--begin::Details-->
                                     <div class="ms-5">
-                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">John Miller</a>
+                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">John
+                                            Miller</a>
 
                                         <div class="fw-semibold text-muted">miller@mapple.com</div>
                                     </div>
@@ -5663,7 +4961,8 @@ require "config/global.php";
 
                                 <!--begin::Access menu-->
                                 <div class="ms-2 w-100px">
-                                    <select class="form-select form-select-solid form-select-sm" data-control="select2" data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
+                                    <select class="form-select form-select-solid form-select-sm" data-control="select2"
+                                        data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
                                         <option value="1">Guest</option>
                                         <option value="2">Owner</option>
                                         <option value="3" selected>Can Edit</option>
@@ -5685,7 +4984,8 @@ require "config/global.php";
 
                                     <!--begin::Details-->
                                     <div class="ms-5">
-                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Lucy Kunic</a>
+                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Lucy
+                                            Kunic</a>
 
                                         <div class="fw-semibold text-muted">lucy.m@fentech.com</div>
                                     </div>
@@ -5695,7 +4995,8 @@ require "config/global.php";
 
                                 <!--begin::Access menu-->
                                 <div class="ms-2 w-100px">
-                                    <select class="form-select form-select-solid form-select-sm" data-control="select2" data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
+                                    <select class="form-select form-select-solid form-select-sm" data-control="select2"
+                                        data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
                                         <option value="1">Guest</option>
                                         <option value="2" selected>Owner</option>
                                         <option value="3">Can Edit</option>
@@ -5716,7 +5017,8 @@ require "config/global.php";
 
                                     <!--begin::Details-->
                                     <div class="ms-5">
-                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Ethan Wilder</a>
+                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Ethan
+                                            Wilder</a>
 
                                         <div class="fw-semibold text-muted">ethan@loop.com.au</div>
                                     </div>
@@ -5726,7 +5028,8 @@ require "config/global.php";
 
                                 <!--begin::Access menu-->
                                 <div class="ms-2 w-100px">
-                                    <select class="form-select form-select-solid form-select-sm" data-control="select2" data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
+                                    <select class="form-select form-select-solid form-select-sm" data-control="select2"
+                                        data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
                                         <option value="1" selected>Guest</option>
                                         <option value="2">Owner</option>
                                         <option value="3">Can Edit</option>
@@ -5747,7 +5050,8 @@ require "config/global.php";
 
                                     <!--begin::Details-->
                                     <div class="ms-5">
-                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Emma Smith</a>
+                                        <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Emma
+                                            Smith</a>
 
                                         <div class="fw-semibold text-muted">smith@kpmg.com</div>
                                     </div>
@@ -5757,7 +5061,8 @@ require "config/global.php";
 
                                 <!--begin::Access menu-->
                                 <div class="ms-2 w-100px">
-                                    <select class="form-select form-select-solid form-select-sm" data-control="select2" data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
+                                    <select class="form-select form-select-solid form-select-sm" data-control="select2"
+                                        data-dropdown-parent="#kt_modal_invite_friends" data-hide-search="true">
                                         <option value="1">Guest</option>
                                         <option value="2">Owner</option>
                                         <option value="3" selected>Can Edit</option>
@@ -5798,7 +5103,8 @@ require "config/global.php";
         </div>
         <!--end::Modal dialog-->
     </div>
-    <!--end::Modal - Invite Friend--><!--begin::Modal - Create Project-->
+    <!--end::Modal - Invite Friend-->
+    <!--begin::Modal - Create Project-->
     <div class="modal fade" id="kt_modal_create_project" tabindex="-1" aria-hidden="true">
         <!--begin::Modal dialog-->
         <div class="modal-dialog modal-fullscreen p-9">
@@ -5885,7 +5191,8 @@ require "config/global.php";
                             <!--end::Nav-->
 
                             <!--begin::Form-->
-                            <form class="mx-auto w-100 mw-600px pt-15 pb-10" novalidate="novalidate" id="kt_modal_create_project_form" method="post">
+                            <form class="mx-auto w-100 mw-600px pt-15 pb-10" novalidate="novalidate"
+                                id="kt_modal_create_project_form" method="post">
                                 <!--begin::Type-->
                                 <div class="current" data-kt-stepper-element="content">
                                     <!--begin::Wrapper-->
@@ -5908,19 +5215,25 @@ require "config/global.php";
                                         <!--begin::Input group-->
                                         <div class="fv-row mb-15" data-kt-buttons="true">
                                             <!--begin::Option-->
-                                            <label class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6 mb-6 active">
+                                            <label
+                                                class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6 mb-6 active">
                                                 <!--begin::Input-->
-                                                <input class="btn-check" type="radio" checked="checked" name="project_type" value="1" />
+                                                <input class="btn-check" type="radio" checked="checked"
+                                                    name="project_type" value="1" />
                                                 <!--end::Input-->
 
                                                 <!--begin::Label-->
                                                 <span class="d-flex">
                                                     <!--begin::Icon-->
-                                                    <i class="ki-duotone ki-profile-circle fs-3hx"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i> <!--end::Icon-->
+                                                    <i class="ki-duotone ki-profile-circle fs-3hx"><span
+                                                            class="path1"></span><span class="path2"></span><span
+                                                            class="path3"></span></i>
+                                                    <!--end::Icon-->
 
                                                     <!--begin::Info-->
                                                     <span class="ms-4">
-                                                        <span class="fs-3 fw-bold text-gray-900 mb-2 d-block">Personal Project</span>
+                                                        <span class="fs-3 fw-bold text-gray-900 mb-2 d-block">Personal
+                                                            Project</span>
 
                                                         <span class="fw-semibold fs-4 text-muted">
                                                             If you need more info, please check it out
@@ -5933,7 +5246,8 @@ require "config/global.php";
                                             <!--end::Option-->
 
                                             <!--begin::Option-->
-                                            <label class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6">
+                                            <label
+                                                class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6">
                                                 <!--begin::Input-->
                                                 <input class="btn-check" type="radio" name="project_type" value="2" />
                                                 <!--end::Input-->
@@ -5941,11 +5255,14 @@ require "config/global.php";
                                                 <!--begin::Label-->
                                                 <span class="d-flex">
                                                     <!--begin::Icon-->
-                                                    <i class="ki-duotone ki-rocket fs-3hx"><span class="path1"></span><span class="path2"></span></i> <!--end::Icon-->
+                                                    <i class="ki-duotone ki-rocket fs-3hx"><span
+                                                            class="path1"></span><span class="path2"></span></i>
+                                                    <!--end::Icon-->
 
                                                     <!--begin::Info-->
                                                     <span class="ms-4">
-                                                        <span class="fs-3 fw-bold text-gray-900 mb-2 d-block">Team Project</span>
+                                                        <span class="fs-3 fw-bold text-gray-900 mb-2 d-block">Team
+                                                            Project</span>
 
                                                         <span class="fw-semibold fs-4 text-muted">
                                                             Create corporate account to manage users
@@ -5961,12 +5278,14 @@ require "config/global.php";
 
                                         <!--begin::Actions-->
                                         <div class="d-flex justify-content-end">
-                                            <button type="button" class="btn btn-lg btn-primary" data-kt-element="type-next">
+                                            <button type="button" class="btn btn-lg btn-primary"
+                                                data-kt-element="type-next">
                                                 <span class="indicator-label">
                                                     Project Settings
                                                 </span>
                                                 <span class="indicator-progress">
-                                                    Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                                    Please wait... <span
+                                                        class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                                 </span>
                                             </button>
                                         </div>
@@ -6001,12 +5320,16 @@ require "config/global.php";
                                                 <!--begin::Message-->
                                                 <div class="dz-message needsclick">
                                                     <!--begin::Icon-->
-                                                    <i class="ki-duotone ki-file-up fs-3hx text-primary"><span class="path1"></span><span class="path2"></span></i> <!--end::Icon-->
+                                                    <i class="ki-duotone ki-file-up fs-3hx text-primary"><span
+                                                            class="path1"></span><span class="path2"></span></i>
+                                                    <!--end::Icon-->
 
                                                     <!--begin::Info-->
                                                     <div class="ms-4">
-                                                        <h3 class="dfs-3 fw-bold text-gray-900 mb-1">Drop files here or click to upload.</h3>
-                                                        <span class="fw-semibold fs-4 text-muted">Upload up to 10 files</span>
+                                                        <h3 class="dfs-3 fw-bold text-gray-900 mb-1">Drop files here or
+                                                            click to upload.</h3>
+                                                        <span class="fw-semibold fs-4 text-muted">Upload up to 10
+                                                            files</span>
                                                     </div>
                                                     <!--end::Info-->
                                                 </div>
@@ -6022,7 +5345,9 @@ require "config/global.php";
                                             <!--end::Label-->
 
                                             <!--begin::Input-->
-                                            <select class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Select..." name="settings_customer">
+                                            <select class="form-select form-select-solid" data-control="select2"
+                                                data-hide-search="true" data-placeholder="Select..."
+                                                name="settings_customer">
                                                 <option></option>
                                                 <option value="1">Keenthemes</option>
                                                 <option value="2">CRM App</option>
@@ -6038,12 +5363,17 @@ require "config/global.php";
                                                 <span class="required">Project Name</span>
 
 
-                                                <span class="ms-1" data-bs-toggle="tooltip" title="Specify project name">
-                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i></span> </label>
+                                                <span class="ms-1" data-bs-toggle="tooltip"
+                                                    title="Specify project name">
+                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6"><span
+                                                            class="path1"></span><span class="path2"></span><span
+                                                            class="path3"></span></i></span> </label>
                                             <!--end::Label-->
 
                                             <!--begin::Input-->
-                                            <input type="text" class="form-control form-control-solid" placeholder="Enter Project Name" value="StockPro Mobile App" name="settings_name" />
+                                            <input type="text" class="form-control form-control-solid"
+                                                placeholder="Enter Project Name" value="StockPro Mobile App"
+                                                name="settings_name" />
                                             <!--end::Input-->
                                         </div>
                                         <!--end::Input group-->
@@ -6055,7 +5385,8 @@ require "config/global.php";
                                             <!--end::Label-->
 
                                             <!--begin::Input-->
-                                            <textarea class="form-control form-control-solid" rows="3" placeholder="Enter Project Description" name="settings_description">
+                                            <textarea class="form-control form-control-solid" rows="3"
+                                                placeholder="Enter Project Description" name="settings_description">
             Experience share market at your fingertips with TICK PRO stock investment mobile trading app
             </textarea>
                                             <!--end::Input-->
@@ -6071,10 +5402,15 @@ require "config/global.php";
                                             <!--begin::Wrapper-->
                                             <div class="position-relative d-flex align-items-center">
                                                 <!--begin::Icon-->
-                                                <i class="ki-duotone ki-calendar-8 fs-2 position-absolute mx-4"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span></i> <!--end::Icon-->
+                                                <i class="ki-duotone ki-calendar-8 fs-2 position-absolute mx-4"><span
+                                                        class="path1"></span><span class="path2"></span><span
+                                                        class="path3"></span><span class="path4"></span><span
+                                                        class="path5"></span><span class="path6"></span></i>
+                                                <!--end::Icon-->
 
                                                 <!--begin::Input-->
-                                                <input class="form-control form-control-solid ps-12" placeholder="Pick date range" name="settings_release_date" />
+                                                <input class="form-control form-control-solid ps-12"
+                                                    placeholder="Pick date range" name="settings_release_date" />
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Wrapper-->
@@ -6088,7 +5424,8 @@ require "config/global.php";
                                                 <!--begin::Label-->
                                                 <div class="me-5">
                                                     <label class="required fs-6 fw-semibold">Notifications</label>
-                                                    <div class="fs-7 fw-semibold text-muted">Allow Notifications by Phone or Email</div>
+                                                    <div class="fs-7 fw-semibold text-muted">Allow Notifications by
+                                                        Phone or Email</div>
                                                 </div>
                                                 <!--end::Label-->
 
@@ -6097,7 +5434,8 @@ require "config/global.php";
                                                     <!--begin::Checkbox-->
                                                     <label class="form-check form-check-custom form-check-solid me-10">
                                                         <!--begin::Input-->
-                                                        <input class="form-check-input h-20px w-20px" type="checkbox" value="email" name="settings_notifications[]" />
+                                                        <input class="form-check-input h-20px w-20px" type="checkbox"
+                                                            value="email" name="settings_notifications[]" />
                                                         <!--end::Input-->
 
                                                         <!--begin::Label-->
@@ -6111,7 +5449,8 @@ require "config/global.php";
                                                     <!--begin::Checkbox-->
                                                     <label class="form-check form-check-custom form-check-solid">
                                                         <!--begin::Input-->
-                                                        <input class="form-check-input h-20px w-20px" type="checkbox" value="phone" checked name="settings_notifications[]" />
+                                                        <input class="form-check-input h-20px w-20px" type="checkbox"
+                                                            value="phone" checked name="settings_notifications[]" />
                                                         <!--end::Input-->
 
                                                         <!--begin::Label-->
@@ -6130,16 +5469,19 @@ require "config/global.php";
 
                                         <!--begin::Actions-->
                                         <div class="d-flex flex-stack">
-                                            <button type="button" class="btn btn-lg btn-light me-3" data-kt-element="settings-previous">
+                                            <button type="button" class="btn btn-lg btn-light me-3"
+                                                data-kt-element="settings-previous">
                                                 Project Type
                                             </button>
 
-                                            <button type="button" class="btn btn-lg btn-primary" data-kt-element="settings-next">
+                                            <button type="button" class="btn btn-lg btn-primary"
+                                                data-kt-element="settings-next">
                                                 <span class="indicator-label">
                                                     Budget
                                                 </span>
                                                 <span class="indicator-progress">
-                                                    Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                                    Please wait... <span
+                                                        class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                                 </span>
                                             </button>
                                         </div>
@@ -6173,7 +5515,8 @@ require "config/global.php";
                                             <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
                                                 <span class="required">Setup Budget</span>
 
-                                                <span class="lh-1 ms-1" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-html="true" data-bs-content="
+                                                <span class="lh-1 ms-1" data-bs-toggle="popover" data-bs-trigger="hover"
+                                                    data-bs-html="true" data-bs-content="
 		&lt;div class=&#039;p-4 rounded bg-light&#039;&gt;
 			&lt;div class=&#039;d-flex flex-stack text-muted mb-4&#039;&gt;
 				&lt;i class=&quot;ki-duotone ki-bank fs-3 me-3&quot;&gt;&lt;span class=&quot;path1&quot;&gt;&lt;/span&gt;&lt;span class=&quot;path2&quot;&gt;&lt;/span&gt;&lt;/i&gt;
@@ -6203,24 +5546,41 @@ require "config/global.php";
 			&lt;/div&gt;
 		&lt;/div&gt;
 	">
-                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i></span> </label>
+                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6"><span
+                                                            class="path1"></span><span class="path2"></span><span
+                                                            class="path3"></span></i></span> </label>
                                             <!--end::Label-->
 
                                             <!--begin::Dialer-->
-                                            <div class="position-relative w-lg-250px" id="kt_modal_create_project_budget_setup" data-kt-dialer="true" data-kt-dialer-min="50" data-kt-dialer-max="50000" data-kt-dialer-step="100" data-kt-dialer-prefix="$" data-kt-dialer-decimals="2">
+                                            <div class="position-relative w-lg-250px"
+                                                id="kt_modal_create_project_budget_setup" data-kt-dialer="true"
+                                                data-kt-dialer-min="50" data-kt-dialer-max="50000"
+                                                data-kt-dialer-step="100" data-kt-dialer-prefix="$"
+                                                data-kt-dialer-decimals="2">
 
                                                 <!--begin::Decrease control-->
-                                                <button type="button" class="btn btn-icon btn-active-color-gray-700 position-absolute translate-middle-y top-50 start-0" data-kt-dialer-control="decrease">
-                                                    <i class="ki-duotone ki-minus-circle fs-1"><span class="path1"></span><span class="path2"></span></i> </button>
+                                                <button type="button"
+                                                    class="btn btn-icon btn-active-color-gray-700 position-absolute translate-middle-y top-50 start-0"
+                                                    data-kt-dialer-control="decrease">
+                                                    <i class="ki-duotone ki-minus-circle fs-1"><span
+                                                            class="path1"></span><span class="path2"></span></i>
+                                                </button>
                                                 <!--end::Decrease control-->
 
                                                 <!--begin::Input control-->
-                                                <input type="text" class="form-control form-control-solid border-0 ps-12" data-kt-dialer-control="input" placeholder="Amount" name="budget_setup" readonly value="$50" />
+                                                <input type="text"
+                                                    class="form-control form-control-solid border-0 ps-12"
+                                                    data-kt-dialer-control="input" placeholder="Amount"
+                                                    name="budget_setup" readonly value="$50" />
                                                 <!--end::Input control-->
 
                                                 <!--begin::Increase control-->
-                                                <button type="button" class="btn btn-icon btn-active-color-gray-700 position-absolute translate-middle-y top-50 end-0" data-kt-dialer-control="increase">
-                                                    <i class="ki-duotone ki-plus-circle fs-1"><span class="path1"></span><span class="path2"></span></i> </button>
+                                                <button type="button"
+                                                    class="btn btn-icon btn-active-color-gray-700 position-absolute translate-middle-y top-50 end-0"
+                                                    data-kt-dialer-control="increase">
+                                                    <i class="ki-duotone ki-plus-circle fs-1"><span
+                                                            class="path1"></span><span class="path2"></span></i>
+                                                </button>
                                                 <!--end::Increase control-->
                                             </div>
                                             <!--end::Dialer-->
@@ -6234,23 +5594,31 @@ require "config/global.php";
                                             <!--end::Label-->
 
                                             <!--begin::Row-->
-                                            <div class="row g-9" data-kt-buttons="true" data-kt-buttons-target="[data-kt-button='true']">
+                                            <div class="row g-9" data-kt-buttons="true"
+                                                data-kt-buttons-target="[data-kt-button='true']">
                                                 <!--begin::Col-->
                                                 <div class="col-md-6 col-lg-12 col-xxl-6">
                                                     <!--begin::Option-->
-                                                    <label class="btn btn-outline btn-outline-dashed btn-active-light-primary active d-flex text-start p-6" data-kt-button="true">
+                                                    <label
+                                                        class="btn btn-outline btn-outline-dashed btn-active-light-primary active d-flex text-start p-6"
+                                                        data-kt-button="true">
                                                         <!--begin::Radio-->
-                                                        <span class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
-                                                            <input class="form-check-input" type="radio" name="budget_usage" value="1" checked="checked" />
+                                                        <span
+                                                            class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="budget_usage" value="1" checked="checked" />
                                                         </span>
                                                         <!--end::Radio-->
 
                                                         <!--begin::Info-->
                                                         <span class="ms-5">
-                                                            <span class="fs-4 fw-bold text-gray-800 mb-2 d-block">Precise Usage</span>
+                                                            <span
+                                                                class="fs-4 fw-bold text-gray-800 mb-2 d-block">Precise
+                                                                Usage</span>
 
                                                             <span class="fw-semibold fs-7 text-gray-600">
-                                                                Withdraw money to your bank account per transaction under $50,000 budget
+                                                                Withdraw money to your bank account per transaction
+                                                                under $50,000 budget
                                                             </span>
                                                         </span>
                                                         <!--end::Info-->
@@ -6262,18 +5630,25 @@ require "config/global.php";
                                                 <!--begin::Col-->
                                                 <div class="col-md-6 col-lg-12 col-xxl-6">
                                                     <!--begin::Option-->
-                                                    <label class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6" data-kt-button="true">
+                                                    <label
+                                                        class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6"
+                                                        data-kt-button="true">
                                                         <!--begin::Radio-->
-                                                        <span class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
-                                                            <input class="form-check-input" type="radio" name="budget_usage" value="2" />
+                                                        <span
+                                                            class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="budget_usage" value="2" />
                                                         </span>
                                                         <!--end::Radio-->
 
                                                         <!--begin::Info-->
                                                         <span class="ms-5">
-                                                            <span class="fs-4 fw-bold text-gray-800 mb-2 d-block">Extreme Usage</span>
+                                                            <span
+                                                                class="fs-4 fw-bold text-gray-800 mb-2 d-block">Extreme
+                                                                Usage</span>
                                                             <span class="fw-semibold fs-7 text-gray-600">
-                                                                Withdraw money to your bank account per transaction under $50,000 budget
+                                                                Withdraw money to your bank account per transaction
+                                                                under $50,000 budget
                                                             </span>
                                                         </span>
                                                         <!--end::Info-->
@@ -6293,13 +5668,16 @@ require "config/global.php";
                                                 <!--begin::Label-->
                                                 <div class="me-5">
                                                     <label class="fs-6 fw-semibold">Allow Changes in Budget</label>
-                                                    <div class="fs-7 fw-semibold text-muted">If you need more info, please check budget planning</div>
+                                                    <div class="fs-7 fw-semibold text-muted">If you need more info,
+                                                        please check budget planning</div>
                                                 </div>
                                                 <!--end::Label-->
 
                                                 <!--begin::Switch-->
-                                                <label class="form-check form-switch form-check-custom form-check-solid">
-                                                    <input class="form-check-input" type="checkbox" value="1" name="budget_allow" checked="checked" />
+                                                <label
+                                                    class="form-check form-switch form-check-custom form-check-solid">
+                                                    <input class="form-check-input" type="checkbox" value="1"
+                                                        name="budget_allow" checked="checked" />
                                                     <span class="form-check-label fw-semibold text-muted">
                                                         Allowed
                                                     </span>
@@ -6312,16 +5690,19 @@ require "config/global.php";
 
                                         <!--begin::Actions-->
                                         <div class="d-flex flex-stack">
-                                            <button type="button" class="btn btn-lg btn-light me-3" data-kt-element="budget-previous">
+                                            <button type="button" class="btn btn-lg btn-light me-3"
+                                                data-kt-element="budget-previous">
                                                 Project Settings
                                             </button>
 
-                                            <button type="button" class="btn btn-lg btn-primary" data-kt-element="budget-next">
+                                            <button type="button" class="btn btn-lg btn-primary"
+                                                data-kt-element="budget-next">
                                                 <span class="indicator-label">
                                                     Build Team
                                                 </span>
                                                 <span class="indicator-progress">
-                                                    Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                                    Please wait... <span
+                                                        class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                                 </span>
                                             </button>
                                         </div>
@@ -6357,7 +5738,9 @@ require "config/global.php";
                                             <!--end::Label-->
 
                                             <!--begin::Input-->
-                                            <input type="text" class="form-control form-control-solid" placeholder="Add project memnbers by name or email.." name="invite_teammates" />
+                                            <input type="text" class="form-control form-control-solid"
+                                                placeholder="Add project memnbers by name or email.."
+                                                name="invite_teammates" />
                                             <!--end::Input-->
                                         </div>
                                         <!--end::Input group-->
@@ -6371,18 +5754,22 @@ require "config/global.php";
                                             <!--begin::Users-->
                                             <div class="mh-300px scroll-y me-n7 pe-7">
                                                 <!--begin::User-->
-                                                <div class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
+                                                <div
+                                                    class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
                                                     <!--begin::Details-->
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px symbol-circle">
-                                                            <img alt="Pic" src="../../../assets/media/avatars/300-6.jpg" />
+                                                            <img alt="Pic"
+                                                                src="../../../assets/media/avatars/300-6.jpg" />
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-5">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Emma Smith</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Emma
+                                                                Smith</a>
 
                                                             <div class="fw-semibold text-muted">smith@kpmg.com</div>
                                                         </div>
@@ -6392,7 +5779,8 @@ require "config/global.php";
 
                                                     <!--begin::Access menu-->
                                                     <div class="ms-2 w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true">
                                                             <option value="1">Guest</option>
                                                             <option value="2" selected>Owner</option>
                                                             <option value="3">Can Edit</option>
@@ -6402,19 +5790,23 @@ require "config/global.php";
                                                 </div>
                                                 <!--end::User-->
                                                 <!--begin::User-->
-                                                <div class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
+                                                <div
+                                                    class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
                                                     <!--begin::Details-->
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px symbol-circle">
-                                                            <span class="symbol-label bg-light-danger text-danger fw-semibold">
+                                                            <span
+                                                                class="symbol-label bg-light-danger text-danger fw-semibold">
                                                                 M </span>
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-5">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Melody Macy</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Melody
+                                                                Macy</a>
 
                                                             <div class="fw-semibold text-muted">melody@altbox.com</div>
                                                         </div>
@@ -6424,7 +5816,8 @@ require "config/global.php";
 
                                                     <!--begin::Access menu-->
                                                     <div class="ms-2 w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true">
                                                             <option value="1" selected>Guest</option>
                                                             <option value="2">Owner</option>
                                                             <option value="3">Can Edit</option>
@@ -6434,18 +5827,22 @@ require "config/global.php";
                                                 </div>
                                                 <!--end::User-->
                                                 <!--begin::User-->
-                                                <div class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
+                                                <div
+                                                    class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
                                                     <!--begin::Details-->
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px symbol-circle">
-                                                            <img alt="Pic" src="../../../assets/media/avatars/300-1.jpg" />
+                                                            <img alt="Pic"
+                                                                src="../../../assets/media/avatars/300-1.jpg" />
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-5">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Max Smith</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Max
+                                                                Smith</a>
 
                                                             <div class="fw-semibold text-muted">max@kt.com</div>
                                                         </div>
@@ -6455,7 +5852,8 @@ require "config/global.php";
 
                                                     <!--begin::Access menu-->
                                                     <div class="ms-2 w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true">
                                                             <option value="1">Guest</option>
                                                             <option value="2">Owner</option>
                                                             <option value="3" selected>Can Edit</option>
@@ -6465,18 +5863,22 @@ require "config/global.php";
                                                 </div>
                                                 <!--end::User-->
                                                 <!--begin::User-->
-                                                <div class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
+                                                <div
+                                                    class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
                                                     <!--begin::Details-->
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px symbol-circle">
-                                                            <img alt="Pic" src="../../../assets/media/avatars/300-5.jpg" />
+                                                            <img alt="Pic"
+                                                                src="../../../assets/media/avatars/300-5.jpg" />
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-5">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Sean Bean</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Sean
+                                                                Bean</a>
 
                                                             <div class="fw-semibold text-muted">sean@dellito.com</div>
                                                         </div>
@@ -6486,7 +5888,8 @@ require "config/global.php";
 
                                                     <!--begin::Access menu-->
                                                     <div class="ms-2 w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true">
                                                             <option value="1">Guest</option>
                                                             <option value="2" selected>Owner</option>
                                                             <option value="3">Can Edit</option>
@@ -6496,18 +5899,22 @@ require "config/global.php";
                                                 </div>
                                                 <!--end::User-->
                                                 <!--begin::User-->
-                                                <div class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
+                                                <div
+                                                    class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
                                                     <!--begin::Details-->
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px symbol-circle">
-                                                            <img alt="Pic" src="../../../assets/media/avatars/300-25.jpg" />
+                                                            <img alt="Pic"
+                                                                src="../../../assets/media/avatars/300-25.jpg" />
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-5">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Brian Cox</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Brian
+                                                                Cox</a>
 
                                                             <div class="fw-semibold text-muted">brian@exchange.com</div>
                                                         </div>
@@ -6517,7 +5924,8 @@ require "config/global.php";
 
                                                     <!--begin::Access menu-->
                                                     <div class="ms-2 w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true">
                                                             <option value="1">Guest</option>
                                                             <option value="2">Owner</option>
                                                             <option value="3" selected>Can Edit</option>
@@ -6527,19 +5935,23 @@ require "config/global.php";
                                                 </div>
                                                 <!--end::User-->
                                                 <!--begin::User-->
-                                                <div class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
+                                                <div
+                                                    class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
                                                     <!--begin::Details-->
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px symbol-circle">
-                                                            <span class="symbol-label bg-light-warning text-warning fw-semibold">
+                                                            <span
+                                                                class="symbol-label bg-light-warning text-warning fw-semibold">
                                                                 C </span>
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-5">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Mikaela Collins</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Mikaela
+                                                                Collins</a>
 
                                                             <div class="fw-semibold text-muted">mik@pex.com</div>
                                                         </div>
@@ -6549,7 +5961,8 @@ require "config/global.php";
 
                                                     <!--begin::Access menu-->
                                                     <div class="ms-2 w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true">
                                                             <option value="1">Guest</option>
                                                             <option value="2" selected>Owner</option>
                                                             <option value="3">Can Edit</option>
@@ -6559,18 +5972,22 @@ require "config/global.php";
                                                 </div>
                                                 <!--end::User-->
                                                 <!--begin::User-->
-                                                <div class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
+                                                <div
+                                                    class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
                                                     <!--begin::Details-->
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px symbol-circle">
-                                                            <img alt="Pic" src="../../../assets/media/avatars/300-9.jpg" />
+                                                            <img alt="Pic"
+                                                                src="../../../assets/media/avatars/300-9.jpg" />
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-5">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Francis Mitcham</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Francis
+                                                                Mitcham</a>
 
                                                             <div class="fw-semibold text-muted">f.mit@kpmg.com</div>
                                                         </div>
@@ -6580,7 +5997,8 @@ require "config/global.php";
 
                                                     <!--begin::Access menu-->
                                                     <div class="ms-2 w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true">
                                                             <option value="1">Guest</option>
                                                             <option value="2">Owner</option>
                                                             <option value="3" selected>Can Edit</option>
@@ -6590,21 +6008,26 @@ require "config/global.php";
                                                 </div>
                                                 <!--end::User-->
                                                 <!--begin::User-->
-                                                <div class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
+                                                <div
+                                                    class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
                                                     <!--begin::Details-->
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px symbol-circle">
-                                                            <span class="symbol-label bg-light-danger text-danger fw-semibold">
+                                                            <span
+                                                                class="symbol-label bg-light-danger text-danger fw-semibold">
                                                                 O </span>
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-5">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Olivia Wild</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Olivia
+                                                                Wild</a>
 
-                                                            <div class="fw-semibold text-muted">olivia@corpmail.com</div>
+                                                            <div class="fw-semibold text-muted">olivia@corpmail.com
+                                                            </div>
                                                         </div>
                                                         <!--end::Details-->
                                                     </div>
@@ -6612,7 +6035,8 @@ require "config/global.php";
 
                                                     <!--begin::Access menu-->
                                                     <div class="ms-2 w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true">
                                                             <option value="1">Guest</option>
                                                             <option value="2" selected>Owner</option>
                                                             <option value="3">Can Edit</option>
@@ -6622,21 +6046,26 @@ require "config/global.php";
                                                 </div>
                                                 <!--end::User-->
                                                 <!--begin::User-->
-                                                <div class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
+                                                <div
+                                                    class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
                                                     <!--begin::Details-->
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px symbol-circle">
-                                                            <span class="symbol-label bg-light-primary text-primary fw-semibold">
+                                                            <span
+                                                                class="symbol-label bg-light-primary text-primary fw-semibold">
                                                                 N </span>
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-5">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Neil Owen</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Neil
+                                                                Owen</a>
 
-                                                            <div class="fw-semibold text-muted">owen.neil@gmail.com</div>
+                                                            <div class="fw-semibold text-muted">owen.neil@gmail.com
+                                                            </div>
                                                         </div>
                                                         <!--end::Details-->
                                                     </div>
@@ -6644,7 +6073,8 @@ require "config/global.php";
 
                                                     <!--begin::Access menu-->
                                                     <div class="ms-2 w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true">
                                                             <option value="1" selected>Guest</option>
                                                             <option value="2">Owner</option>
                                                             <option value="3">Can Edit</option>
@@ -6654,18 +6084,22 @@ require "config/global.php";
                                                 </div>
                                                 <!--end::User-->
                                                 <!--begin::User-->
-                                                <div class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
+                                                <div
+                                                    class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
                                                     <!--begin::Details-->
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px symbol-circle">
-                                                            <img alt="Pic" src="../../../assets/media/avatars/300-23.jpg" />
+                                                            <img alt="Pic"
+                                                                src="../../../assets/media/avatars/300-23.jpg" />
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-5">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Dan Wilson</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Dan
+                                                                Wilson</a>
 
                                                             <div class="fw-semibold text-muted">dam@consilting.com</div>
                                                         </div>
@@ -6675,7 +6109,8 @@ require "config/global.php";
 
                                                     <!--begin::Access menu-->
                                                     <div class="ms-2 w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true">
                                                             <option value="1">Guest</option>
                                                             <option value="2">Owner</option>
                                                             <option value="3" selected>Can Edit</option>
@@ -6685,19 +6120,23 @@ require "config/global.php";
                                                 </div>
                                                 <!--end::User-->
                                                 <!--begin::User-->
-                                                <div class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
+                                                <div
+                                                    class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
                                                     <!--begin::Details-->
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px symbol-circle">
-                                                            <span class="symbol-label bg-light-danger text-danger fw-semibold">
+                                                            <span
+                                                                class="symbol-label bg-light-danger text-danger fw-semibold">
                                                                 E </span>
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-5">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Emma Bold</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Emma
+                                                                Bold</a>
 
                                                             <div class="fw-semibold text-muted">emma@intenso.com</div>
                                                         </div>
@@ -6707,7 +6146,8 @@ require "config/global.php";
 
                                                     <!--begin::Access menu-->
                                                     <div class="ms-2 w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true">
                                                             <option value="1">Guest</option>
                                                             <option value="2" selected>Owner</option>
                                                             <option value="3">Can Edit</option>
@@ -6717,18 +6157,22 @@ require "config/global.php";
                                                 </div>
                                                 <!--end::User-->
                                                 <!--begin::User-->
-                                                <div class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
+                                                <div
+                                                    class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
                                                     <!--begin::Details-->
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px symbol-circle">
-                                                            <img alt="Pic" src="../../../assets/media/avatars/300-12.jpg" />
+                                                            <img alt="Pic"
+                                                                src="../../../assets/media/avatars/300-12.jpg" />
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-5">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Ana Crown</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Ana
+                                                                Crown</a>
 
                                                             <div class="fw-semibold text-muted">ana.cf@limtel.com</div>
                                                         </div>
@@ -6738,7 +6182,8 @@ require "config/global.php";
 
                                                     <!--begin::Access menu-->
                                                     <div class="ms-2 w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true">
                                                             <option value="1" selected>Guest</option>
                                                             <option value="2">Owner</option>
                                                             <option value="3">Can Edit</option>
@@ -6748,19 +6193,23 @@ require "config/global.php";
                                                 </div>
                                                 <!--end::User-->
                                                 <!--begin::User-->
-                                                <div class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
+                                                <div
+                                                    class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
                                                     <!--begin::Details-->
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px symbol-circle">
-                                                            <span class="symbol-label bg-light-info text-info fw-semibold">
+                                                            <span
+                                                                class="symbol-label bg-light-info text-info fw-semibold">
                                                                 A </span>
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-5">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Robert Doe</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Robert
+                                                                Doe</a>
 
                                                             <div class="fw-semibold text-muted">robert@benko.com</div>
                                                         </div>
@@ -6770,7 +6219,8 @@ require "config/global.php";
 
                                                     <!--begin::Access menu-->
                                                     <div class="ms-2 w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true">
                                                             <option value="1">Guest</option>
                                                             <option value="2">Owner</option>
                                                             <option value="3" selected>Can Edit</option>
@@ -6780,18 +6230,22 @@ require "config/global.php";
                                                 </div>
                                                 <!--end::User-->
                                                 <!--begin::User-->
-                                                <div class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
+                                                <div
+                                                    class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
                                                     <!--begin::Details-->
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px symbol-circle">
-                                                            <img alt="Pic" src="../../../assets/media/avatars/300-13.jpg" />
+                                                            <img alt="Pic"
+                                                                src="../../../assets/media/avatars/300-13.jpg" />
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-5">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">John Miller</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">John
+                                                                Miller</a>
 
                                                             <div class="fw-semibold text-muted">miller@mapple.com</div>
                                                         </div>
@@ -6801,7 +6255,8 @@ require "config/global.php";
 
                                                     <!--begin::Access menu-->
                                                     <div class="ms-2 w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true">
                                                             <option value="1">Guest</option>
                                                             <option value="2">Owner</option>
                                                             <option value="3" selected>Can Edit</option>
@@ -6811,19 +6266,23 @@ require "config/global.php";
                                                 </div>
                                                 <!--end::User-->
                                                 <!--begin::User-->
-                                                <div class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
+                                                <div
+                                                    class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
                                                     <!--begin::Details-->
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px symbol-circle">
-                                                            <span class="symbol-label bg-light-success text-success fw-semibold">
+                                                            <span
+                                                                class="symbol-label bg-light-success text-success fw-semibold">
                                                                 L </span>
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-5">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Lucy Kunic</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Lucy
+                                                                Kunic</a>
 
                                                             <div class="fw-semibold text-muted">lucy.m@fentech.com</div>
                                                         </div>
@@ -6833,7 +6292,8 @@ require "config/global.php";
 
                                                     <!--begin::Access menu-->
                                                     <div class="ms-2 w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true">
                                                             <option value="1">Guest</option>
                                                             <option value="2" selected>Owner</option>
                                                             <option value="3">Can Edit</option>
@@ -6843,18 +6303,22 @@ require "config/global.php";
                                                 </div>
                                                 <!--end::User-->
                                                 <!--begin::User-->
-                                                <div class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
+                                                <div
+                                                    class="d-flex flex-stack py-4 border-bottom border-gray-300 border-bottom-dashed">
                                                     <!--begin::Details-->
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px symbol-circle">
-                                                            <img alt="Pic" src="../../../assets/media/avatars/300-21.jpg" />
+                                                            <img alt="Pic"
+                                                                src="../../../assets/media/avatars/300-21.jpg" />
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-5">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Ethan Wilder</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Ethan
+                                                                Wilder</a>
 
                                                             <div class="fw-semibold text-muted">ethan@loop.com.au</div>
                                                         </div>
@@ -6864,7 +6328,8 @@ require "config/global.php";
 
                                                     <!--begin::Access menu-->
                                                     <div class="ms-2 w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true">
                                                             <option value="1" selected>Guest</option>
                                                             <option value="2">Owner</option>
                                                             <option value="3">Can Edit</option>
@@ -6879,13 +6344,16 @@ require "config/global.php";
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px symbol-circle">
-                                                            <img alt="Pic" src="../../../assets/media/avatars/300-9.jpg" />
+                                                            <img alt="Pic"
+                                                                src="../../../assets/media/avatars/300-9.jpg" />
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-5">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Francis Mitcham</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Francis
+                                                                Mitcham</a>
 
                                                             <div class="fw-semibold text-muted">f.mit@kpmg.com</div>
                                                         </div>
@@ -6895,7 +6363,8 @@ require "config/global.php";
 
                                                     <!--begin::Access menu-->
                                                     <div class="ms-2 w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true">
                                                             <option value="1">Guest</option>
                                                             <option value="2">Owner</option>
                                                             <option value="3" selected>Can Edit</option>
@@ -6914,13 +6383,15 @@ require "config/global.php";
                                             <!--begin::Label-->
                                             <div class="me-5 fw-semibold">
                                                 <label class="fs-6">Adding Users by Team Members</label>
-                                                <div class="fs-7 text-muted">If you need more info, please check budget planning</div>
+                                                <div class="fs-7 text-muted">If you need more info, please check budget
+                                                    planning</div>
                                             </div>
                                             <!--end::Label-->
 
                                             <!--begin::Switch-->
                                             <label class="form-check form-switch form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="checkbox" value="" checked="checked" />
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    checked="checked" />
                                             </label>
                                             <!--end::Switch-->
                                         </div>
@@ -6928,16 +6399,19 @@ require "config/global.php";
 
                                         <!--begin::Actions-->
                                         <div class="d-flex flex-stack">
-                                            <button type="button" class="btn btn-lg btn-light me-3" data-kt-element="team-previous">
+                                            <button type="button" class="btn btn-lg btn-light me-3"
+                                                data-kt-element="team-previous">
                                                 Budget
                                             </button>
 
-                                            <button type="button" class="btn btn-lg btn-primary" data-kt-element="team-next">
+                                            <button type="button" class="btn btn-lg btn-primary"
+                                                data-kt-element="team-next">
                                                 <span class="indicator-label">
                                                     Set Target
                                                 </span>
                                                 <span class="indicator-progress">
-                                                    Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                                    Please wait... <span
+                                                        class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                                 </span>
                                             </button>
                                         </div>
@@ -6969,7 +6443,9 @@ require "config/global.php";
                                         <!--begin::Input group-->
                                         <div class="fv-row mb-8">
                                             <label class="fs-6 fw-semibold mb-2">Target Title</label>
-                                            <input type="text" class="form-control form-control-solid" placeholder="Enter Target Title" name="target_title" name="Project Launch" />
+                                            <input type="text" class="form-control form-control-solid"
+                                                placeholder="Enter Target Title" name="target_title"
+                                                name="Project Launch" />
                                         </div>
                                         <!--end::Input group-->
 
@@ -6978,7 +6454,9 @@ require "config/global.php";
                                             <!--begin::Col-->
                                             <div class="col-md-6 fv-row">
                                                 <label class="required fs-6 fw-semibold mb-2">Assign</label>
-                                                <select class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Select a Team Member" name="target_assign">
+                                                <select class="form-select form-select-solid" data-control="select2"
+                                                    data-hide-search="true" data-placeholder="Select a Team Member"
+                                                    name="target_assign">
                                                     <option></option>
                                                     <option value="1">Karina Clark</option>
                                                     <option value="2" selected>Robert Doe</option>
@@ -6994,10 +6472,15 @@ require "config/global.php";
                                                 <label class="required fs-6 fw-semibold mb-2">Due Date</label>
                                                 <div class="position-relative d-flex align-items-center">
                                                     <!--begin::Icon-->
-                                                    <i class="ki-duotone ki-calendar-8 fs-2 position-absolute mx-4"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span></i> <!--end::Icon-->
+                                                    <i class="ki-duotone ki-calendar-8 fs-2 position-absolute mx-4"><span
+                                                            class="path1"></span><span class="path2"></span><span
+                                                            class="path3"></span><span class="path4"></span><span
+                                                            class="path5"></span><span class="path6"></span></i>
+                                                    <!--end::Icon-->
 
                                                     <!--begin::Datepicker-->
-                                                    <input class="form-control form-control-solid ps-12" placeholder="Pick date range" name="target_due_date" />
+                                                    <input class="form-control form-control-solid ps-12"
+                                                        placeholder="Pick date range" name="target_due_date" />
                                                     <!--end::Datepicker-->
                                                 </div>
                                             </div>
@@ -7008,7 +6491,8 @@ require "config/global.php";
                                         <!--begin::Input group-->
                                         <div class="fv-row mb-8">
                                             <label class="fs-6 fw-semibold mb-2">Target Details</label>
-                                            <textarea class="form-control form-control-solid" rows="2" name="target_details" placeholder="Type Target Details">
+                                            <textarea class="form-control form-control-solid" rows="2"
+                                                name="target_details" placeholder="Type Target Details">
             Experience share market at your fingertips with TICK PRO stock investment mobile trading app
             </textarea>
                                         </div>
@@ -7017,7 +6501,8 @@ require "config/global.php";
                                         <!--begin::Input group-->
                                         <div class="fv-row mb-8">
                                             <label class="required fs-6 fw-semibold mb-2">Tags</label>
-                                            <input class="form-control form-control-solid" value="Important, Urgent" name="target_tags" />
+                                            <input class="form-control form-control-solid" value="Important, Urgent"
+                                                name="target_tags" />
                                         </div>
                                         <!--end::Input group-->
 
@@ -7028,13 +6513,16 @@ require "config/global.php";
                                                 <!--begin::Label-->
                                                 <div class="me-5">
                                                     <label class="fs-6 fw-semibold">Allow Changes in Budget</label>
-                                                    <div class="fs-7 fw-semibold text-muted">If you need more info, please check budget planning</div>
+                                                    <div class="fs-7 fw-semibold text-muted">If you need more info,
+                                                        please check budget planning</div>
                                                 </div>
                                                 <!--end::Label-->
 
                                                 <!--begin::Switch-->
-                                                <label class="form-check form-switch form-check-custom form-check-solid">
-                                                    <input class="form-check-input" type="checkbox" value="1" name="target_allow" checked="checked" />
+                                                <label
+                                                    class="form-check form-switch form-check-custom form-check-solid">
+                                                    <input class="form-check-input" type="checkbox" value="1"
+                                                        name="target_allow" checked="checked" />
                                                     <span class="form-check-label fw-semibold text-muted">
                                                         Allowed
                                                     </span>
@@ -7052,7 +6540,8 @@ require "config/global.php";
                                                 <!--begin::Label-->
                                                 <div class="me-5">
                                                     <label class="fs-6 fw-semibold">Notifications</label>
-                                                    <div class="fs-7 fw-semibold text-muted">Allow Notifications by Phone or Email</div>
+                                                    <div class="fs-7 fw-semibold text-muted">Allow Notifications by
+                                                        Phone or Email</div>
                                                 </div>
                                                 <!--end::Label-->
 
@@ -7061,7 +6550,8 @@ require "config/global.php";
                                                     <!--begin::Checkbox-->
                                                     <label class="form-check form-check-custom form-check-solid me-10">
                                                         <!--begin::Input-->
-                                                        <input class="form-check-input h-20px w-20px" type="checkbox" value="email" name="target_notifications[]" />
+                                                        <input class="form-check-input h-20px w-20px" type="checkbox"
+                                                            value="email" name="target_notifications[]" />
                                                         <!--end::Input-->
 
                                                         <!--begin::Label-->
@@ -7075,7 +6565,8 @@ require "config/global.php";
                                                     <!--begin::Checkbox-->
                                                     <label class="form-check form-check-custom form-check-solid">
                                                         <!--begin::Input-->
-                                                        <input class="form-check-input h-20px w-20px" type="checkbox" value="phone" checked name="target_notifications[]" />
+                                                        <input class="form-check-input h-20px w-20px" type="checkbox"
+                                                            value="phone" checked name="target_notifications[]" />
                                                         <!--end::Input-->
 
                                                         <!--begin::Label-->
@@ -7094,16 +6585,19 @@ require "config/global.php";
 
                                         <!--begin::Actions-->
                                         <div class="d-flex flex-stack">
-                                            <button type="button" class="btn btn-lg btn-light me-3" data-kt-element="targets-previous">
+                                            <button type="button" class="btn btn-lg btn-light me-3"
+                                                data-kt-element="targets-previous">
                                                 Build a Team
                                             </button>
 
-                                            <button type="button" class="btn btn-lg btn-primary" data-kt-element="targets-next">
+                                            <button type="button" class="btn btn-lg btn-primary"
+                                                data-kt-element="targets-next">
                                                 <span class="indicator-label">
                                                     Upload Files
                                                 </span>
                                                 <span class="indicator-progress">
-                                                    Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                                    Please wait... <span
+                                                        class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                                 </span>
                                             </button>
                                         </div>
@@ -7139,12 +6633,16 @@ require "config/global.php";
                                                 <!--begin::Message-->
                                                 <div class="dz-message needsclick">
                                                     <!--begin::Icon-->
-                                                    <i class="ki-duotone ki-file-up fs-3hx text-primary"><span class="path1"></span><span class="path2"></span></i> <!--end::Icon-->
+                                                    <i class="ki-duotone ki-file-up fs-3hx text-primary"><span
+                                                            class="path1"></span><span class="path2"></span></i>
+                                                    <!--end::Icon-->
 
                                                     <!--begin::Info-->
                                                     <div class="ms-4">
-                                                        <h3 class="dfs-3 fw-bold text-gray-900 mb-1">Drop files here or click to upload.</h3>
-                                                        <span class="fw-semibold fs-4 text-muted">Upload up to 10 files</span>
+                                                        <h3 class="dfs-3 fw-bold text-gray-900 mb-1">Drop files here or
+                                                            click to upload.</h3>
+                                                        <span class="fw-semibold fs-4 text-muted">Upload up to 10
+                                                            files</span>
                                                     </div>
                                                     <!--end::Info-->
                                                 </div>
@@ -7162,17 +6660,21 @@ require "config/global.php";
                                             <!--begin::Files-->
                                             <div class="mh-300px scroll-y me-n7 pe-7">
                                                 <!--begin::File-->
-                                                <div class="d-flex flex-stack py-4 border border-top-0 border-left-0 border-right-0 border-dashed">
+                                                <div
+                                                    class="d-flex flex-stack py-4 border border-top-0 border-left-0 border-right-0 border-dashed">
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px">
-                                                            <img src="../../../assets/media/svg/files/pdf.svg" alt="icon" />
+                                                            <img src="../../../assets/media/svg/files/pdf.svg"
+                                                                alt="icon" />
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-6">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Avionica Technical Requirements</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Avionica
+                                                                Technical Requirements</a>
                                                             <div class="fw-semibold text-muted">230kb</div>
                                                         </div>
                                                         <!--end::Details-->
@@ -7180,7 +6682,9 @@ require "config/global.php";
 
                                                     <!--begin::Menu-->
                                                     <div class="min-w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true" data-placeholder="Edit">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true"
+                                                            data-placeholder="Edit">
                                                             <option></option>
                                                             <option value="1">Remove</option>
                                                             <option value="2">Modify</option>
@@ -7191,17 +6695,21 @@ require "config/global.php";
                                                 </div>
                                                 <!--end::File-->
                                                 <!--begin::File-->
-                                                <div class="d-flex flex-stack py-4 border border-top-0 border-left-0 border-right-0 border-dashed">
+                                                <div
+                                                    class="d-flex flex-stack py-4 border border-top-0 border-left-0 border-right-0 border-dashed">
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px">
-                                                            <img src="../../../assets/media/svg/files/doc.svg" alt="icon" />
+                                                            <img src="../../../assets/media/svg/files/doc.svg"
+                                                                alt="icon" />
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-6">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">9 Degree CURD draftplan</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">9
+                                                                Degree CURD draftplan</a>
                                                             <div class="fw-semibold text-muted">3.6mb</div>
                                                         </div>
                                                         <!--end::Details-->
@@ -7209,7 +6717,9 @@ require "config/global.php";
 
                                                     <!--begin::Menu-->
                                                     <div class="min-w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true" data-placeholder="Edit">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true"
+                                                            data-placeholder="Edit">
                                                             <option></option>
                                                             <option value="1">Remove</option>
                                                             <option value="2">Modify</option>
@@ -7220,17 +6730,21 @@ require "config/global.php";
                                                 </div>
                                                 <!--end::File-->
                                                 <!--begin::File-->
-                                                <div class="d-flex flex-stack py-4 border border-top-0 border-left-0 border-right-0 border-dashed">
+                                                <div
+                                                    class="d-flex flex-stack py-4 border border-top-0 border-left-0 border-right-0 border-dashed">
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px">
-                                                            <img src="../../../assets/media/svg/files/css.svg" alt="icon" />
+                                                            <img src="../../../assets/media/svg/files/css.svg"
+                                                                alt="icon" />
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-6">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">User CRUD Styles</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">User
+                                                                CRUD Styles</a>
                                                             <div class="fw-semibold text-muted">85kb</div>
                                                         </div>
                                                         <!--end::Details-->
@@ -7238,7 +6752,9 @@ require "config/global.php";
 
                                                     <!--begin::Menu-->
                                                     <div class="min-w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true" data-placeholder="Edit">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true"
+                                                            data-placeholder="Edit">
                                                             <option></option>
                                                             <option value="1">Remove</option>
                                                             <option value="2">Modify</option>
@@ -7249,17 +6765,21 @@ require "config/global.php";
                                                 </div>
                                                 <!--end::File-->
                                                 <!--begin::File-->
-                                                <div class="d-flex flex-stack py-4 border border-top-0 border-left-0 border-right-0 border-dashed">
+                                                <div
+                                                    class="d-flex flex-stack py-4 border border-top-0 border-left-0 border-right-0 border-dashed">
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px">
-                                                            <img src="../../../assets/media/svg/files/ai.svg" alt="icon" />
+                                                            <img src="../../../assets/media/svg/files/ai.svg"
+                                                                alt="icon" />
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-6">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Design Initial Logo</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Design
+                                                                Initial Logo</a>
                                                             <div class="fw-semibold text-muted">40kb</div>
                                                         </div>
                                                         <!--end::Details-->
@@ -7267,7 +6787,9 @@ require "config/global.php";
 
                                                     <!--begin::Menu-->
                                                     <div class="min-w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true" data-placeholder="Edit">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true"
+                                                            data-placeholder="Edit">
                                                             <option></option>
                                                             <option value="1">Remove</option>
                                                             <option value="2">Modify</option>
@@ -7282,13 +6804,16 @@ require "config/global.php";
                                                     <div class="d-flex align-items-center">
                                                         <!--begin::Avatar-->
                                                         <div class="symbol symbol-35px">
-                                                            <img src="../../../assets/media/svg/files/tif.svg" alt="icon" />
+                                                            <img src="../../../assets/media/svg/files/tif.svg"
+                                                                alt="icon" />
                                                         </div>
                                                         <!--end::Avatar-->
 
                                                         <!--begin::Details-->
                                                         <div class="ms-6">
-                                                            <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Tower Hill Bilboard</a>
+                                                            <a href="#"
+                                                                class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Tower
+                                                                Hill Bilboard</a>
                                                             <div class="fw-semibold text-muted">27mb</div>
                                                         </div>
                                                         <!--end::Details-->
@@ -7296,7 +6821,9 @@ require "config/global.php";
 
                                                     <!--begin::Menu-->
                                                     <div class="min-w-100px">
-                                                        <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true" data-placeholder="Edit">
+                                                        <select class="form-select form-select-solid form-select-sm"
+                                                            data-control="select2" data-hide-search="true"
+                                                            data-placeholder="Edit">
                                                             <option></option>
                                                             <option value="1">Remove</option>
                                                             <option value="2">Modify</option>
@@ -7318,13 +6845,16 @@ require "config/global.php";
                                                 <!--begin::Label-->
                                                 <div class="me-5">
                                                     <label class="fs-6 fw-semibold">Allow Changes in Budget</label>
-                                                    <div class="fs-7 fw-semibold text-muted">If you need more info, please check budget planning</div>
+                                                    <div class="fs-7 fw-semibold text-muted">If you need more info,
+                                                        please check budget planning</div>
                                                 </div>
                                                 <!--end::Label-->
 
                                                 <!--begin::Switch-->
-                                                <label class="form-check form-switch form-check-custom form-check-solid">
-                                                    <input class="form-check-input" type="checkbox" value="1" name="target_allow" checked="checked" />
+                                                <label
+                                                    class="form-check form-switch form-check-custom form-check-solid">
+                                                    <input class="form-check-input" type="checkbox" value="1"
+                                                        name="target_allow" checked="checked" />
                                                     <span class="form-check-label fw-semibold text-muted">
                                                         Allowed
                                                     </span>
@@ -7337,16 +6867,19 @@ require "config/global.php";
 
                                         <!--begin::Actions-->
                                         <div class="d-flex flex-stack">
-                                            <button type="button" class="btn btn-lg btn-light me-3" data-kt-element="files-previous">
+                                            <button type="button" class="btn btn-lg btn-light me-3"
+                                                data-kt-element="files-previous">
                                                 Set First Target
                                             </button>
 
-                                            <button type="button" class="btn btn-lg btn-primary" data-kt-element="files-next">
+                                            <button type="button" class="btn btn-lg btn-primary"
+                                                data-kt-element="files-next">
                                                 <span class="indicator-label">
                                                     Complete
                                                 </span>
                                                 <span class="indicator-progress">
-                                                    Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                                    Please wait... <span
+                                                        class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                                 </span>
                                             </button>
                                         </div>
@@ -7375,11 +6908,13 @@ require "config/global.php";
 
                                         <!--begin::Actions-->
                                         <div class="d-flex flex-center pb-20">
-                                            <button type="button" class="btn btn-lg btn-light me-3" data-kt-element="complete-start">
+                                            <button type="button" class="btn btn-lg btn-light me-3"
+                                                data-kt-element="complete-start">
                                                 Create New Project
                                             </button>
 
-                                            <a href="#" class="btn btn-lg btn-primary" data-bs-toggle="tooltip" title="Coming Soon">
+                                            <a href="#" class="btn btn-lg btn-primary" data-bs-toggle="tooltip"
+                                                title="Coming Soon">
                                                 View Project
                                             </a>
                                         </div>
@@ -7387,7 +6922,8 @@ require "config/global.php";
 
                                         <!--begin::Illustration-->
                                         <div class="text-center px-4">
-                                            <img src="../../../assets/media/illustrations/sigma-1/9.png" alt="" class="mww-100 mh-350px" />
+                                            <img src="../../../assets/media/illustrations/sigma-1/9.png" alt=""
+                                                class="mww-100 mh-350px" />
                                         </div>
                                         <!--end::Illustration-->
                                     </div>
@@ -7406,7 +6942,8 @@ require "config/global.php";
         </div>
         <!--end::Modal dialog-->
     </div>
-    <!--end::Modal - Create Project--><!--begin::Modal - Users Search-->
+    <!--end::Modal - Create Project-->
+    <!--begin::Modal - Users Search-->
     <div class="modal fade" id="kt_modal_users_search" tabindex="-1" aria-hidden="true">
         <!--begin::Modal dialog-->
         <div class="modal-dialog modal-dialog-centered mw-650px">
@@ -7435,7 +6972,8 @@ require "config/global.php";
                     <!--end::Content-->
 
                     <!--begin::Search-->
-                    <div id="kt_modal_users_search_handler" data-kt-search-keypress="true" data-kt-search-min-length="2" data-kt-search-enter="enter" data-kt-search-layout="inline">
+                    <div id="kt_modal_users_search_handler" data-kt-search-keypress="true" data-kt-search-min-length="2"
+                        data-kt-search-enter="enter" data-kt-search-layout="inline">
 
                         <!--begin::Form-->
                         <form data-kt-search-element="form" class="w-100 position-relative mb-5" autocomplete="off">
@@ -7444,21 +6982,30 @@ require "config/global.php";
                             <!--end::Hidden input-->
 
                             <!--begin::Icon-->
-                            <i class="ki-duotone ki-magnifier fs-2 fs-lg-1 text-gray-500 position-absolute top-50 ms-5 translate-middle-y"><span class="path1"></span><span class="path2"></span></i> <!--end::Icon-->
+                            <i
+                                class="ki-duotone ki-magnifier fs-2 fs-lg-1 text-gray-500 position-absolute top-50 ms-5 translate-middle-y"><span
+                                    class="path1"></span><span class="path2"></span></i>
+                            <!--end::Icon-->
 
                             <!--begin::Input-->
-                            <input type="text" class="form-control form-control-lg form-control-solid px-15" name="search" value="" placeholder="Search by username, full name or email..." data-kt-search-element="input" />
+                            <input type="text" class="form-control form-control-lg form-control-solid px-15"
+                                name="search" value="" placeholder="Search by username, full name or email..."
+                                data-kt-search-element="input" />
                             <!--end::Input-->
 
                             <!--begin::Spinner-->
-                            <span class="position-absolute top-50 end-0 translate-middle-y lh-0 d-none me-5" data-kt-search-element="spinner">
+                            <span class="position-absolute top-50 end-0 translate-middle-y lh-0 d-none me-5"
+                                data-kt-search-element="spinner">
                                 <span class="spinner-border h-15px w-15px align-middle text-muted"></span>
                             </span>
                             <!--end::Spinner-->
 
                             <!--begin::Reset-->
-                            <span class="btn btn-flush btn-active-color-primary position-absolute top-50 end-0 translate-middle-y lh-0 me-5 d-none" data-kt-search-element="clear">
-                                <i class="ki-duotone ki-cross fs-2 fs-lg-1 me-0"><span class="path1"></span><span class="path2"></span></i> </span>
+                            <span
+                                class="btn btn-flush btn-active-color-primary position-absolute top-50 end-0 translate-middle-y lh-0 me-5 d-none"
+                                data-kt-search-element="clear">
+                                <i class="ki-duotone ki-cross fs-2 fs-lg-1 me-0"><span class="path1"></span><span
+                                        class="path2"></span></i> </span>
                             <!--end::Reset-->
                         </form>
                         <!--end::Form-->
@@ -7474,7 +7021,8 @@ require "config/global.php";
                                 <!--begin::Users-->
                                 <div class="mh-375px scroll-y me-n7 pe-7">
                                     <!--begin::User-->
-                                    <a href="#" class="d-flex align-items-center p-3 rounded bg-state-light bg-state-opacity-50 mb-1">
+                                    <a href="#"
+                                        class="d-flex align-items-center p-3 rounded bg-state-light bg-state-opacity-50 mb-1">
                                         <!--begin::Avatar-->
                                         <div class="symbol symbol-35px symbol-circle me-5">
                                             <img alt="Pic" src="../../../assets/media/avatars/300-6.jpg" />
@@ -7490,7 +7038,8 @@ require "config/global.php";
                                     </a>
                                     <!--end::User-->
                                     <!--begin::User-->
-                                    <a href="#" class="d-flex align-items-center p-3 rounded bg-state-light bg-state-opacity-50 mb-1">
+                                    <a href="#"
+                                        class="d-flex align-items-center p-3 rounded bg-state-light bg-state-opacity-50 mb-1">
                                         <!--begin::Avatar-->
                                         <div class="symbol symbol-35px symbol-circle me-5">
                                             <span class="symbol-label bg-light-danger text-danger fw-semibold">
@@ -7507,7 +7056,8 @@ require "config/global.php";
                                     </a>
                                     <!--end::User-->
                                     <!--begin::User-->
-                                    <a href="#" class="d-flex align-items-center p-3 rounded bg-state-light bg-state-opacity-50 mb-1">
+                                    <a href="#"
+                                        class="d-flex align-items-center p-3 rounded bg-state-light bg-state-opacity-50 mb-1">
                                         <!--begin::Avatar-->
                                         <div class="symbol symbol-35px symbol-circle me-5">
                                             <img alt="Pic" src="../../../assets/media/avatars/300-1.jpg" />
@@ -7523,7 +7073,8 @@ require "config/global.php";
                                     </a>
                                     <!--end::User-->
                                     <!--begin::User-->
-                                    <a href="#" class="d-flex align-items-center p-3 rounded bg-state-light bg-state-opacity-50 mb-1">
+                                    <a href="#"
+                                        class="d-flex align-items-center p-3 rounded bg-state-light bg-state-opacity-50 mb-1">
                                         <!--begin::Avatar-->
                                         <div class="symbol symbol-35px symbol-circle me-5">
                                             <img alt="Pic" src="../../../assets/media/avatars/300-5.jpg" />
@@ -7539,7 +7090,8 @@ require "config/global.php";
                                     </a>
                                     <!--end::User-->
                                     <!--begin::User-->
-                                    <a href="#" class="d-flex align-items-center p-3 rounded bg-state-light bg-state-opacity-50 mb-1">
+                                    <a href="#"
+                                        class="d-flex align-items-center p-3 rounded bg-state-light bg-state-opacity-50 mb-1">
                                         <!--begin::Avatar-->
                                         <div class="symbol symbol-35px symbol-circle me-5">
                                             <img alt="Pic" src="../../../assets/media/avatars/300-25.jpg" />
@@ -7569,7 +7121,9 @@ require "config/global.php";
                                         <div class="d-flex align-items-center">
                                             <!--begin::Checkbox-->
                                             <label class="form-check form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" type="checkbox" name="users" data-kt-check="true" data-kt-check-target="[data-user-id='0']" value="0" />
+                                                <input class="form-check-input" type="checkbox" name="users"
+                                                    data-kt-check="true" data-kt-check-target="[data-user-id='0']"
+                                                    value="0" />
                                             </label>
                                             <!--end::Checkbox-->
 
@@ -7581,7 +7135,9 @@ require "config/global.php";
 
                                             <!--begin::Details-->
                                             <div class="ms-5">
-                                                <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Emma Smith</a>
+                                                <a href="#"
+                                                    class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Emma
+                                                    Smith</a>
 
                                                 <div class="fw-semibold text-muted">smith@kpmg.com</div>
                                             </div>
@@ -7591,7 +7147,8 @@ require "config/global.php";
 
                                         <!--begin::Access menu-->
                                         <div class="ms-2 w-100px">
-                                            <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                            <select class="form-select form-select-solid form-select-sm"
+                                                data-control="select2" data-hide-search="true">
                                                 <option value="1">Guest</option>
                                                 <option value="2" selected>Owner</option>
                                                 <option value="3">Can Edit</option>
@@ -7611,7 +7168,9 @@ require "config/global.php";
                                         <div class="d-flex align-items-center">
                                             <!--begin::Checkbox-->
                                             <label class="form-check form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" type="checkbox" name="users" data-kt-check="true" data-kt-check-target="[data-user-id='1']" value="1" />
+                                                <input class="form-check-input" type="checkbox" name="users"
+                                                    data-kt-check="true" data-kt-check-target="[data-user-id='1']"
+                                                    value="1" />
                                             </label>
                                             <!--end::Checkbox-->
 
@@ -7624,7 +7183,9 @@ require "config/global.php";
 
                                             <!--begin::Details-->
                                             <div class="ms-5">
-                                                <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Melody Macy</a>
+                                                <a href="#"
+                                                    class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Melody
+                                                    Macy</a>
 
                                                 <div class="fw-semibold text-muted">melody@altbox.com</div>
                                             </div>
@@ -7634,7 +7195,8 @@ require "config/global.php";
 
                                         <!--begin::Access menu-->
                                         <div class="ms-2 w-100px">
-                                            <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                            <select class="form-select form-select-solid form-select-sm"
+                                                data-control="select2" data-hide-search="true">
                                                 <option value="1" selected>Guest</option>
                                                 <option value="2">Owner</option>
                                                 <option value="3">Can Edit</option>
@@ -7654,7 +7216,9 @@ require "config/global.php";
                                         <div class="d-flex align-items-center">
                                             <!--begin::Checkbox-->
                                             <label class="form-check form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" type="checkbox" name="users" data-kt-check="true" data-kt-check-target="[data-user-id='2']" value="2" />
+                                                <input class="form-check-input" type="checkbox" name="users"
+                                                    data-kt-check="true" data-kt-check-target="[data-user-id='2']"
+                                                    value="2" />
                                             </label>
                                             <!--end::Checkbox-->
 
@@ -7666,7 +7230,9 @@ require "config/global.php";
 
                                             <!--begin::Details-->
                                             <div class="ms-5">
-                                                <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Max Smith</a>
+                                                <a href="#"
+                                                    class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Max
+                                                    Smith</a>
 
                                                 <div class="fw-semibold text-muted">max@kt.com</div>
                                             </div>
@@ -7676,7 +7242,8 @@ require "config/global.php";
 
                                         <!--begin::Access menu-->
                                         <div class="ms-2 w-100px">
-                                            <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                            <select class="form-select form-select-solid form-select-sm"
+                                                data-control="select2" data-hide-search="true">
                                                 <option value="1">Guest</option>
                                                 <option value="2">Owner</option>
                                                 <option value="3" selected>Can Edit</option>
@@ -7696,7 +7263,9 @@ require "config/global.php";
                                         <div class="d-flex align-items-center">
                                             <!--begin::Checkbox-->
                                             <label class="form-check form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" type="checkbox" name="users" data-kt-check="true" data-kt-check-target="[data-user-id='3']" value="3" />
+                                                <input class="form-check-input" type="checkbox" name="users"
+                                                    data-kt-check="true" data-kt-check-target="[data-user-id='3']"
+                                                    value="3" />
                                             </label>
                                             <!--end::Checkbox-->
 
@@ -7708,7 +7277,9 @@ require "config/global.php";
 
                                             <!--begin::Details-->
                                             <div class="ms-5">
-                                                <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Sean Bean</a>
+                                                <a href="#"
+                                                    class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Sean
+                                                    Bean</a>
 
                                                 <div class="fw-semibold text-muted">sean@dellito.com</div>
                                             </div>
@@ -7718,7 +7289,8 @@ require "config/global.php";
 
                                         <!--begin::Access menu-->
                                         <div class="ms-2 w-100px">
-                                            <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                            <select class="form-select form-select-solid form-select-sm"
+                                                data-control="select2" data-hide-search="true">
                                                 <option value="1">Guest</option>
                                                 <option value="2" selected>Owner</option>
                                                 <option value="3">Can Edit</option>
@@ -7738,7 +7310,9 @@ require "config/global.php";
                                         <div class="d-flex align-items-center">
                                             <!--begin::Checkbox-->
                                             <label class="form-check form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" type="checkbox" name="users" data-kt-check="true" data-kt-check-target="[data-user-id='4']" value="4" />
+                                                <input class="form-check-input" type="checkbox" name="users"
+                                                    data-kt-check="true" data-kt-check-target="[data-user-id='4']"
+                                                    value="4" />
                                             </label>
                                             <!--end::Checkbox-->
 
@@ -7750,7 +7324,9 @@ require "config/global.php";
 
                                             <!--begin::Details-->
                                             <div class="ms-5">
-                                                <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Brian Cox</a>
+                                                <a href="#"
+                                                    class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Brian
+                                                    Cox</a>
 
                                                 <div class="fw-semibold text-muted">brian@exchange.com</div>
                                             </div>
@@ -7760,7 +7336,8 @@ require "config/global.php";
 
                                         <!--begin::Access menu-->
                                         <div class="ms-2 w-100px">
-                                            <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                            <select class="form-select form-select-solid form-select-sm"
+                                                data-control="select2" data-hide-search="true">
                                                 <option value="1">Guest</option>
                                                 <option value="2">Owner</option>
                                                 <option value="3" selected>Can Edit</option>
@@ -7780,7 +7357,9 @@ require "config/global.php";
                                         <div class="d-flex align-items-center">
                                             <!--begin::Checkbox-->
                                             <label class="form-check form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" type="checkbox" name="users" data-kt-check="true" data-kt-check-target="[data-user-id='5']" value="5" />
+                                                <input class="form-check-input" type="checkbox" name="users"
+                                                    data-kt-check="true" data-kt-check-target="[data-user-id='5']"
+                                                    value="5" />
                                             </label>
                                             <!--end::Checkbox-->
 
@@ -7793,7 +7372,9 @@ require "config/global.php";
 
                                             <!--begin::Details-->
                                             <div class="ms-5">
-                                                <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Mikaela Collins</a>
+                                                <a href="#"
+                                                    class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Mikaela
+                                                    Collins</a>
 
                                                 <div class="fw-semibold text-muted">mik@pex.com</div>
                                             </div>
@@ -7803,7 +7384,8 @@ require "config/global.php";
 
                                         <!--begin::Access menu-->
                                         <div class="ms-2 w-100px">
-                                            <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                            <select class="form-select form-select-solid form-select-sm"
+                                                data-control="select2" data-hide-search="true">
                                                 <option value="1">Guest</option>
                                                 <option value="2" selected>Owner</option>
                                                 <option value="3">Can Edit</option>
@@ -7823,7 +7405,9 @@ require "config/global.php";
                                         <div class="d-flex align-items-center">
                                             <!--begin::Checkbox-->
                                             <label class="form-check form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" type="checkbox" name="users" data-kt-check="true" data-kt-check-target="[data-user-id='6']" value="6" />
+                                                <input class="form-check-input" type="checkbox" name="users"
+                                                    data-kt-check="true" data-kt-check-target="[data-user-id='6']"
+                                                    value="6" />
                                             </label>
                                             <!--end::Checkbox-->
 
@@ -7835,7 +7419,9 @@ require "config/global.php";
 
                                             <!--begin::Details-->
                                             <div class="ms-5">
-                                                <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Francis Mitcham</a>
+                                                <a href="#"
+                                                    class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Francis
+                                                    Mitcham</a>
 
                                                 <div class="fw-semibold text-muted">f.mit@kpmg.com</div>
                                             </div>
@@ -7845,7 +7431,8 @@ require "config/global.php";
 
                                         <!--begin::Access menu-->
                                         <div class="ms-2 w-100px">
-                                            <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                            <select class="form-select form-select-solid form-select-sm"
+                                                data-control="select2" data-hide-search="true">
                                                 <option value="1">Guest</option>
                                                 <option value="2">Owner</option>
                                                 <option value="3" selected>Can Edit</option>
@@ -7865,7 +7452,9 @@ require "config/global.php";
                                         <div class="d-flex align-items-center">
                                             <!--begin::Checkbox-->
                                             <label class="form-check form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" type="checkbox" name="users" data-kt-check="true" data-kt-check-target="[data-user-id='7']" value="7" />
+                                                <input class="form-check-input" type="checkbox" name="users"
+                                                    data-kt-check="true" data-kt-check-target="[data-user-id='7']"
+                                                    value="7" />
                                             </label>
                                             <!--end::Checkbox-->
 
@@ -7878,7 +7467,9 @@ require "config/global.php";
 
                                             <!--begin::Details-->
                                             <div class="ms-5">
-                                                <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Olivia Wild</a>
+                                                <a href="#"
+                                                    class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Olivia
+                                                    Wild</a>
 
                                                 <div class="fw-semibold text-muted">olivia@corpmail.com</div>
                                             </div>
@@ -7888,7 +7479,8 @@ require "config/global.php";
 
                                         <!--begin::Access menu-->
                                         <div class="ms-2 w-100px">
-                                            <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                            <select class="form-select form-select-solid form-select-sm"
+                                                data-control="select2" data-hide-search="true">
                                                 <option value="1">Guest</option>
                                                 <option value="2" selected>Owner</option>
                                                 <option value="3">Can Edit</option>
@@ -7908,7 +7500,9 @@ require "config/global.php";
                                         <div class="d-flex align-items-center">
                                             <!--begin::Checkbox-->
                                             <label class="form-check form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" type="checkbox" name="users" data-kt-check="true" data-kt-check-target="[data-user-id='8']" value="8" />
+                                                <input class="form-check-input" type="checkbox" name="users"
+                                                    data-kt-check="true" data-kt-check-target="[data-user-id='8']"
+                                                    value="8" />
                                             </label>
                                             <!--end::Checkbox-->
 
@@ -7921,7 +7515,9 @@ require "config/global.php";
 
                                             <!--begin::Details-->
                                             <div class="ms-5">
-                                                <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Neil Owen</a>
+                                                <a href="#"
+                                                    class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Neil
+                                                    Owen</a>
 
                                                 <div class="fw-semibold text-muted">owen.neil@gmail.com</div>
                                             </div>
@@ -7931,7 +7527,8 @@ require "config/global.php";
 
                                         <!--begin::Access menu-->
                                         <div class="ms-2 w-100px">
-                                            <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                            <select class="form-select form-select-solid form-select-sm"
+                                                data-control="select2" data-hide-search="true">
                                                 <option value="1" selected>Guest</option>
                                                 <option value="2">Owner</option>
                                                 <option value="3">Can Edit</option>
@@ -7951,7 +7548,9 @@ require "config/global.php";
                                         <div class="d-flex align-items-center">
                                             <!--begin::Checkbox-->
                                             <label class="form-check form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" type="checkbox" name="users" data-kt-check="true" data-kt-check-target="[data-user-id='9']" value="9" />
+                                                <input class="form-check-input" type="checkbox" name="users"
+                                                    data-kt-check="true" data-kt-check-target="[data-user-id='9']"
+                                                    value="9" />
                                             </label>
                                             <!--end::Checkbox-->
 
@@ -7963,7 +7562,9 @@ require "config/global.php";
 
                                             <!--begin::Details-->
                                             <div class="ms-5">
-                                                <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Dan Wilson</a>
+                                                <a href="#"
+                                                    class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Dan
+                                                    Wilson</a>
 
                                                 <div class="fw-semibold text-muted">dam@consilting.com</div>
                                             </div>
@@ -7973,7 +7574,8 @@ require "config/global.php";
 
                                         <!--begin::Access menu-->
                                         <div class="ms-2 w-100px">
-                                            <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                            <select class="form-select form-select-solid form-select-sm"
+                                                data-control="select2" data-hide-search="true">
                                                 <option value="1">Guest</option>
                                                 <option value="2">Owner</option>
                                                 <option value="3" selected>Can Edit</option>
@@ -7993,7 +7595,9 @@ require "config/global.php";
                                         <div class="d-flex align-items-center">
                                             <!--begin::Checkbox-->
                                             <label class="form-check form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" type="checkbox" name="users" data-kt-check="true" data-kt-check-target="[data-user-id='10']" value="10" />
+                                                <input class="form-check-input" type="checkbox" name="users"
+                                                    data-kt-check="true" data-kt-check-target="[data-user-id='10']"
+                                                    value="10" />
                                             </label>
                                             <!--end::Checkbox-->
 
@@ -8006,7 +7610,9 @@ require "config/global.php";
 
                                             <!--begin::Details-->
                                             <div class="ms-5">
-                                                <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Emma Bold</a>
+                                                <a href="#"
+                                                    class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Emma
+                                                    Bold</a>
 
                                                 <div class="fw-semibold text-muted">emma@intenso.com</div>
                                             </div>
@@ -8016,7 +7622,8 @@ require "config/global.php";
 
                                         <!--begin::Access menu-->
                                         <div class="ms-2 w-100px">
-                                            <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                            <select class="form-select form-select-solid form-select-sm"
+                                                data-control="select2" data-hide-search="true">
                                                 <option value="1">Guest</option>
                                                 <option value="2" selected>Owner</option>
                                                 <option value="3">Can Edit</option>
@@ -8036,7 +7643,9 @@ require "config/global.php";
                                         <div class="d-flex align-items-center">
                                             <!--begin::Checkbox-->
                                             <label class="form-check form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" type="checkbox" name="users" data-kt-check="true" data-kt-check-target="[data-user-id='11']" value="11" />
+                                                <input class="form-check-input" type="checkbox" name="users"
+                                                    data-kt-check="true" data-kt-check-target="[data-user-id='11']"
+                                                    value="11" />
                                             </label>
                                             <!--end::Checkbox-->
 
@@ -8048,7 +7657,9 @@ require "config/global.php";
 
                                             <!--begin::Details-->
                                             <div class="ms-5">
-                                                <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Ana Crown</a>
+                                                <a href="#"
+                                                    class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Ana
+                                                    Crown</a>
 
                                                 <div class="fw-semibold text-muted">ana.cf@limtel.com</div>
                                             </div>
@@ -8058,7 +7669,8 @@ require "config/global.php";
 
                                         <!--begin::Access menu-->
                                         <div class="ms-2 w-100px">
-                                            <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                            <select class="form-select form-select-solid form-select-sm"
+                                                data-control="select2" data-hide-search="true">
                                                 <option value="1" selected>Guest</option>
                                                 <option value="2">Owner</option>
                                                 <option value="3">Can Edit</option>
@@ -8078,7 +7690,9 @@ require "config/global.php";
                                         <div class="d-flex align-items-center">
                                             <!--begin::Checkbox-->
                                             <label class="form-check form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" type="checkbox" name="users" data-kt-check="true" data-kt-check-target="[data-user-id='12']" value="12" />
+                                                <input class="form-check-input" type="checkbox" name="users"
+                                                    data-kt-check="true" data-kt-check-target="[data-user-id='12']"
+                                                    value="12" />
                                             </label>
                                             <!--end::Checkbox-->
 
@@ -8091,7 +7705,9 @@ require "config/global.php";
 
                                             <!--begin::Details-->
                                             <div class="ms-5">
-                                                <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Robert Doe</a>
+                                                <a href="#"
+                                                    class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Robert
+                                                    Doe</a>
 
                                                 <div class="fw-semibold text-muted">robert@benko.com</div>
                                             </div>
@@ -8101,7 +7717,8 @@ require "config/global.php";
 
                                         <!--begin::Access menu-->
                                         <div class="ms-2 w-100px">
-                                            <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                            <select class="form-select form-select-solid form-select-sm"
+                                                data-control="select2" data-hide-search="true">
                                                 <option value="1">Guest</option>
                                                 <option value="2">Owner</option>
                                                 <option value="3" selected>Can Edit</option>
@@ -8121,7 +7738,9 @@ require "config/global.php";
                                         <div class="d-flex align-items-center">
                                             <!--begin::Checkbox-->
                                             <label class="form-check form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" type="checkbox" name="users" data-kt-check="true" data-kt-check-target="[data-user-id='13']" value="13" />
+                                                <input class="form-check-input" type="checkbox" name="users"
+                                                    data-kt-check="true" data-kt-check-target="[data-user-id='13']"
+                                                    value="13" />
                                             </label>
                                             <!--end::Checkbox-->
 
@@ -8133,7 +7752,9 @@ require "config/global.php";
 
                                             <!--begin::Details-->
                                             <div class="ms-5">
-                                                <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">John Miller</a>
+                                                <a href="#"
+                                                    class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">John
+                                                    Miller</a>
 
                                                 <div class="fw-semibold text-muted">miller@mapple.com</div>
                                             </div>
@@ -8143,7 +7764,8 @@ require "config/global.php";
 
                                         <!--begin::Access menu-->
                                         <div class="ms-2 w-100px">
-                                            <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                            <select class="form-select form-select-solid form-select-sm"
+                                                data-control="select2" data-hide-search="true">
                                                 <option value="1">Guest</option>
                                                 <option value="2">Owner</option>
                                                 <option value="3" selected>Can Edit</option>
@@ -8163,7 +7785,9 @@ require "config/global.php";
                                         <div class="d-flex align-items-center">
                                             <!--begin::Checkbox-->
                                             <label class="form-check form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" type="checkbox" name="users" data-kt-check="true" data-kt-check-target="[data-user-id='14']" value="14" />
+                                                <input class="form-check-input" type="checkbox" name="users"
+                                                    data-kt-check="true" data-kt-check-target="[data-user-id='14']"
+                                                    value="14" />
                                             </label>
                                             <!--end::Checkbox-->
 
@@ -8176,7 +7800,9 @@ require "config/global.php";
 
                                             <!--begin::Details-->
                                             <div class="ms-5">
-                                                <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Lucy Kunic</a>
+                                                <a href="#"
+                                                    class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Lucy
+                                                    Kunic</a>
 
                                                 <div class="fw-semibold text-muted">lucy.m@fentech.com</div>
                                             </div>
@@ -8186,7 +7812,8 @@ require "config/global.php";
 
                                         <!--begin::Access menu-->
                                         <div class="ms-2 w-100px">
-                                            <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                            <select class="form-select form-select-solid form-select-sm"
+                                                data-control="select2" data-hide-search="true">
                                                 <option value="1">Guest</option>
                                                 <option value="2" selected>Owner</option>
                                                 <option value="3">Can Edit</option>
@@ -8206,7 +7833,9 @@ require "config/global.php";
                                         <div class="d-flex align-items-center">
                                             <!--begin::Checkbox-->
                                             <label class="form-check form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" type="checkbox" name="users" data-kt-check="true" data-kt-check-target="[data-user-id='15']" value="15" />
+                                                <input class="form-check-input" type="checkbox" name="users"
+                                                    data-kt-check="true" data-kt-check-target="[data-user-id='15']"
+                                                    value="15" />
                                             </label>
                                             <!--end::Checkbox-->
 
@@ -8218,7 +7847,9 @@ require "config/global.php";
 
                                             <!--begin::Details-->
                                             <div class="ms-5">
-                                                <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Ethan Wilder</a>
+                                                <a href="#"
+                                                    class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Ethan
+                                                    Wilder</a>
 
                                                 <div class="fw-semibold text-muted">ethan@loop.com.au</div>
                                             </div>
@@ -8228,7 +7859,8 @@ require "config/global.php";
 
                                         <!--begin::Access menu-->
                                         <div class="ms-2 w-100px">
-                                            <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                            <select class="form-select form-select-solid form-select-sm"
+                                                data-control="select2" data-hide-search="true">
                                                 <option value="1" selected>Guest</option>
                                                 <option value="2">Owner</option>
                                                 <option value="3">Can Edit</option>
@@ -8248,7 +7880,9 @@ require "config/global.php";
                                         <div class="d-flex align-items-center">
                                             <!--begin::Checkbox-->
                                             <label class="form-check form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" type="checkbox" name="users" data-kt-check="true" data-kt-check-target="[data-user-id='16']" value="16" />
+                                                <input class="form-check-input" type="checkbox" name="users"
+                                                    data-kt-check="true" data-kt-check-target="[data-user-id='16']"
+                                                    value="16" />
                                             </label>
                                             <!--end::Checkbox-->
 
@@ -8260,7 +7894,9 @@ require "config/global.php";
 
                                             <!--begin::Details-->
                                             <div class="ms-5">
-                                                <a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Max Smith</a>
+                                                <a href="#"
+                                                    class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Max
+                                                    Smith</a>
 
                                                 <div class="fw-semibold text-muted">max@kt.com</div>
                                             </div>
@@ -8270,7 +7906,8 @@ require "config/global.php";
 
                                         <!--begin::Access menu-->
                                         <div class="ms-2 w-100px">
-                                            <select class="form-select form-select-solid form-select-sm" data-control="select2" data-hide-search="true">
+                                            <select class="form-select form-select-solid form-select-sm"
+                                                data-control="select2" data-hide-search="true">
                                                 <option value="1">Guest</option>
                                                 <option value="2">Owner</option>
                                                 <option value="3" selected>Can Edit</option>
@@ -8286,7 +7923,8 @@ require "config/global.php";
 
                                 <!--begin::Actions-->
                                 <div class="d-flex flex-center mt-15">
-                                    <button type="reset" id="kt_modal_users_search_reset" data-bs-dismiss="modal" class="btn btn-active-light me-3">
+                                    <button type="reset" id="kt_modal_users_search_reset" data-bs-dismiss="modal"
+                                        class="btn btn-active-light me-3">
                                         Cancel
                                     </button>
 
@@ -8309,7 +7947,8 @@ require "config/global.php";
 
                                 <!--begin::Illustration-->
                                 <div class="text-center px-5">
-                                    <img src="../../../assets/media/illustrations/sigma-1/1.png" alt="" class="w-100 h-200px h-sm-325px" />
+                                    <img src="../../../assets/media/illustrations/sigma-1/1.png" alt=""
+                                        class="w-100 h-200px h-sm-325px" />
                                 </div>
                                 <!--end::Illustration-->
                             </div>
@@ -8325,15 +7964,16 @@ require "config/global.php";
         </div>
         <!--end::Modal dialog-->
     </div>
-    <!--end::Modal - Users Search--> <!--end::Modals-->
+    <!--end::Modal - Users Search-->
+    <!--end::Modals-->
 
     <!--begin::Javascript-->
     <?php 
     include("includes/footer_scripts.php");
-    ?>                    
-    
-      <!--begin::Vendors Javascript(used for this page only)-->
-      <script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    ?>
+
+    <!--begin::Vendors Javascript(used for this page only)-->
+    <script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="assets/plugins/custom/vis-timeline/vis-timeline.bundle.js"></script>
     <script src="//cdn.amcharts.com/lib/5/index.js"></script>
     <script src="//cdn.amcharts.com/lib/5/xy.js"></script>

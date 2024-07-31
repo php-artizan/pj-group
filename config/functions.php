@@ -21,6 +21,13 @@ function redirect($route, $ext=".php"){
     }
 }
 
+function redirectBack($route){
+    $pageName = basename($_SERVER['PHP_SELF']);
+    if($pageName != "$route.php"){
+        header("Location: $route");
+    }
+}
+
 function uploadFile($fileInput, $directory, $allowedTypes = array('jpg', 'jpeg', 'png'), $maxFileSize = 500000) {
     $uploadOk = 1;
     $errorMessage = '';
@@ -52,6 +59,7 @@ function uploadFile($fileInput, $directory, $allowedTypes = array('jpg', 'jpeg',
     // }
 
     // Check if $uploadOk is set to 0 by an error
+
     if ($uploadOk == 0) {
         return array('success' => false, 'message' => $errorMessage);
     }
@@ -206,7 +214,7 @@ function transformArrayMetaKey($inputArray, $ad_id) {
 }
 
 
-function uploadMultipleFiles($files,$ad_id, $uploadDir = "assets/img" ,$allowedTypes = ["jpg", "jpeg", "png", "gif","jfif"], $maxSize = 2 * 1024 * 1024) {
+function uploadMultipleFiles($files, $uploadDir = "assets/img",$ad_id ,$rooDir = "",$allowedTypes = ["jpg", "jpeg", "png", "gif","jfif"], $maxSize = 2 * 1024 * 1024) {
     $response = [];
 
     // Ensure the upload directory exists
@@ -253,8 +261,12 @@ function uploadMultipleFiles($files,$ad_id, $uploadDir = "assets/img" ,$allowedT
         // Generate a unique file name to prevent overwriting
         $uniqueFileName = uniqid() . "." . $fileType;
 
+        $finalUrl = $uploadDir;
+        if(!empty($rooDir)){
+            $finalUrl = $rooDir.$uploadDir;
+        }
         // Move the file to the upload directory
-        if (move_uploaded_file($fileTmpName, $uploadDir . $uniqueFileName)) {
+        if (move_uploaded_file($fileTmpName, $finalUrl . $uniqueFileName)) {
             $response[] = [
                 "ad_id" => $ad_id,
                 "image_type" => $fileType,
@@ -305,5 +317,162 @@ function page_title($name=""){
 
 }   
 
+  function returnJson($array){
+      return json_encode($array);
+  }
 
+
+function deleteRow($table, $conditions) {
+
+    global $db;
+
+    $whereClauses = [];
+    foreach ($conditions as $key => $value) {
+        $whereClauses[] = "$key = '" . $db->real_escape_string($value) . "'";
+    }
+    $where = implode(' AND ', $whereClauses);
+
+    $query = "DELETE FROM $table WHERE $where";
+
+    if(mysqli_query($db, $query)){
+        return  true;
+    }else{
+        return false;
+    }
+}
+
+
+function updateRow($table, $row = [], $conditions = [], $bool = false) {
+    global $db;
+
+    // Construct the SET clause
+    $setClauses = [];
+    foreach ($row as $column => $value) {
+        $setClauses[] = "$column = '" . mysqli_real_escape_string($db, $value) . "'";
+    }
+    $setClause = implode(", ", $setClauses);
+
+    // Construct the WHERE clause from the conditions array
+    $whereClauses = [];
+    foreach ($conditions as $column => $value) {
+        $whereClauses[] = "$column = '" . mysqli_real_escape_string($db, $value) . "'";
+    }
+    $whereClause = implode(" AND ", $whereClauses);
+
+    // Create the UPDATE SQL query
+    $query = "UPDATE $table SET $setClause WHERE $whereClause";
+
+    // Return the query if $bool is true
+    if ($bool) {
+        return $query;
+    }
+
+    // Execute the query
+    if (mysqli_query($db, $query)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+function uploadSingleFile($uploadDir, $inputName, $pathSave="icons/",$allowedTypes = ['jpg', 'jpeg', 'png', 'gif']) {
+    // Check if the upload directory exists, if not create it
+
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0755, true);
+    }
+
+    // Check if file was uploaded without errors
+    if ($_FILES[$inputName]['error'] === UPLOAD_ERR_OK) {
+        // Validate file type
+        $fileInfo = pathinfo($_FILES[$inputName]['name']);
+        $extension = strtolower($fileInfo['extension']);
+        if (!in_array($extension, $allowedTypes)) {
+            return false; // Return false if file type is not allowed
+        }
+
+        // Generate unique filename to avoid overwriting existing files
+        $fileName = uniqid() . '.' . $extension;
+        $targetFile = $uploadDir . '/' . $fileName;
+
+        // Move the uploaded file to the destination directory
+        if (move_uploaded_file($_FILES[$inputName]['tmp_name'], $targetFile)) {
+            return $pathSave.$fileName; // Return the file path if upload was successful
+        } else {
+            return false; // Return false if file move failed
+        }
+    } else {
+        return false; // Return false if there was an upload error
+    }
+
+    
+
+}
+
+
+function getAdminRoot($url){
+ // Parse the URL to get its components
+$parsed_url = parse_url($url);
+
+// Extract the path component
+$path = $parsed_url['path'];
+
+// Find the position of "admin/" in the path
+$admin_pos = strpos($path, 'admin/');
+
+// Extract the part of the path up to "admin/"
+$path_up_to_admin = substr($path, 0, $admin_pos + strlen('admin/'));
+
+// Rebuild the full URL up to "admin/"
+$full_url_up_to_admin = $parsed_url['scheme'] . '://' . $parsed_url['host'] . $path_up_to_admin;
+
+// Output the result
+return $full_url_up_to_admin;
+}
+
+function getUrlBeforeAdmin($url) {
+    // Parse the URL to get its components
+    $parsedUrl = parse_url($url);
+    
+    // Get the path component
+    $path = $parsedUrl['path'];
+
+    // Find the position of '/admin'
+    $adminPos = strpos($path, '/admin');
+
+    // If '/admin' is found in the path
+    if ($adminPos !== false) {
+        // Extract the path up to '/admin'
+        $newPath = substr($path, 0, $adminPos);
+    } else {
+        // If '/admin' is not found, return the original URL
+        return $url;
+    }
+
+    // Rebuild the URL
+    $newUrl = $parsedUrl['scheme'] . '://' . $parsedUrl['host'] . $newPath;
+    if (isset($parsedUrl['port'])) {
+        $newUrl .= ':' . $parsedUrl['port'];
+    }
+
+    return $newUrl;
+}
+
+function getCurrentUri(){
+    // Get the request scheme (http or https)
+    $scheme = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+
+    // Get the host
+    $host = $_SERVER['HTTP_HOST'];
+
+    // Get the request URI
+    $uri = $_SERVER['REQUEST_URI'];
+
+    // Combine them to form the full URL
+    $current_url = $scheme . '://' . $host . $uri;
+
+    // Output the current URL
+    return $current_url;
+}
 ?>
