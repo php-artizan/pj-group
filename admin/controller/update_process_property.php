@@ -2,7 +2,7 @@
 <?php
 include_once('../../config/functions.php');
 
-
+$currentUrl = getCurrentUri();
 
 
 if(isset($_POST['updateBtn'])){
@@ -60,11 +60,13 @@ if(isset($_POST['updateBtn'])){
 
     
         if(!empty($_FILES['images']) && !empty($_FILES['images']['name'][0])){
-            $filesInfo = uploadMultipleFiles($_FILES['images'],"uploads/images/ads/",$_POST['ad_id']);
+
+           $Mainroot = getUrlBeforeAdmin($currentUrl);
+            $filesInfo = uploadMultipleFiles($_FILES['images'],"uploads/images/ads/",$_POST['ad_id'],"../../");
             insertRowsIntoDatabase('ads_images',$filesInfo);
         }
 
-
+        $_SESSION['success_msg'] = "";
         $_SESSION['success_msg'] ="Ad Updated Successfully";
         redirectBack($adminRoot.$_POST['back_url']);
 

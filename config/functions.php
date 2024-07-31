@@ -211,7 +211,7 @@ function transformArrayMetaKey($inputArray, $ad_id) {
 }
 
 
-function uploadMultipleFiles($files, $uploadDir = "assets/img",$ad_id ,$allowedTypes = ["jpg", "jpeg", "png", "gif","jfif"], $maxSize = 2 * 1024 * 1024) {
+function uploadMultipleFiles($files, $uploadDir = "assets/img",$ad_id ,$rooDir = "",$allowedTypes = ["jpg", "jpeg", "png", "gif","jfif"], $maxSize = 2 * 1024 * 1024) {
     $response = [];
 
     // Ensure the upload directory exists
@@ -258,8 +258,12 @@ function uploadMultipleFiles($files, $uploadDir = "assets/img",$ad_id ,$allowedT
         // Generate a unique file name to prevent overwriting
         $uniqueFileName = uniqid() . "." . $fileType;
 
+        $finalUrl = $uploadDir;
+        if(!empty($rooDir)){
+            $finalUrl = $rooDir.$uploadDir;
+        }
         // Move the file to the upload directory
-        if (move_uploaded_file($fileTmpName, $uploadDir . $uniqueFileName)) {
+        if (move_uploaded_file($fileTmpName, $finalUrl . $uniqueFileName)) {
             $response[] = [
                 "ad_id" => $ad_id,
                 "image_type" => $fileType,
@@ -422,6 +426,34 @@ $full_url_up_to_admin = $parsed_url['scheme'] . '://' . $parsed_url['host'] . $p
 
 // Output the result
 return $full_url_up_to_admin;
+}
+
+function getUrlBeforeAdmin($url) {
+    // Parse the URL to get its components
+    $parsedUrl = parse_url($url);
+    
+    // Get the path component
+    $path = $parsedUrl['path'];
+
+    // Find the position of '/admin'
+    $adminPos = strpos($path, '/admin');
+
+    // If '/admin' is found in the path
+    if ($adminPos !== false) {
+        // Extract the path up to '/admin'
+        $newPath = substr($path, 0, $adminPos);
+    } else {
+        // If '/admin' is not found, return the original URL
+        return $url;
+    }
+
+    // Rebuild the URL
+    $newUrl = $parsedUrl['scheme'] . '://' . $parsedUrl['host'] . $newPath;
+    if (isset($parsedUrl['port'])) {
+        $newUrl .= ':' . $parsedUrl['port'];
+    }
+
+    return $newUrl;
 }
 
 function getCurrentUri(){

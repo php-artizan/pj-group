@@ -4,6 +4,7 @@ include_once('../../config/functions.php');
 
 session_start();
 $uploadDir = __DIR__ . '/../../uploads/icons';
+$uploadDirProfile = __DIR__ . '/../../uploads/profile';
 
 //dd($_SERVER['HTTP_REFERER']);
 if(isset($_POST['submitAmnGrpBtn'])){
@@ -65,6 +66,9 @@ if(isset($_POST['getEditField'])){
 
     }elseif ($_POST['getEditField'] ==4){
         $allData = selectAllData('users',['id' => $_POST['id']]);
+
+    }elseif ($_POST['getEditField'] ==7){
+        $allData = selectAllData('admins',['id' => $_POST['id']]);
 
     }
 
@@ -193,7 +197,6 @@ if(isset($_POST['submitAmnBtnUpdate'])){
 
 // ADD User
 if(isset($_POST['submitUser'])){
-
     $dataAds = [
         'name'=> $_POST['name'],
         'email'=> $_POST['email'],
@@ -201,8 +204,36 @@ if(isset($_POST['submitUser'])){
         'status'=> $_POST['status'],
     ];
 
+    if(!empty($_FILES['user_image']) && !empty($_FILES['user_image']['name'])){
+        $filesInfo = uploadSingleFile($uploadDirProfile,'user_image','profile/');
+        $dataAds['user_image'] = $filesInfo;
+
+    }
+    // echo
+    // print_r($dataAds);
+    // die();
     $insertAndGetID = insertRowAndGetID('users',$dataAds);
     $_SESSION['success_msg'] ="New User Added Successfully";
+    redirectBack($_SERVER['HTTP_REFERER']);
+
+}
+
+// ADD Admin
+if(isset($_POST['submitAdmin'])){
+    $dataAds = [
+        'name'=> $_POST['name'],
+        'email'=> $_POST['email'],
+        'pass'=> $_POST['pass'],
+    ];
+
+    if(!empty($_FILES['admin_image']) && !empty($_FILES['admin_image']['name'])){
+        $filesInfo = uploadSingleFile($uploadDirProfile,'admin_image','profile/');
+        $dataAds['admin_image'] = $filesInfo;
+
+    }
+    
+    $insertAndGetID = insertRowAndGetID('admins',$dataAds);
+    $_SESSION['success_msg'] ="New Admin Added Successfully";
     redirectBack($_SERVER['HTTP_REFERER']);
 
 }
@@ -217,9 +248,36 @@ if(isset($_POST['updateUser'])){
         'status'=> $_POST['status'],
     ];
 
+    if(!empty($_FILES['user_image']) && !empty($_FILES['user_image']['name'])){
+        $filesInfo = uploadSingleFile($uploadDirProfile,'user_image','profile/');
+        $dataAds['user_image'] = $filesInfo;
+
+    }
+
     $where = ['id' => $_POST['id']];
     $insertAndGetID = updateRow('users',$dataAds,$where);
     $_SESSION['success_msg'] ="User Updated Successfully";
+    redirectBack($_SERVER['HTTP_REFERER']);
+}
+
+// Update Admin
+if(isset($_POST['updateadmin'])){
+
+    $dataAds = [
+        'name'=> $_POST['name'],
+        'email'=> $_POST['email'],
+        'pass'=> $_POST['pass'],
+    ];
+
+    if(!empty($_FILES['admin_image']) && !empty($_FILES['admin_image']['name'])){
+        $filesInfo = uploadSingleFile($uploadDirProfile,'admin_image','profile/');
+        $dataAds['admin_image'] = $filesInfo;
+
+    }
+
+    $where = ['id' => $_POST['id']];
+    $insertAndGetID = updateRow('admins',$dataAds,$where);
+    $_SESSION['success_msg'] ="Admin Updated Successfully";
     redirectBack($_SERVER['HTTP_REFERER']);
 }
 
@@ -228,6 +286,15 @@ if(isset($_GET['del_user'])){
 
     deleteRow('users',['id' => $_GET['id']]);
     $_SESSION['success_msg'] ="User Deleted Successfully";
+    redirectBack($_SERVER['HTTP_REFERER']);
+
+}
+
+// Delete Admin
+if(isset($_GET['del_admin'])){
+
+    deleteRow('admins',['id' => $_GET['id']]);
+    $_SESSION['success_msg'] ="Admin Deleted Successfully";
     redirectBack($_SERVER['HTTP_REFERER']);
 
 }

@@ -106,14 +106,17 @@ while ($row = mysqli_fetch_assoc($result)) {
                                             Home </a>
                                     </li>
 
-                                    <!-- <li class="breadcrumb-item text-muted">
+                                    <li class="breadcrumb-item text-muted">
                                         
                                         <a href="javascript::void(0)" class="text-muted text-hover-primary">
                                         Miscellaneous </a>
-                                    </li> -->
+                                    </li>
 
-                                    <!-- <li class="breadcrumb-item text-dark">
-                                        Amenties Groups</li> -->
+                                    <li class="breadcrumb-item text-dark">
+                                        <a href="" class="text-dark text-hover-primary">
+                                        Admins
+                                        </a>
+                                    </li>
 
                                 </ul>
                                 <!--end::Breadcrumb-->
@@ -146,13 +149,14 @@ while ($row = mysqli_fetch_assoc($result)) {
 <!--                            --><?php //=$errorMessage; ?>
 <!--                        </div>-->
 <!--                    --><?php //} ?>
-                    <?php if($success) {?>
-                        <div class="alert alert-success">
-                            --><?php //=$message; ?>
-                            <?=$_SESSION['success_msg']; ?>
-                            <?php unset($_SESSION['success_msg']); ?>
-                        </div>
-                    <?php } ?>
+                        <?php if( $success || !empty($_SESSION['success_msg'])) {?>
+                            <div class="alert alert-success">
+                                <!-- <?php //=$message; ?> -->
+                                <?=$_SESSION['success_msg']; ?>
+                                <?php unset($_SESSION['success_msg']); ?>
+
+                            </div>
+                        <?php } ?>
                                 <!--begin::Post-->
                     <div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
                         <!--begin::Container-->
@@ -164,9 +168,9 @@ while ($row = mysqli_fetch_assoc($result)) {
                                     <!--begin::Card title-->
                                     <div class="card-title">
                                         <!--begin::Search-->
-                                        <div class="d-flex align-items-center position-relative my-1">
+                                        <!-- <div class="d-flex align-items-center position-relative my-1">
                                             <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span class="path1"></span><span class="path2"></span></i> <input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search user" />
-                                        </div>
+                                        </div> -->
                                         <!--end::Search-->
                                     </div>
                                     <!--begin::Card title-->
@@ -176,9 +180,9 @@ while ($row = mysqli_fetch_assoc($result)) {
                                         <!--begin::Toolbar-->
                                         <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                                             <!--begin::Filter-->
-                                            <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                            <!-- <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                                 <i class="ki-duotone ki-filter fs-2"><span class="path1"></span><span class="path2"></span></i> Filter
-                                            </button>
+                                            </button> -->
                                             <!--begin::Menu 1-->
                                             <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true">
                                                 <!--begin::Header-->
@@ -230,9 +234,9 @@ while ($row = mysqli_fetch_assoc($result)) {
                                             <!--end::Menu 1--> <!--end::Filter-->
 
                                             <!--begin::Export-->
-                                            <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal" data-bs-target="#kt_modal_export_users">
+                                            <!-- <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal" data-bs-target="#kt_modal_export_users">
                                                 <i class="ki-duotone ki-exit-up fs-2"><span class="path1"></span><span class="path2"></span></i> Export
-                                            </button>
+                                            </button> -->
                                             <!--end::Export-->
 
                                             <!--begin::Add user-->
@@ -399,11 +403,19 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                                     <!--begin::Label-->
                                                                     <label class="required fw-semibold fs-6 mb-2">Password</label>
                                                                     <!--end::Label-->
-                                                                    <input type="password" name="password"  required class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Enter Password" value="" />
+                                                                    <input type="password" name="pass"  required class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Enter Password" value="" />
                                                                 </div>
                                                                 <!--end::Input group-->         
                                                             </div>
                                                             <!--end::Scroll-->
+
+                                                            <div class="fv-row mb-7">
+                                                                <!--begin::Label-->
+                                                                <label class="required fw-semibold fs-6 mb-2">Image</label>
+                                                                <!--end::Label-->
+                                                                <input type="file" name="admin_image"  required class="form-control  "  />
+                                                            </div>
+                                                            <!--end::Input group-->
 
                                                             <!--begin::Actions-->
                                                             <div class="text-center pt-10">
@@ -411,7 +423,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                                     Discard
                                                                 </button>
                                                                 
-                                                                <button type="submit" name="submitAtypeGrpBtn" class="btn btn-primary" data-kt-users-modal-action="submit">
+                                                                <button type="submit" name="submitAdmin" class="btn btn-primary" data-kt-users-modal-action="submit">
                                                                     <span class="indicator-label">
                                                                         Submit
                                                                     </span>
@@ -474,7 +486,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                                 <!--end::Label-->
 
                                                                 <!--begin::Input-->
-                                                                <input type="text" name="name"  required class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Full name" value="" />
+                                                                <input type="text" name="name" id="name_field_update"  required class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Full name" value="" />
                                                                 <!--end::Input-->
                                                         </div>
                                                                 <!--end::Input group-->
@@ -484,7 +496,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                                     <!--begin::Label-->
                                                                     <label class="required fw-semibold fs-6 mb-2">Email</label>
                                                                     <!--end::Label-->
-                                                                    <input type="email" name="email"  required class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Enter Email" value="" />
+                                                                    <input type="email" name="email" id="email_field_update"  required class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Enter Email" value="" />
                                                                 </div>
                                                                 <!--end::Input group-->
 
@@ -493,10 +505,18 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                                     <!--begin::Label-->
                                                                     <label class="required fw-semibold fs-6 mb-2">Password</label>
                                                                     <!--end::Label-->
-                                                                    <input type="password" name="password"  required class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Enter Password" value="" />
+                                                                    <input type="password" name="pass" id="pass_field_update"  required class="form-control  mb-3 mb-lg-0" id="name_field" placeholder="Enter Password" value="" />
                                                                 </div>
                                                                 <!--end::Input group-->           
 
+                                                                <div class="fv-row mb-7 updateProfileView">
+                                                                    <!--begin::Label-->
+                                                                    <label class="required fw-semibold fs-6 mb-2">Image</label>
+                                                                    <!--end::Label-->
+                                                                    <img class="rounded-2" src=".././uploads/profile/default.png" width="80" height="80">
+                                                                    <input type="file" name="admin_image"  required class="form-control  "  />
+                                                                </div>
+                                                                <!--end::Input group-->
                                                     </div>
                                                     <!--end::Scroll-->
 
@@ -506,7 +526,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                             Discard
                                                         </button>
 
-                                                        <button type="submit" name="submitAdTypeBtnUpdate"  class="btn btn-primary" data-kt-users-modal-action="submit">
+                                                        <button type="submit" name="updateadmin"  class="btn btn-primary" data-kt-users-modal-action="submit">
                                                                     <span class="indicator-label">
                                                                         Update
                                                                     </span>
@@ -534,13 +554,14 @@ while ($row = mysqli_fetch_assoc($result)) {
                                         <thead>
                                             <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
                                                 <th class="w-10px pe-2">
-                                                    <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
+                                                    <!-- <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
                                                         <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_table_users .form-check-input" value="1" />
-                                                    </div>
+                                                    </div> -->
                                                 </th>
                                                 <th class="min-w-125px">Name</th>
                                                 <th class="min-w-125px">Email</th>
                                                 <th class="min-w-125px">Password</th>
+                                                <th class="min-w-125px">Image</th>
                                                 <th class="text-end min-w-100px">Actions</th>
                                             </tr>
                                         </thead>
@@ -548,9 +569,9 @@ while ($row = mysqli_fetch_assoc($result)) {
                                             <?php  foreach($admins as $item) { ?>
                                                 <tr>
                                                     <td>
-                                                        <div class="form-check form-check-sm form-check-custom form-check-solid">
+                                                        <!-- <div class="form-check form-check-sm form-check-custom form-check-solid">
                                                             <input class="form-check-input" type="checkbox" value="1" />
-                                                        </div>
+                                                        </div> -->
                                                     </td>
                                                     <td class="d-flex align-items-center">
                                                         <!--begin:: Avatar -->
@@ -569,6 +590,15 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                     <td>
                                                         <?=$item['pass']?> 
                                                     </td>
+                                                    <td>
+                                                        <?php 
+                                                            if (!empty($item['admin_image'])) {
+                                                                echo '<img class="rounded-2" src=".././uploads/' . $item['admin_image'] . '" width="40" height="40">';
+                                                            }else{
+                                                                echo '<img class="rounded-2" src=".././uploads/profile/default.png" width="40" height="40">';
+                                                            }
+                                                        ?>
+                                                    </td>    
                                                     <td class="text-end">
                                                         <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                                             Actions
@@ -578,7 +608,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                         <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                                             <!--begin::Menu item-->
                                                             <div class="menu-item px-3">
-                                                                <a href="#" data-bs-toggle="modal" data-edit-id="" data-bs-target="#kt_modal_update_user" class="menu-link adsTypeEdit px-3">
+                                                                <a href="#" data-bs-toggle="modal" data-edit-id="<?=$item['id']?>" data-bs-target="#kt_modal_update_user" class="menu-link adminEdit px-3">
                                                                     Edit
                                                                 </a>
                                                             </div>
@@ -586,7 +616,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 
                                                             <!--begin::Menu item-->
                                                             <div class="menu-item px-3">
-                                                                <a href="controller/adminController.php?id=<?php echo $item['id']?>&del_type=ad_type" class="menu-link px-3" data-kt-users-table-filter="delete_row">
+                                                                <a href="controller/adminController.php?id=<?php echo $item['id']?>&del_admin=admin" class="menu-link px-3" data-kt-users-table-filter="delete_row">
                                                                     Delete
                                                                 </a>
                                                             </div>
@@ -627,6 +657,47 @@ while ($row = mysqli_fetch_assoc($result)) {
     include("includes/footer_scripts.php");
     ?>                                   
     <!--end::Custom Javascript-->
+
+    <script>
+        $(document).ready(function(){
+
+            $("#name_field").keyup(function(){
+                var name = $("#name_field").val();
+            });
+
+            $(".adminEdit").on("click",function(){
+                let editId = $(this).attr("data-edit-id");
+
+                $.ajax({
+                    url: 'controller/adminController.php',
+                    type: 'POST',
+                    data: {
+                        id:editId,
+                        getEditField:7,
+            }, // Serialize the form data
+                    success: function(response) {
+                        let res = JSON.parse(response);
+                        var currentUrl = window.location.href;
+                        var startIndex = currentUrl.indexOf("pj-group/") + "pj-group/".length;
+                        var newUrl = currentUrl.substr(0, startIndex);
+                        console.log(newUrl)
+                        var icon_filename = res[0].admin_image;
+                        var imageUrl = newUrl + '/uploads/' + icon_filename;
+
+                        $("#id_field_update").val(editId);
+                        $("#name_field_update").val(res[0].name)
+                        $("#email_field_update").val(res[0].email)
+                        $("#pass_field_update").val(res[0].pass)
+                        $(".updateProfileView").children('img').attr('src',imageUrl)
+                    }
+                });
+            })
+
+            
+
+        });
+    </script>
+
     <!--end::Javascript-->
 
 </body>

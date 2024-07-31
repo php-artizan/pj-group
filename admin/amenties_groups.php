@@ -222,7 +222,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                     <div class="card-title">
                                         <!--begin::Search-->
                                         <div class="d-flex align-items-center position-relative my-1">
-                                            <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span class="path1"></span><span class="path2"></span></i> <input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search user" />
+<!--                                            <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span class="path1"></span><span class="path2"></span></i> <input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search user" />-->
                                         </div>
                                         <!--end::Search-->
                                     </div>
@@ -233,14 +233,14 @@ while ($row = mysqli_fetch_assoc($result)) {
                                         <!--begin::Toolbar-->
                                         <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                                             <!--begin::Filter-->
-                                            <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                                                <i class="ki-duotone ki-filter fs-2"><span class="path1"></span><span class="path2"></span></i> Filter
-                                            </button>
+<!--                                            <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">-->
+<!--                                                <i class="ki-duotone ki-filter fs-2"><span class="path1"></span><span class="path2"></span></i> Filter-->
+<!--                                            </button>-->
                                             <!--begin::Menu 1-->
                                             <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true">
                                                 <!--begin::Header-->
                                                 <div class="px-7 py-5">
-                                                    <div class="fs-5 text-dark fw-bold">Filter Options</div>
+<!--                                                    <div class="fs-5 text-dark fw-bold">Filter Options</div>-->
                                                 </div>
                                                 <!--end::Header-->
 
@@ -287,9 +287,9 @@ while ($row = mysqli_fetch_assoc($result)) {
                                             <!--end::Menu 1--> <!--end::Filter-->
 
                                             <!--begin::Export-->
-                                            <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal" data-bs-target="#kt_modal_export_users">
-                                                <i class="ki-duotone ki-exit-up fs-2"><span class="path1"></span><span class="path2"></span></i> Export
-                                            </button>
+<!--                                            <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal" data-bs-target="#kt_modal_export_users">-->
+<!--                                                <i class="ki-duotone ki-exit-up fs-2"><span class="path1"></span><span class="path2"></span></i> Export-->
+<!--                                            </button>-->
                                             <!--end::Export-->
 
                                             <!--begin::Add user-->
@@ -596,11 +596,11 @@ while ($row = mysqli_fetch_assoc($result)) {
                                     <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
                                         <thead>
                                             <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                                                <th class="w-10px pe-2">
-                                                    <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-                                                        <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_table_users .form-check-input" value="1" />
-                                                    </div>
-                                                </th>
+<!--                                                <th class="w-10px pe-2">-->
+<!--                                                    <div class="form-check form-check-sm form-check-custom form-check-solid me-3">-->
+<!--                                                        <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_table_users .form-check-input" value="1" />-->
+<!--                                                    </div>-->
+<!--                                                </th>-->
                                                 <th class="min-w-125px">Name</th>
                                                 <th class="min-w-125px">Joined Date</th>
                                                 <th class="text-end min-w-100px">Actions</th>
@@ -609,11 +609,11 @@ while ($row = mysqli_fetch_assoc($result)) {
                                         <tbody class="text-gray-600 fw-semibold">
                                             <?php  foreach($amenties_groups as $item) { ?>
                                                 <tr>
-                                                    <td>
-                                                        <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                            <input class="form-check-input" type="checkbox" value="1" />
-                                                        </div>
-                                                    </td>
+<!--                                                    <td>-->
+<!--                                                        <div class="form-check form-check-sm form-check-custom form-check-solid">-->
+<!--                                                            <input class="form-check-input" type="checkbox" value="1" />-->
+<!--                                                        </div>-->
+<!--                                                    </td>-->
                                                     <td class="d-flex align-items-center">
                                                         <!--begin:: Avatar -->
                                                        

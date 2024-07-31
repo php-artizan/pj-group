@@ -1,3 +1,4 @@
+
  <div id="kt_header" class="header " data-kt-sticky="true" data-kt-sticky-name="header" data-kt-sticky-offset="{default: '200px', lg: '300px'}">
 
                     <!--begin::Container-->
@@ -50,10 +51,10 @@
                                         <!--end::Hidden input-->
 
                                         <!--begin::Icon-->
-                                        <i class="ki-duotone ki-magnifier search-icon fs-2 text-gray-500 position-absolute top-50 translate-middle-y ms-5"><span class="path1"></span><span class="path2"></span></i> <!--end::Icon-->
+                                        <!-- <i class="ki-duotone ki-magnifier search-icon fs-2 text-gray-500 position-absolute top-50 translate-middle-y ms-5"><span class="path1"></span><span class="path2"></span></i> end::Icon -->
 
                                         <!--begin::Input-->
-                                        <input type="text" class="search-input form-control form-control-solid  ps-13" name="search" value="" placeholder="Search..." data-kt-search-element="input" />
+                                        <!-- <input type="text" class="search-input form-control form-control-solid  ps-13" name="search" value="" placeholder="Search..." data-kt-search-element="input" /> -->
                                         <!--end::Input-->
 
                                         <!--begin::Spinner-->
@@ -773,9 +774,9 @@
                                 <!--begin::Activities-->
                                 <div class="d-flex align-items-center ms-1 ms-lg-2">
                                     <!--begin::Drawer toggle-->
-                                    <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px" id="kt_activities_toggle">
+                                    <!-- <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px" id="kt_activities_toggle">
                                         <i class="ki-duotone ki-chart-simple fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
-                                    </div>
+                                    </div> -->
                                     <!--end::Drawer toggle-->
                                 </div>
                                 <!--end::Activities-->
@@ -783,9 +784,9 @@
                                 <!--begin::Quick links-->
                                 <div class="d-flex align-items-center ms-1 ms-lg-2">
                                     <!--begin::Menu wrapper-->
-                                    <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
+                                    <!-- <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
                                         <i class="ki-duotone ki-element-plus fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></i>
-                                    </div>
+                                    </div> -->
 
                                     <!--begin::Menu-->
                                     <div class="menu menu-sub menu-sub-dropdown menu-column w-250px w-lg-325px" data-kt-menu="true">
@@ -859,11 +860,11 @@
                                 <!--begin::Chat-->
                                 <div class="d-flex align-items-center ms-1 ms-lg-2">
                                     <!--begin::Menu wrapper-->
-                                    <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px position-relative" id="kt_drawer_chat_toggle">
+                                    <!-- <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px position-relative" id="kt_drawer_chat_toggle">
                                         <i class="ki-duotone ki-message-text-2 fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
                                         <span class="bullet bullet-dot bg-success h-6px w-6px position-absolute translate-middle top-0 start-50 animation-blink">
                                         </span>
-                                    </div>
+                                    </div> -->
                                     <!--end::Menu wrapper-->
                                 </div>
                                 <!--end::Chat-->
@@ -871,9 +872,9 @@
                                 <!--begin::Notifications-->
                                 <div class="d-flex align-items-center ms-1 ms-lg-2">
                                     <!--begin::Menu wrapper-->
-                                    <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
+                                    <!-- <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
                                         <i class="ki-duotone ki-element-11 fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
-                                    </div>
+                                    </div> -->
 
                                     <!--begin::Menu-->
                                     <div class="menu menu-sub menu-sub-dropdown menu-column w-350px w-lg-375px" data-kt-menu="true" id="kt_menu_notifications">
@@ -1448,7 +1449,7 @@
                                 <div class="d-flex align-items-center ms-2 ms-lg-3" id="kt_header_user_menu_toggle">
                                     <!--begin::Menu wrapper-->
                                     <div class="cursor-pointer symbol symbol-35px symbol-lg-35px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-                                        <img alt="Pic" src="assets/media/avatars/300-1.jpg" />
+                                        <img alt="Pic" src="<?php echo (!empty($_SESSION['profile_img'])) ? '.././uploads/'.$_SESSION['profile_img'] : '.././uploads/profile/default.png'; ?>" />
                                     </div>
 
                                     <!--begin::User account menu-->
@@ -1458,18 +1459,20 @@
                                             <div class="menu-content d-flex align-items-center px-3">
                                                 <!--begin::Avatar-->
                                                 <div class="symbol symbol-50px me-5">
-                                                    <img alt="Logo" src="assets/media/avatars/300-1.jpg" />
+                                                    <img alt="Logo" src="<?php echo (!empty($_SESSION['profile_img'])) ? '.././uploads/'.$_SESSION['profile_img'] : '.././uploads/profile/default.png'; ?>" />
                                                 </div>
                                                 <!--end::Avatar-->
 
                                                 <!--begin::Username-->
                                                 <div class="d-flex flex-column">
                                                     <div class="fw-bold d-flex align-items-center fs-5">
-                                                        Max Smith <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Pro</span>
+                                                    <?php echo (!empty($_SESSION['user_name'])) ? $_SESSION['user_name'] : ''; ?>
+                                                        <!-- <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Pro</span> -->
                                                     </div>
 
                                                     <a href="#" class="fw-semibold text-muted text-hover-primary fs-7">
-                                                        max@kt.com </a>
+                                                    <?php echo (!empty($_SESSION['user_email'])) ? $_SESSION['user_email'] : ''; ?>
+                                                    </a>
                                                 </div>
                                                 <!--end::Username-->
                                             </div>
@@ -1477,78 +1480,78 @@
                                         <!--end::Menu item-->
 
                                         <!--begin::Menu separator-->
-                                        <div class="separator my-2"></div>
+                                        <!-- <div class="separator my-2"></div> -->
                                         <!--end::Menu separator-->
 
                                         <!--begin::Menu item-->
-                                        <div class="menu-item px-5">
+                                        <!-- <div class="menu-item px-5">
                                             <a href="../../../account/overview.html" class="menu-link px-5">
                                                 My Profile
                                             </a>
-                                        </div>
+                                        </div> -->
                                         <!--end::Menu item-->
 
                                         <!--begin::Menu item-->
-                                        <div class="menu-item px-5">
+                                        <!-- <div class="menu-item px-5">
                                             <a href="../../projects/list.html" class="menu-link px-5">
                                                 <span class="menu-text">My Projects</span>
                                                 <span class="menu-badge">
                                                     <span class="badge badge-light-danger badge-circle fw-bold fs-7">3</span>
                                                 </span>
                                             </a>
-                                        </div>
+                                        </div> -->
                                         <!--end::Menu item-->
 
                                         <!--begin::Menu item-->
-                                        <div class="menu-item px-5" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="left-start" data-kt-menu-offset="-15px, 0">
-                                            <a href="#" class="menu-link px-5">
+                                        <!-- <div class="menu-item px-5" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="left-start" data-kt-menu-offset="-15px, 0"> -->
+                                            <!-- <a href="#" class="menu-link px-5">
                                                 <span class="menu-title">My Subscription</span>
                                                 <span class="menu-arrow"></span>
-                                            </a>
+                                            </a> -->
 
                                             <!--begin::Menu sub-->
-                                            <div class="menu-sub menu-sub-dropdown w-175px py-4">
+                                            <!-- <div class="menu-sub menu-sub-dropdown w-175px py-4"> -->
                                                 <!--begin::Menu item-->
-                                                <div class="menu-item px-3">
+                                                <!-- <div class="menu-item px-3">
                                                     <a href="../../../account/referrals.html" class="menu-link px-5">
                                                         Referrals
                                                     </a>
-                                                </div>
+                                                </div> -->
                                                 <!--end::Menu item-->
 
                                                 <!--begin::Menu item-->
-                                                <div class="menu-item px-3">
+                                                <!-- <div class="menu-item px-3">
                                                     <a href="../../../account/billing.html" class="menu-link px-5">
                                                         Billing
                                                     </a>
-                                                </div>
+                                                </div> -->
                                                 <!--end::Menu item-->
 
                                                 <!--begin::Menu item-->
-                                                <div class="menu-item px-3">
+                                                <!-- <div class="menu-item px-3">
                                                     <a href="../../../account/statements.html" class="menu-link px-5">
                                                         Payments
                                                     </a>
-                                                </div>
+                                                </div> -->
                                                 <!--end::Menu item-->
 
                                                 <!--begin::Menu item-->
-                                                <div class="menu-item px-3">
+                                                <!-- <div class="menu-item px-3">
                                                     <a href="../../../account/statements.html" class="menu-link d-flex flex-stack px-5">
                                                         Statements
 
                                                         <span class="ms-2 lh-0" data-bs-toggle="tooltip" title="View your statements">
                                                             <i class="ki-duotone ki-information-5 fs-5"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i> </span>
                                                     </a>
-                                                </div>
+                                                </div> -->
                                                 <!--end::Menu item-->
 
                                                 <!--begin::Menu separator-->
-                                                <div class="separator my-2"></div>
+                                                <!-- <div class="separator my-2"></div> -->
                                                 <!--end::Menu separator-->
 
                                                 <!--begin::Menu item-->
-                                                <div class="menu-item px-3">
+                                                <!-- <div class="menu-item px-3">
                                                     <div class="menu-content px-3">
                                                         <label class="form-check form-switch form-check-custom form-check-solid">
                                                             <input class="form-check-input w-30px h-20px" type="checkbox" value="1" checked="checked" name="notifications" />
@@ -1557,19 +1560,19 @@
                                                             </span>
                                                         </label>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                 <!--end::Menu item-->
-                                            </div>
+                                            <!-- </div> -->
                                             <!--end::Menu sub-->
-                                        </div>
+                                        <!-- </div> -->
                                         <!--end::Menu item-->
 
                                         <!--begin::Menu item-->
-                                        <div class="menu-item px-5">
-                                            <a href="../../../account/statements.html" class="menu-link px-5">
+                                        <!-- <div class="menu-item px-5"> -->
+                                            <!-- <a href="../../../account/statements.html" class="menu-link px-5">
                                                 My Statements
-                                            </a>
-                                        </div>
+                                            </a> -->
+                                        <!-- </div> -->
                                         <!--end::Menu item-->
 
                                         <!--begin::Menu separator-->
@@ -1578,8 +1581,8 @@
 
 
                                         <!--begin::Menu item-->
-                                        <div class="menu-item px-5" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="left-start" data-kt-menu-offset="-15px, 0">
-                                            <a href="#" class="menu-link px-5">
+                                        <!-- <div class="menu-item px-5" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="left-start" data-kt-menu-offset="-15px, 0"> -->
+                                            <!-- <a href="#" class="menu-link px-5">
                                                 <span class="menu-title position-relative">
                                                     Language
 
@@ -1587,80 +1590,80 @@
                                                         English <img class="w-15px h-15px rounded-1 ms-2" src="../../../assets/media/flags/united-states.svg" alt="" />
                                                     </span>
                                                 </span>
-                                            </a>
+                                            </a> -->
 
                                             <!--begin::Menu sub-->
-                                            <div class="menu-sub menu-sub-dropdown w-175px py-4">
+                                            <!-- <div class="menu-sub menu-sub-dropdown w-175px py-4"> -->
                                                 <!--begin::Menu item-->
-                                                <div class="menu-item px-3">
+                                                <!-- <div class="menu-item px-3">
                                                     <a href="../../../account/settings.html" class="menu-link d-flex px-5 active">
                                                         <span class="symbol symbol-20px me-4">
                                                             <img class="rounded-1" src="../../../assets/media/flags/united-states.svg" alt="" />
                                                         </span>
                                                         English
                                                     </a>
-                                                </div>
+                                                </div> -->
                                                 <!--end::Menu item-->
 
                                                 <!--begin::Menu item-->
-                                                <div class="menu-item px-3">
+                                                <!-- <div class="menu-item px-3">
                                                     <a href="../../../account/settings.html" class="menu-link d-flex px-5">
                                                         <span class="symbol symbol-20px me-4">
                                                             <img class="rounded-1" src="../../../assets/media/flags/spain.svg" alt="" />
                                                         </span>
                                                         Spanish
                                                     </a>
-                                                </div>
+                                                </div> -->
                                                 <!--end::Menu item-->
 
                                                 <!--begin::Menu item-->
-                                                <div class="menu-item px-3">
+                                                <!-- <div class="menu-item px-3">
                                                     <a href="../../../account/settings.html" class="menu-link d-flex px-5">
                                                         <span class="symbol symbol-20px me-4">
                                                             <img class="rounded-1" src="../../../assets/media/flags/germany.svg" alt="" />
                                                         </span>
                                                         German
                                                     </a>
-                                                </div>
+                                                </div> -->
                                                 <!--end::Menu item-->
 
                                                 <!--begin::Menu item-->
-                                                <div class="menu-item px-3">
+                                                <!-- <div class="menu-item px-3">
                                                     <a href="../../../account/settings.html" class="menu-link d-flex px-5">
                                                         <span class="symbol symbol-20px me-4">
                                                             <img class="rounded-1" src="../../../assets/media/flags/japan.svg" alt="" />
                                                         </span>
                                                         Japanese
                                                     </a>
-                                                </div>
+                                                </div> -->
                                                 <!--end::Menu item-->
 
                                                 <!--begin::Menu item-->
-                                                <div class="menu-item px-3">
+                                                <!-- <div class="menu-item px-3">
                                                     <a href="../../../account/settings.html" class="menu-link d-flex px-5">
                                                         <span class="symbol symbol-20px me-4">
                                                             <img class="rounded-1" src="../../../assets/media/flags/france.svg" alt="" />
                                                         </span>
                                                         French
                                                     </a>
-                                                </div>
+                                                </div> -->
                                                 <!--end::Menu item-->
-                                            </div>
+                                            <!-- </div> -->
                                             <!--end::Menu sub-->
-                                        </div>
+                                        <!-- </div> -->
                                         <!--end::Menu item-->
 
                                         <!--begin::Menu item-->
-                                        <div class="menu-item px-5 my-1">
-                                            <a href="../../../account/settings.html" class="menu-link px-5">
+                                        <!-- <div class="menu-item px-5 my-1"> -->
+                                            <!-- <a href="../../../account/settings.html" class="menu-link px-5">
                                                 Account Settings
-                                            </a>
-                                        </div>
+                                            </a> -->
+                                        <!-- </div> -->
                                         <!--end::Menu item-->
 
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-5">
-                                            <a href="../../../authentication/sign-in/basic.html" class="menu-link px-5">
+                                            <a href=".././logout.php" class="menu-link px-5">
                                                 Sign Out
                                             </a>
                                         </div>
