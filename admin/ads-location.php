@@ -6,7 +6,7 @@ $success = false;
 
 
 // Read
-$query = "SELECT * FROM ad_location";
+$query = "SELECT * FROM location";
 $result = mysqli_query($db, $query);
 
 $ad_location = array();

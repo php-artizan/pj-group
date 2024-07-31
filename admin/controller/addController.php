@@ -18,7 +18,7 @@ if(isset($_POST['submitAddCategoryBtn'])){
         $dataAds['image'] = $filesInfo;
     }
 
-    $insertAndGetID = insertRowAndGetID('category',$dataAds);
+    $insertAndGetID = insertRowAndGetID('categories',$dataAds);
     $_SESSION['success_msg'] ="New Category Added Successfully";
     redirectBack($_SERVER['HTTP_REFERER']);
 
@@ -39,7 +39,7 @@ if(isset($_POST['submitAddLocationBtn'])){
         $dataAds['image'] = $filesInfo;
     }
 
-    $insertAndGetID = insertRowAndGetID('ad_location',$dataAds);
+    $insertAndGetID = insertRowAndGetID('location',$dataAds);
     $_SESSION['success_msg'] ="New Location Added Successfully";
     redirectBack($_SERVER['HTTP_REFERER']);
 
@@ -103,7 +103,7 @@ if(isset($_POST['AdLocationUpdate'])){
 
 // Delete Category
 if(isset($_GET['id'])){
-    deleteRow('category',['id' => $_GET['id']]);
+    deleteRow('categories',['id' => $_GET['id']]);
     $_SESSION['success_msg'] ="Category Deleted Successfully";
     redirectBack($_SERVER['HTTP_REFERER']);
 
@@ -112,7 +112,7 @@ if(isset($_GET['id'])){
 
 // Delete Location
 if(isset($_GET['id'])){
-    deleteRow('ad_location',['id' => $_GET['id']]);
+    deleteRow('location',['id' => $_GET['id']]);
     $_SESSION['success_msg'] ="Location Deleted Successfully";
     redirectBack($_SERVER['HTTP_REFERER']);
 

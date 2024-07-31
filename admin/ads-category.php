@@ -6,7 +6,7 @@ $success = false;
 
 
 // Read
-$query = "SELECT * FROM category";
+$query = "SELECT * FROM categories";
 $result = mysqli_query($db, $query);
 
 $category = array();
