@@ -13,9 +13,11 @@ unset($_GET['submit']);
 $query_params = $_GET;
 // dd($query_params);
 
+$page = $query_params['page'] ?? 1;
 
-$search_results = Ad::search($query_params);
-dd($search_results);
+
+$search_results = Ad::search($query_params, $page, 10);
+// dd($search_results);
 
 
 
@@ -50,11 +52,11 @@ include("include/head.php");
 			<!-- ============================ Page Title End ================================== -->
 			
 			<!-- ============================ All Property ================================== -->
-			<section class="gray-simple">
+			<section class="gray-simple ">
 			
 				<div class="container">
 				
-					<div class="row">
+					<div class="row mt-5">
 						<div class="col-lg-12 col-md-12">
 							<div class="filter_search_opt">
 								<a href="javascript:void(0);" class="btn btn-dark full-width mb-4" onclick="openFilterSearch()">
@@ -483,11 +485,11 @@ include("include/head.php");
 						
 						<div class="col-lg-8 col-md-12 list-layout">
 							
-							<div class="row justify-content-center">
+							<div class="row justify-content-center ">
 								<div class="col-lg-12 col-md-12">
 									<div class="item-shorting-box">
 										<div class="item-shorting clearfix">
-											<div class="left-column pull-left"><h4 class="fs-6 m-0">Found 1-10 of 142 Results</h4></div>
+											<div class="left-column pull-left"><h4 class="fs-6 m-0">Found 1-<?=$search_results['total_pages']?> of <?=$search_results['total_records']?> Results</h4></div>
 										</div>
 										<div class="item-shorting-box-right">
 											<div class="shorting-by">

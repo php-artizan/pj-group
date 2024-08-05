@@ -440,15 +440,15 @@
 	  autoplaySpeed:2000,
 	});
 	
-	// Range Slider Script
-	$(".js-range-slider").ionRangeSlider({
-		type: "double",
-		min: 0,
-		max: 1000,
-		from: 200,
-		to: 500,
-		grid: true
-	});
+	// // Range Slider Script
+	// $(".js-range-slider").ionRangeSlider({
+	// 	type: "double",
+	// 	min: 0,
+	// 	max: 1000,
+	// 	from: 200,
+	// 	to: 500,
+	// 	grid: true
+	// });
 	
 	// Select Bedrooms
 	$('#bedrooms').select2({

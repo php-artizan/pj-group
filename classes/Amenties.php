@@ -45,6 +45,34 @@ class Amenties extends CustomOperations {
         return $data;
     
     }
+    public static function all(){
+       
+    
+        $query = "SELECT * FROM amenties ";
+        $data = parent::get_rows($query);
+        if(!$data){
+            return false;
+        }
+        $ret = [];
+
+        foreach($data as $item){
+            $amenity =  self::get_single_amenity($item['id']);
+            // dd($amenity);
+            $ret[$amenity['group_slug']]['id'] = $amenity['group_id'];
+            $ret[$amenity['group_slug']]['title'] = $amenity['group_name'];
+            $ret[$amenity['group_slug']]['desc'] = $amenity['group_description'];
+            $ret[$amenity['group_slug']]['items'][] = [
+                "id" =>  $amenity['id'],
+                "name" => $amenity['name'],
+                "slug" => $amenity['slug'],
+                "icon" => UPLOADS_DIR.$amenity['icon'],
+                "desc" => $amenity['description']
+            ];
+        }
+       
+        return $ret;
+      
+    }
 
 } 
 

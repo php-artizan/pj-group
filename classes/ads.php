@@ -25,44 +25,114 @@ class Ad extends CustomOperations {
         
         return $ret;
     }
-    public static function search($options=[]){
+    public static function search($options = [], $page = 1, $records_per_page = 10) {
+        // Calculate the offset
+        $offset = ($page - 1) * $records_per_page;
         
-        $options_count = count($options);
-        $query = "SELECT DISTINCT(ad_id) as ad_id FROM `ads_meta` ";
-        if( $options_count > 0){
-            $query .= "  WHERE ";
-        }
-        $count = 1;
-        foreach ($options as $key => $value){
-
-            $query .= " ( meta_key='$key' AND meta_value='$value' ) ";
-            if( $count  < $options_count){
-                $query .= " OR ";
+        // Initialize the ad_ids array
+        $ad_ids = [];
+        
+        // Base query for ads
+        $query = "SELECT DISTINCT(id) as id FROM ads ";
+        $main_type = !empty($options['main_type']) ? $options['main_type'] : "sale";
+        $price = explode(";", $options['price']);
+        $min_price = $price[0];
+        $max_price = $price[1];
+    
+        // If there are options, build the query
+        if (count($options) > 0) {
+            $query .= " WHERE main_type='$main_type' ";
+    
+            if (!empty($options['location_id'])) {
+                $query .= " AND location_id = " . $options['location_id'];
             }
-            $count++;
-
-
+    
+            if (!empty($options['cat_id'])) {
+                $query .= " AND cat_id = " . $options['cat_id'];
+            }
+    
+            if (!empty($options['price'])) {
+                $query .= " AND price BETWEEN $min_price AND $max_price";
+            }
+    
+            // Get the rows matching the criteria
+            $data = parent::get_rows($query);
+    
+            // If data is returned, add the IDs to the ad_ids array
+            if ($data) {
+                foreach ($data as $item) {
+                    $ad_ids[] = $item['id'];
+                }
+            }
+    
+            // Additional query for ads_meta
+            $query = "SELECT DISTINCT(ad_id) as id FROM ads_meta WHERE 1 ";
+    
+            if (!empty($options['bedrooms'])) {
+                $bedrooms = $options['bedrooms'];
+                $query .= " AND (meta_key='bedrooms' AND meta_value='$bedrooms') ";
+            }
+    
+            if (!empty($options['bathrooms'])) {
+                $bathrooms = $options['bathrooms'];
+                $query .= " AND (meta_key='bathrooms' AND meta_value='$bathrooms') ";
+            }
+    
+            // Get the rows matching the criteria
+            $data = parent::get_rows($query);
+    
+            // If data is returned, add the IDs to the ad_ids array
+            if ($data) {
+                foreach ($data as $item) {
+                    $ad_ids[] = $item['id'];
+                }
+            }
+    
+            // Remove duplicate IDs
+            $ad_ids = array_unique($ad_ids);
         }
-
-
-        $data = parent::get_rows($query);
+    
+        // Build the WHERE part for the main query
+        $where_part = '';
+        if (count($ad_ids) != 0) {
+            $where_part = ' AND id IN (' . implode(',', $ad_ids) . ') ';
+        }
+    
+        // Calculate the total number of records
+        $total_records_query = "SELECT COUNT(*) as total FROM ads WHERE 1 $where_part";
+        $total_records_result = parent::get_rows($total_records_query);
+        $total_records = $total_records_result[0]['total'];
         
-
-        if(!$data){
+        // Calculate the total number of pages
+        $total_pages = ceil($total_records / $records_per_page);
+    
+        // Get the paginated records
+        $data = parent::get_rows("SELECT * FROM ads WHERE 1 $where_part LIMIT $offset, $records_per_page");
+    
+        if (!$data) {
             return false;
         }
-        $ret = [];
-        foreach($data as $item){
+    
+        // Initialize the ads array
+        $ads = [];
+        foreach ($data as $item) {
             $options = array(
-                "id"=>$item['ad_id']
+                "id" => $item['id']
             );
-            $ret[] = self::get_ad($options);    
+            $ads[] = self::get_ad($options);
         }
-
-        // dd($ret, false);
-        
+    
+        // Prepare the return array
+        $ret = [
+            "data" => $ads,
+            "total_records" => $total_records,
+            "total_pages" => $total_pages,
+            "current_page" => $page
+        ];
+    
         return $ret;
     }
+    
     public static function get_ads_by_user_id($user_id = false){
         if(!$user_id){
             return false;
