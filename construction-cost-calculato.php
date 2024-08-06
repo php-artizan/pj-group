@@ -5,6 +5,7 @@ require "config/global.php";
 <html lang="zxx">
 
 <?php
+
 include("include/head.php");
 ?>
 <style>
@@ -146,107 +147,110 @@ include("include/head.php");
                                 <h2>Construction Cost Calculator </h2>
                                 <p>Use our Construction Cost Calculator to get a quick estimate of required building materials along with their costs.</p>
                             </div>
-                            <div class="full-search-2 eclip-search italian-search hero-search-radius shadow-hard mt-5  " style="width: 1000px; ">
-                                <div class="hero-search-content">
-                                    <div class="row ">
-
-                                        <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
-                                            <div class="form-group mb-2">
-                                                <div class="" placeholder="Lahore">
-                                                    City
-                                                    <select id="town" class="form-control">
-                                                        <option value="1" selected>Lahore</option>
-                                                        <option value="2">Karachi</option>
-                                                        <option value="3">Islamabad</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-xl-6 col-lg-6 col-md-4 col-sm-12 p-md-0 elio ">
-                                            <div class="form-group ">
-                                                <div class="position-relative ">
-                                                    Area Size
-                                                    <input type="text" class="form-control" placeholder="Area Size" style="height: 55px;" />
-                                                    <div class="position-absolute top-50 start-0 translate-middle-y ms-2">
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-xl-1 col-lg-1 col-md-1 col-sm-2 d-flex align-items-end">
-                                            <div class="form-group">
-                                                <a class="collapsed ad-search" data-bs-toggle="collapse" data-bs-parent="#search" data-bs-target="#advance-search" href="javascript:void(0);" aria-expanded="false" aria-controls="advance-search"><i class="fa fa-sliders-h"></i></a>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
-                                            <div class="form-group">
-                                                <button type="button" class="btn btn-dark full-width">Calculate Cost</button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <!-- Collapse Advance Search Form -->
-                                    <div class="collapse" id="advance-search" aria-expanded="false" role="banner">
-
-                                        <!-- row -->
-                                        <div class="row">
-
-                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 p-md-0 elio ">
-                                                <div class="form-group ">
-                                                    <div class="position-relative ">
-                                                        Covered Area
-                                                        <input type="text" class="form-control" placeholder="Enter Covered Area in Sq.Ft." />
-                                                        <div class="position-absolute top-50 start-0 translate-middle-y ms-2">
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 p-md-0 elio ">
-                                                <div class="form-group">
-                                                    <div class="position-relative mx-3">
-                                                        Covered Area
-                                                        <i class="fa fa-info-circle info-icon" onclick="toggleTooltip()"></i>
-                                                        <div class="tooltip-box">
-                                                            This is some information about the covered area.
-                                                        </div>
-                                                        <div class="position-absolute top-50 start-0 translate-middle-y ms-2 badge-container mt-5">
-                                                            <span class="badge d-flex align-items-center justify-content-center" style="width: 110px; height: 30px; border-radius: 17px; background-color: #074DA3;" onclick="selectBadge(this)"><i class="fa mx-1"></i>Gray structure</span>
-                                                            <span class="badge d-flex align-items-center justify-content-center" style="width: 110px; height: 30px; border-radius: 17px; background-color: #074DA3;" onclick="selectBadge(this)"><i class="fa mx-1"></i>Complete </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-
-                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 p-md-0 elio ">
-                                                <div class="form-group">
-                                                    <div class="position-relative">
-                                                    Construction Mode
-                                                        <i class="fa fa-info-circle info-icon" onclick="toggleTooltip()"></i>
-                                                        <div class="tooltip-box">
-                                                            This is some information about the covered area.
-                                                        </div>
-                                                        <div class="position-absolute top-50 start-0 translate-middle-y ms-2 badge-container mt-5">
-                                                            <span class="badge d-flex align-items-center justify-content-center" style="width: 110px; height: 30px; border-radius: 17px; background-color: #074DA3;" onclick="selectBadge(this)"><i class="fa mx-1"></i>With Material</span>
-                                                            <span class="badge d-flex align-items-center justify-content-center" style="width: 110px; height: 30px; border-radius: 17px; background-color: #074DA3;" onclick="selectBadge(this)"><i class="fa mx-1"></i>Without Material</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-                                            <!-- /row -->
-
-                                        </div>
-                                    </div>
+                            <div class="full-search-2 eclip-search italian-search hero-search-radius shadow-hard mt-5  " style="width: 800px; ">
+                            <div class="container mt-5">
+                            <form action="calculate_cost.php" method="post">
+        <div class="hero-search-content">
+            <div class="row">
+                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
+                    <div class="form-group mb-2">
+                        <div>
+                            City
+                            <select id="town" class="form-control" name="city">
+                                <option value="Lahore" selected>Lahore</option>
+                                <option value="Karachi">Karachi</option>
+                                <option value="Islamabad">Islamabad</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-4 col-sm-12 p-md-0 elio">
+                    <div class="form-group">
+                        <div class="position-relative">
+                            Area Size
+                            <input type="text" name="area_size" class="form-control" placeholder="Area Size" style="height: 55px;" required/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-1 col-lg-1 col-md-1 col-sm-2 d-flex align-items-end">
+                    <div class="form-group">
+                        <a class="collapsed ad-search mt-4" data-bs-toggle="collapse" data-bs-parent="#search" data-bs-target="#advance-search" href="javascript:void(0);" aria-expanded="false" aria-controls="advance-search">
+                            <i class="fa fa-sliders-h"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-dark full-width">Calculate Cost</button>
+                    </div>
+                </div>
+            </div>
+            <div class="collapse" id="advance-search" aria-expanded="false" role="banner">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 p-md-0 elio">
+                        <div class="form-group">
+                            <div class="position-relative">
+                                Covered Area
+                                <input type="text" name="covered_area_size" class="form-control" placeholder="Enter Covered Area in Sq.Ft." />
+                                <div class="position-absolute top-50 start-0 translate-middle-y ms-2">
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 p-md-0 elio">
+                        <div class="form-group">
+                            <div class="position-relative mx-3">
+                                Covered Area
+                                <i class="fa fa-info-circle info-icon" onclick="toggleTooltip(this)"></i>
+                                <div class="tooltip-box">
+                                    This is some information about the covered area.
+                                </div>
+                                <div class="position-absolute top-50 start-0 translate-middle-y ms-2 badge-container mt-5">
+                                    <span class="badge d-flex align-items-center justify-content-center" style="width: 110px; height: 30px; border-radius: 17px; background-color: #074DA3;" onclick="selectBadge(this, 'covered_area', 'Complete')"><i class="fa mx-1 fa-check "></i>Complete</span>
+                                    <span class="badge d-flex align-items-center justify-content-center" style="width: 110px; height: 30px; border-radius: 17px; background-color: #074DA3;" onclick="selectBadge(this, 'covered_area', 'Gray structure')"><i class="fa mx-1"></i>Gray structure</span>
+                                </div>
+                                <input type="hidden" id="covered_area" name="covered_area" value="Complete">
+                            </div>
+                        </div>
+                    </div> -->
+                    
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 p-md-0 elio">
+                        <div class="form-group">
+                            <div class="position-relative">
+                                Covered Area
+                                <i class="fa fa-info-circle info-icon" onclick="toggleTooltip(this)"></i>
+                                <div class="tooltip-box">
+                                This is some information about the covered area.
+                                </div>
+                                <div class="position-absolute top-50 start-0 translate-middle-y ms-2 badge-container mt-5">
+                                    <span class="badge d-flex align-items-center justify-content-center" style="width: 110px; height: 30px; border-radius: 17px; background-color: #074DA3;" onclick="selectBadge(this, 'covered_area', 'Gray structure')"><i class="fa mx-1"></i>Gray structure</span>
+                                    <span class="badge d-flex align-items-center justify-content-center" style="width: 110px; height: 30px; border-radius: 17px; background-color: #074DA3;" onclick="selectBadge(this, 'covered_area', 'Complete')"><i class="fa mx-1 fa-check"></i>Complete</span>
+                                </div>
+                                <input type="hidden" id="covered_area" name="covered_area" value="Complete">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 p-md-0 elio">
+                        <div class="form-group">
+                            <div class="position-relative">
+                                Construction Mode
+                                <i class="fa fa-info-circle info-icon" onclick="toggleTooltip(this)"></i>
+                                <div class="tooltip-box">
+                                    This is some information about the construction mode.
+                                </div>
+                                <div class="position-absolute top-50 start-0 translate-middle-y ms-2 badge-container mt-5">
+                                    <span class="badge d-flex align-items-center justify-content-center" style="width: 110px; height: 30px; border-radius: 17px; background-color: #074DA3;" onclick="selectBadge(this, 'construction_mode', 'With Material')"><i class="fa mx-1"></i>With Material</span>
+                                    <span class="badge d-flex align-items-center justify-content-center" style="width: 110px; height: 30px; border-radius: 17px; background-color: #074DA3;" onclick="selectBadge(this, 'construction_mode', 'Without Material')"><i class="fa mx-1 fa-check"></i>Without Material</span>
+                                </div>
+                                <input type="hidden" id="construction_mode" name="construction_mode" value="Without Material">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
                             </div>
                         </div>
@@ -516,7 +520,7 @@ include("include/head.php");
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
-    <script src="assets/js/jquery.min.js"></script>
+   
 
     <script src="assets/js/popper.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
@@ -531,10 +535,11 @@ include("include/head.php");
 
 
     <script src="assets/js/custom.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
     <!-- ============================================================== -->
     <!-- This page plugins -->
     <!-- ============================================================== -->
@@ -559,46 +564,53 @@ include("include/head.php");
                 },
             });
         });
+        function selectBadge(badge, inputId, value) {
+    // Remove the selected class from all badges in the same container
+    const badgeContainer = badge.parentElement;
+    const badges = badgeContainer.querySelectorAll('.badge');
+    badges.forEach(b => {
+        b.classList.remove('selected');
+        b.querySelector('i').classList.remove('fa-check');
+    });
 
-        function selectBadge(badge) {
-            // Remove the selected class from both badges
-            const badges = document.querySelectorAll('.badge');
-            badges.forEach(b => {
-                b.classList.remove('selected');
-                b.querySelector('i').classList.remove('fa-check');
-            });
+    // Add the selected class to the clicked badge
+    badge.classList.add('selected');
+    badge.querySelector('i').classList.add('fa-check');
 
-            // Add the selected class to the clicked badge
-            badge.classList.add('selected');
-            badge.querySelector('i').classList.add('fa-check');
-        }
+    // Set the value of the hidden input field
+    const inputElement = document.getElementById(inputId);
+    inputElement.value = value;
+    
+    // Log the value for debugging
+    console.log(`Input ID: ${inputId}, Value Set: ${inputElement.value}`);
+}
 
-        function toggleTooltip() {
-            const tooltip = document.querySelector('.tooltip-box');
+        
+
+        function toggleTooltip(icon) {
+            const tooltip = icon.nextElementSibling;
             tooltip.style.display = tooltip.style.display === 'block' ? 'none' : 'block';
         }
 
         // Close the tooltip if clicked outside
         document.addEventListener('click', function(event) {
-            const isClickInside = document.querySelector('.info-icon').contains(event.target);
-            const tooltip = document.querySelector('.tooltip-box');
+            const isClickInside = event.target.closest('.info-icon');
+            const tooltips = document.querySelectorAll('.tooltip-box');
             if (!isClickInside) {
-                tooltip.style.display = 'none';
+                tooltips.forEach(tooltip => {
+                    tooltip.style.display = 'none';
+                });
             }
         });
 
-        function selectBadge(badge) {
-            // Remove the selected class from both badges
-            const badges = document.querySelectorAll('.badge');
-            badges.forEach(b => {
-                b.classList.remove('selected');
-                b.querySelector('i').classList.remove('fa-check');
-            });
-
-            // Add the selected class to the clicked badge
-            badge.classList.add('selected');
-            badge.querySelector('i').classList.add('fa-check');
-        }
+        // Set initial selections
+        document.addEventListener('DOMContentLoaded', function() {
+            const initialCoveredAreaBadge = document.querySelector('.badge-container .badge:first-child');
+            selectBadge(initialCoveredAreaBadge, 'covered_area', 'Complete');
+            
+            const initialConstructionModeBadge = document.querySelector('.badge-container .badge:last-child');
+            selectBadge(initialConstructionModeBadge, 'construction_mode', 'Without Material');
+        });
 
         const track = document.querySelector('.carousel-track');
         const slides = Array.from(track.children);
@@ -634,7 +646,40 @@ include("include/head.php");
 
             moveToSlide(track, currentSlide, nextSlide);
         });
+        function calculateCost() {
+    const city = document.getElementById('city').value;
+    const areaSize = document.getElementById('areaSize').value;
+    const coveredArea = document.getElementById('coveredArea').value;
+    const constructionMode = document.getElementById('constructionMode').value;
+    const materialType = document.getElementById('materialType').value;
+
+    $.ajax({
+        type: 'POST',
+        url: 'calculate_cost.php',
+        data: {
+            city: city,
+            areaSize: areaSize,
+            coveredArea: coveredArea,
+            constructionMode: constructionMode,
+            materialType: materialType
+        },
+        dataType: 'json', // Expect JSON response
+        success: function(response) {
+            // Handle JSON response
+            if (response.error) {
+                console.error('Error:', response.error);
+                document.getElementById('totalCost').innerText = 'Error: ' + response.error;
+            } else {
+                document.getElementById('totalCost').innerText = response.totalCost;
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', status, error);
+        }
+    });
+}
     </script>
+
 
 </body>
 
